@@ -1,0 +1,636 @@
+/* ==========================================================================
+   production.css — LisaCreo
+   Переопределения поверх Webflow / main.css.
+   Webflow-файлы (main.css, webflow-*.js) не редактировать напрямую.
+   Порядок подключения в <head>: main.css → production.css.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. CSS-переменные
+   -------------------------------------------------------------------------- */
+:root {
+  --lc-accent: #ff5e00;
+  --lc-pink:   #ff61a6;
+  --_font-family---title-font: Raleway, sans-serif;
+  --_font-family---text-font:  Raleway, sans-serif;
+}
+
+/* --------------------------------------------------------------------------
+   2. База — типографика, скролл, рендеринг
+   -------------------------------------------------------------------------- */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: Raleway, sans-serif;
+  text-rendering: geometricPrecision;
+  -webkit-font-smoothing: antialiased;
+}
+
+body :where(h1, h2, h3, h4, h5, h6, p, a, span, div, button, input, textarea, select, label) {
+  font-family: Raleway, sans-serif;
+}
+
+[class^="w-icon-"],
+[class*=" w-icon-"],
+.social-icon {
+  font-family: webflow-icons, Arial, sans-serif !important;
+}
+
+img {
+  max-width: 100%;
+}
+
+.page-wrapper {
+  overflow: clip;
+}
+
+/* --------------------------------------------------------------------------
+   3. Фоны секций (пути относительно css/)
+   -------------------------------------------------------------------------- */
+.bg.hero-bg {
+  background-image: url("../assets/portfolio/main-img.jpg") !important;
+}
+
+.bg.start-your-brand-bg,
+.bg.project-info-bg {
+  background-image: url("../assets/portfolio/start-your-brand.jpg") !important;
+}
+
+/* --------------------------------------------------------------------------
+   4. Фокус и интерактивные элементы
+   -------------------------------------------------------------------------- */
+:where(a, button, input, textarea, select):focus-visible {
+  outline: 2px solid rgba(255, 97, 166, 0.8);
+  outline-offset: 3px;
+}
+
+.contact-input,
+.contact-button,
+.theme-button,
+.footer-list-link,
+.social-icon-link,
+.pricing-single,
+.project-single,
+.service-single,
+.process-single,
+.brands-gallery-card {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.contact-input {
+  transition: border-color     220ms cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow       220ms cubic-bezier(0.16, 1, 0.3, 1),
+              background-color 220ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.contact-input:focus {
+  border-color: rgba(255, 97, 166, 0.6);
+  box-shadow: 0 0 0 4px rgba(255, 97, 166, 0.16);
+}
+
+.contact-button,
+.theme-button,
+.pricing-single,
+.project-single,
+.service-single,
+.process-single,
+.brands-gallery-card {
+  transition: transform  420ms cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 420ms cubic-bezier(0.16, 1, 0.3, 1),
+              filter     420ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (hover: hover) {
+  .pricing-single:hover,
+  .project-single:hover,
+  .service-single:hover,
+  .process-single:hover,
+  .brands-gallery-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.28);
+  }
+
+  .contact-button:hover,
+  .theme-button:hover {
+    transform: translateY(-1px);
+    filter: saturate(1.05) contrast(1.02);
+  }
+}
+
+.theme-btn-icon-box {
+  background: #000 !important;
+  border-radius: 999px;
+}
+
+.theme-button .theme-btn-bg {
+  background: #000 !important;
+}
+
+.w-form-done,
+.w-form-fail {
+  border-radius: 20px;
+}
+
+/* --------------------------------------------------------------------------
+   5. Медиа и иконки
+   -------------------------------------------------------------------------- */
+.brands-gallery-card img,
+.project-detail-image,
+.case-image-full,
+.case-image-grid img,
+.gallery-image,
+.project-image,
+.marquee-image,
+.process-image {
+  background: #181818;
+}
+
+.project-video {
+  display: block;
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+
+/* Dot-иконка соцсетей (font-size:0 скрывает символ, ::before рисует кружок) */
+.social-icon {
+  font-family: Arial, sans-serif !important;
+  font-size: 0 !important;
+}
+
+.social-icon::before {
+  content: "";
+  display: block;
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  background: var(--lc-accent);
+  box-shadow: inset 0 0 0 5px rgba(255, 255, 255, 0.18);
+}
+
+/* --------------------------------------------------------------------------
+   6. Прочие секции
+   -------------------------------------------------------------------------- */
+.ai-note-section {
+  padding-top: clamp(64px, 8vw, 120px);
+}
+
+/* --------------------------------------------------------------------------
+   7. Hero — итоговая раскладка
+   --------------------------------------------------------------------------
+   Структура: .hero-content-box (display: block)
+                └── .hero-left-box (flex-column)
+                      ├── .hero-title-outer (order: 1) → h1.hero-title
+                      └── .hero-text-box    (order: 2) → h2.hero-title-two
+              .banner-list-box (grid 4-col, сестра .hero-content-box)
+   -------------------------------------------------------------------------- */
+
+.hero-section,
+.hero-outer-box {
+  min-height: 100svh;
+}
+
+.hero-outer-box {
+  padding-top:    clamp(88px, 9vh, 132px) !important;
+  padding-bottom: clamp(48px, 7vh, 96px)  !important;
+}
+
+.hero-outer-box > .container {
+  width: min(100% - clamp(32px, 7vw, 136px), 1680px);
+}
+
+/* IX масштабирует .hero-bg — якорим origin к верху, чтобы при scale
+   не открывалась тёмная полоса под прозрачным хедером */
+.hero-outer-box > .bg.hero-bg {
+  transform-origin: 50% 0 !important;
+}
+
+.hero-content-box {
+  display: block !important;
+  width: 100%;
+  margin-bottom: clamp(18px, 4vh, 56px) !important;
+}
+
+.hero-left-box {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  width: min(100%, 1320px) !important;
+  max-width: 100% !important;
+  gap: clamp(16px, 2.2vw, 32px) !important;
+}
+
+.hero-title-outer,
+.hero-title-box,
+.hero-title-box.two {
+  position: relative !important;
+  width: max-content !important;
+  min-width: max-content !important;
+  max-width: none !important;
+  height: auto !important;
+  align-self: flex-start !important;
+  justify-self: start !important;
+  margin-left: 0 !important;
+  left: 0 !important;
+  overflow: visible !important;
+}
+
+/* Заголовок идёт первым в flex-column */
+.hero-title-outer {
+  order: 1 !important;
+}
+
+/* hero-title-box.one — заглушка Webflow, не нужна */
+.hero-title-box.one {
+  display: none !important;
+}
+
+/* Маска reveal: clip-path раскрывается слева направо */
+.hero-title-box.two {
+  overflow: hidden !important;
+  padding: 0.16em 0.9em 0.2em 0 !important;
+  margin: -0.16em -0.9em -0.2em 0 !important;
+  clip-path: inset(-0.12em 100% -0.16em 0);
+  animation: heroTitleRevealSafe 2000ms cubic-bezier(0.19, 1, 0.22, 1) 180ms forwards !important;
+}
+
+.hero-title {
+  display: block !important;
+  width: max-content !important;
+  max-width: none !important;
+  font-size: clamp(76px, 11.2vw, 214px) !important;
+  font-weight: 600 !important;
+  line-height: 0.92 !important;
+  letter-spacing: -0.055em !important;
+  margin: 0 !important;
+  white-space: nowrap !important;
+}
+
+/* Дескриптор появляется с задержкой через opacity-fade */
+.hero-text-box {
+  order: 2 !important;
+  width: min(100%, 560px) !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  align-self: flex-start !important;
+  justify-self: start !important;
+  text-align: left !important;
+  overflow: visible !important;
+  clip-path: none !important;
+  opacity: 0;
+  animation: heroDescriptorFade 1000ms cubic-bezier(0.19, 1, 0.22, 1) 1180ms forwards !important;
+}
+
+.hero-title-two {
+  font-size: clamp(18px, 1.5vw, 30px) !important;
+  font-weight: 600 !important;
+  line-height: 1.14 !important;
+  letter-spacing: -0.03em !important;
+  text-align: left !important;
+  margin: 0 !important;
+}
+
+/* --------------------------------------------------------------------------
+   8. Banner-list (теги #01–04 в hero)
+   -------------------------------------------------------------------------- */
+.banner-list-box {
+  width: 100%;
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  column-gap: clamp(20px, 5vw, 96px) !important;
+  row-gap: 16px !important;
+  align-items: start !important;
+}
+
+.banner-list {
+  width: auto !important;
+  min-width: 0;
+  opacity: 0;
+  transform: translateY(10px);
+  animation: heroSmallTitleFade 700ms cubic-bezier(0.19, 1, 0.22, 1) 2300ms forwards !important;
+}
+
+.banner-list:nth-child(2) { animation-delay: 2380ms !important; }
+.banner-list:nth-child(3) { animation-delay: 2460ms !important; }
+.banner-list:nth-child(4) { animation-delay: 2540ms !important; }
+
+.banner-list-count {
+  font-size: clamp(11px, 0.82vw, 14px);
+  line-height: 1.1;
+}
+
+.banner-list-text {
+  font-size: clamp(12px, 0.88vw, 15px);
+  line-height: 1.25;
+}
+
+/* --------------------------------------------------------------------------
+   9. Хедер — glass-эффект
+   --------------------------------------------------------------------------
+   <header class="main-header"> вынесен из .page-wrapper — иначе
+   overflow:clip ломает backdrop-filter.
+   JS (initHeaderGlassOnScroll) добавляет .lc-header-scrolled и сбрасывает
+   inline-фоны, которые IX/tram вешает через style="background:...".
+   -------------------------------------------------------------------------- */
+
+/* Шапка всегда прозрачна — фон только через .lc-header-glass */
+.main-header {
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  border-bottom: 1px solid transparent;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+
+/* Webflow иногда рисует фон через псевдоэлементы */
+.main-header::before,
+.main-header::after {
+  content: none !important;
+  display: none !important;
+  background: none !important;
+  background-image: none !important;
+}
+
+/* Слой размытия — невидим до скролла */
+.lc-header-glass {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  /* Короткий transition — меньше «мигания» у порога гистерезиса в JS */
+  transition: opacity 140ms ease-out, visibility 140ms ease-out;
+  background-color: #ffffff26;
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+}
+
+.main-header.lc-header-scrolled .lc-header-glass {
+  opacity: 1;
+  visibility: visible;
+}
+
+.main-header.lc-header-scrolled {
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  border-bottom-color: transparent !important;
+}
+
+/* Контент шапки поверх glass-слоя */
+.main-header .w-layout-blockcontainer {
+  position: relative;
+  z-index: 1;
+  background-color: transparent !important;
+  background-image: none !important;
+}
+
+.main-header .header-main-box,
+.main-header .header-menu-box,
+.main-header .header-button-box {
+  background-color: transparent !important;
+  background-image: none !important;
+}
+
+.main-header.lc-header-scrolled .w-layout-blockcontainer,
+.main-header.lc-header-scrolled .w-layout-blockcontainer.container,
+.main-header.lc-header-scrolled .header-main-box {
+  background-color: transparent !important;
+  background-image: none !important;
+}
+
+/* --------------------------------------------------------------------------
+   10. Карусель клиентов
+   -------------------------------------------------------------------------- */
+.client-section .client-image {
+  width: auto;
+  max-width: 180px;
+  height: 44px;
+  object-fit: contain;
+  object-position: center;
+}
+
+/* Точечная корректировка масштаба отдельных брендов */
+.client-section .client-image[src*="1xbet.svg"] {
+  transform: scale(0.808);
+  transform-origin: center;
+}
+
+.client-section .client-image[src*="lenta.svg"] {
+  transform: scale(1.15);
+  transform-origin: center;
+}
+
+/* ==========================================================================
+   МЕДИАЗАПРОСЫ
+   ========================================================================== */
+
+/* ≥1920px — большие мониторы */
+@media (min-width: 1920px) {
+  .hero-left-box {
+    width: min(100%, 1320px) !important;
+  }
+
+  .hero-title {
+    font-size: clamp(190px, 10.4vw, 224px) !important;
+  }
+
+  .hero-content-box {
+    margin-bottom: clamp(22px, 4.5vh, 64px) !important;
+  }
+}
+
+/* ≥768px — от планшета */
+@media (min-width: 768px) {
+  .hero-title-two {
+    font-size: 24px !important;
+  }
+}
+
+/* ≤1279px */
+@media (max-width: 1279px) {
+  .hero-title {
+    font-size: clamp(72px, 12vw, 138px) !important;
+  }
+}
+
+/* ≤991px — планшет; десктоп-меню скрыто, видна кнопка мобильного меню */
+@media (max-width: 991px) {
+  .container {
+    width: min(100% - 32px, 100%);
+  }
+
+  .hero-title,
+  .project-info-title,
+  .section-title {
+    word-break: normal;
+    overflow-wrap: normal;
+  }
+
+  .hero-outer-box {
+    min-height: 92svh;
+    padding-bottom: clamp(40px, 6vh, 72px) !important;
+  }
+
+  /* Явно дублируем glass для планшета (включая 768px), чтобы
+     перебить возможные inline-стили от IX */
+  .main-header.lc-header-scrolled .lc-header-glass {
+    opacity: 1;
+    visibility: visible;
+    background-color: #ffffff26;
+    -webkit-backdrop-filter: blur(20px) !important;
+    backdrop-filter: blur(20px) !important;
+  }
+
+  .main-header.lc-header-scrolled .w-layout-blockcontainer,
+  .main-header.lc-header-scrolled .header-main-box {
+    background-color: transparent !important;
+    background-image: none !important;
+  }
+}
+
+/* ≤767px — мобильный / граница планшета */
+@media (max-width: 767px) {
+  .banner-list-box {
+    gap: 16px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 20px !important;
+  }
+
+  .contact-form-grid,
+  .footer-grid,
+  .case-study-header,
+  .case-image-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .brands-gallery-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .hero-section,
+  .hero-outer-box {
+    min-height: 100svh;
+  }
+
+  .hero-outer-box {
+    padding-top:    96px !important;
+    padding-bottom: 44px !important;
+  }
+
+  .hero-left-box {
+    gap: 18px !important;
+  }
+
+  .hero-title {
+    font-size: clamp(52px, 17vw, 92px) !important;
+    line-height: 0.96 !important;
+  }
+
+  .hero-title-two {
+    font-size: clamp(18px, 5vw, 24px) !important;
+    text-align: left;
+  }
+}
+
+/* ≤479px — узкий мобильный */
+@media (max-width: 479px) {
+  .container {
+    width: min(100% - 24px, 100%);
+  }
+
+  .brands-gallery-grid {
+    gap: 8px !important;
+  }
+
+  .hero-outer-box > .container {
+    width: min(100% - 24px, 100%);
+  }
+
+  .hero-title {
+    font-size: clamp(44px, 16.5vw, 66px) !important;
+    letter-spacing: -0.06em !important;
+  }
+
+  .hero-title-two {
+    font-size: 18px !important;
+  }
+
+  .banner-list-text {
+    font-size: 12px;
+  }
+}
+
+/* ==========================================================================
+   АНИМАЦИИ
+   ========================================================================== */
+
+/* Reveal заголовка: clip-path раскрывается слева направо */
+@keyframes heroTitleRevealSafe {
+  to {
+    clip-path: inset(-0.12em -0.9em -0.16em 0);
+  }
+}
+
+/* Плавное появление дескриптора */
+@keyframes heroDescriptorFade {
+  to {
+    opacity: 1;
+  }
+}
+
+/* Поочерёдное появление тегов #01–04 */
+@keyframes heroSmallTitleFade {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ==========================================================================
+   prefers-reduced-motion
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  /* Без анимации — glass переключается мгновенно */
+  .lc-header-glass {
+    transition: none;
+  }
+
+  /* При reduced-motion blur снижаем, чтобы не грузить GPU */
+  .main-header.lc-header-scrolled .lc-header-glass {
+    -webkit-backdrop-filter: blur(12px) !important;
+    backdrop-filter: blur(12px) !important;
+  }
+
+  /* Маска reveal — сразу в конечном состоянии */
+  .hero-title-box.two {
+    clip-path: inset(-0.12em -0.9em -0.16em 0) !important;
+    animation: none !important;
+  }
+
+  /* Дескриптор сразу виден */
+  .hero-text-box {
+    opacity: 1 !important;
+    animation: none !important;
+  }
+
+  /* Теги banner-list сразу видны */
+  .banner-list {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+  }
+}

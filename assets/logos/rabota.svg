@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Запасной вариант: только текст, фон прозрачный (в карусели — rabota.png). -->
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="44" viewBox="0 0 200 44" fill="none" aria-hidden="true">
+  <text
+    x="100"
+    y="29"
+    text-anchor="middle"
+    font-family="system-ui, -apple-system, 'Segoe UI', sans-serif"
+    font-size="17"
+    font-weight="600"
+    letter-spacing="-0.02em"
+    fill="#0088FF"
+  >работа.ру</text>
+</svg>
