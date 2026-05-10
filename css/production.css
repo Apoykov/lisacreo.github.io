@@ -2070,6 +2070,21 @@ img {
 }
 
 /* --------------------------------------------------------------------------
+   ≥1440px — заголовки секций: +20px снизу под title-stack (скриншоты).
+   Ниже существующего padding-bottom нет (0 в правилах ≥1280 / title-stack gap на .section-title-box).
+   -------------------------------------------------------------------------- */
+@media (min-width: 1440px) {
+  #Project-Section h2.project-section-title,
+  #Project-Section #Project-Section-Title,
+  #Gallery-Section .project-section-title,
+  #Gallery-Section #Gallery-Section-Title,
+  #Marquee-Section .marquee-section-title,
+  #Marquee-Section #Marquee-Section-Title {
+    padding-bottom: 20px !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
    992–1279px — header/nav from 992px frame (e.g. 261:2391); Project/Gallery
    hero copy metrics from 1024 frame nodes 504:17–504:21, 261:1749
    nav 16px, py 15px, кнопка 48px/16px, иконка 40px, padding 60px
