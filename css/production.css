@@ -9,7 +9,7 @@
    1. CSS-переменные
    -------------------------------------------------------------------------- */
 :root {
-  --lc-accent: #ff5e00;
+  --lc-accent: #E53F88;
   --lc-pink:   #ff61a6;
   --_font-family---title-font: Raleway, sans-serif;
   --_font-family---text-font:  Raleway, sans-serif;
@@ -123,6 +123,11 @@ img {
   .header-btn:hover .theme-btn-hover-text {
     color: #fff !important;
   }
+
+  #Project-Section .theme-button--project-card:hover .theme-btn-text,
+  #Project-Section .theme-button--project-card:hover .theme-btn-hover-text {
+    color: #fff !important;
+  }
 }
 
 .theme-btn-icon-box {
@@ -167,6 +172,12 @@ img {
   height: 100%;
 }
 
+/* Видео-блок: высота всегда по соотношению сторон видео (2560×1440 = 16:9) */
+#Project-Section .w-dyn-list .project-image-box {
+  aspect-ratio: 16 / 9 !important;
+  height: auto !important;
+}
+
 /* Dot-иконка соцсетей (font-size:0 скрывает символ, ::before рисует кружок) */
 .social-icon {
   font-family: Arial, sans-serif !important;
@@ -188,6 +199,160 @@ img {
    -------------------------------------------------------------------------- */
 .ai-note-section {
   padding-top: clamp(64px, 8vw, 120px);
+}
+
+/* --------------------------------------------------------------------------
+   Service (#Service-Section) — базовая геометрия карточек / утилиты
+   Точная типографика и отступы по брейкпоинтам — см. блоки ниже (Figma 411:600 …)
+   -------------------------------------------------------------------------- */
+#Service-Section.service-section {
+  box-sizing: border-box;
+}
+
+#Service-Section.service-section > .service-sectitle-wrap.sectitle-outer-box {
+  box-sizing: border-box;
+  margin-bottom: 0 !important;
+}
+
+#Service-Section .service-section-intro {
+  margin: 0;
+  padding: 0;
+  font-size: 20px;
+  line-height: 28px;
+  letter-spacing: -0.72px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.86);
+}
+
+@media (max-width: 767px) {
+  #Service-Section .service-section-intro {
+    display: block !important;
+  }
+}
+
+@media (min-width: 768px) {
+  #Service-Section .service-section-intro {
+    display: none !important;
+  }
+}
+
+@media (max-width: 1279px) {
+  #Service-Section.service-section > .service-sectitle-wrap.sectitle-outer-box > .service-section-heading-aside,
+  #Service-Section.service-section .service-section-eyebrow {
+    display: none !important;
+  }
+}
+
+@media (min-width: 1280px) {
+  #Service-Section.service-section .service-section-eyebrow {
+    display: block !important;
+  }
+
+  #Service-Section.service-section > .service-sectitle-wrap.sectitle-outer-box > .service-section-heading-aside {
+    display: flex !important;
+    flex-direction: column;
+  }
+
+  #Service-Section.service-section > .service-sectitle-wrap.sectitle-outer-box {
+    display: flex !important;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 0 !important;
+    column-gap: 60px;
+    row-gap: 40px;
+    width: 100%;
+    max-width: none;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  #Service-Section.service-section > .service-sectitle-wrap.sectitle-outer-box .section-title-box.mb-zero {
+    flex: 1 1 auto;
+    min-width: 0;
+    gap: 12px;
+  }
+
+  #Service-Section.service-section .service-section-heading-aside {
+    flex: 0 0 auto;
+    max-width: min(470px, 34vw);
+    align-items: flex-start !important;
+    gap: 32px;
+    width: auto;
+    min-width: 300px;
+  }
+
+  #Service-Section.service-section .service-section-aside-copy.section-title-two {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    font-size: clamp(18px, 1.56vw, 22px) !important;
+    line-height: 1.35 !important;
+    font-weight: 400 !important;
+    color: rgba(255, 255, 255, 0.88) !important;
+  }
+
+  #Service-Section.service-section .service-section-aside-cta.section-btn-box {
+    margin-top: 0 !important;
+    text-align: left !important;
+  }
+
+  #Service-Section.service-section .service-section-eyebrow {
+    margin-bottom: 0 !important;
+    font-size: 30px !important;
+    line-height: 42px !important;
+    font-weight: 500 !important;
+    color: var(--lc-accent) !important;
+  }
+}
+
+#Service-Section.service-section .service-icon-box {
+  flex-shrink: 0;
+  border-radius: 40px !important;
+  background-color: var(--lc-pink) !important;
+}
+
+#Service-Section.service-section .service-line {
+  height: 2px !important;
+  margin-bottom: 0 !important;
+}
+
+#Service-Section.service-section .service-content-box {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 10px;
+  flex: 0 1 auto;
+  width: 100%;
+}
+
+#Service-Section.service-section .service-title {
+  color: #fff !important;
+  margin: 0 !important;
+  font-weight: 600 !important;
+}
+
+#Service-Section.service-section .service-text {
+  margin: 0 !important;
+  opacity: 0.8 !important;
+}
+
+#Service-Section.service-section .service-section-header-cta.theme-button {
+  align-self: flex-start !important;
+  background-color: #ff61a6 !important;
+  color: #fff !important;
+  border-radius: 30px !important;
+}
+
+#Service-Section.service-section .service-section-header-cta.theme-button .theme-btn-text,
+#Service-Section.service-section .service-section-header-cta.theme-button .theme-btn-hover-text {
+  color: #fff !important;
+}
+
+@media (hover: hover) {
+  #Service-Section.service-section .service-section-header-cta.theme-button:hover .theme-btn-text,
+  #Service-Section.service-section .service-section-header-cta.theme-button:hover .theme-btn-hover-text {
+    color: #fff !important;
+  }
 }
 
 /* --------------------------------------------------------------------------
@@ -230,6 +395,9 @@ img {
 #Project-Section .project-section-title {
   display: block;
   white-space: normal;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
 }
 
 #Project-Section .project-section-title-hash,
@@ -250,6 +418,40 @@ img {
   letter-spacing: -0.72px;
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+}
+
+/* Gallery: тот же паттерн, что #Project-Section (# Видеопродакшн + lead) */
+#Gallery-Section .project-section-title {
+  display: block;
+  white-space: normal;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+}
+
+#Gallery-Section .project-section-title-hash,
+#Gallery-Section .project-section-title-lead {
+  display: inline;
+}
+
+#Gallery-Section .project-section-title-hash {
+  color: #e53f88;
+  font-weight: 400;
+}
+
+#Gallery-Section .project-section-desc {
+  font-family: Raleway, sans-serif;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.86);
+  letter-spacing: -0.72px;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
 }
 
 /* IX масштабирует .hero-bg — якорим origin к верху, чтобы при scale
@@ -433,9 +635,14 @@ img {
   gap: 40px !important;
 }
 
-/* Иконка гамбургера — всегда чёрная (SVG грузится через <img>, filter делает чёрной) */
+/* Иконка гамбургера: раньше глобально чёрнили через filter (розовый menu.svg на светлом).
+   На моб. кнопке — белые линии на чёрном диске (menu-white.svg), filter уничтожает их. */
 .header-menu-icon {
   filter: brightness(0) !important;
+}
+
+.mobile-menu-open-btn .header-menu-icon {
+  filter: none !important;
 }
 
 /* Мобильное меню — активный пункт */
@@ -542,6 +749,18 @@ img {
   display: none !important;
 }
 
+/* Figma 557:5423 — чёрный круг с иконкой внутри белого скругления (размеры в @media ≤991) */
+.mobile-menu-open-disc {
+  pointer-events: none;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background-color: #000;
+}
+
 .main-header.lc-header-scrolled .w-layout-blockcontainer,
 .main-header.lc-header-scrolled .w-layout-blockcontainer.container,
 .main-header.lc-header-scrolled .header-main-box {
@@ -626,16 +845,17 @@ img {
     font-size: 13px !important;
   }
 
-  /* Project desc — Figma 1440px: 32px / lh 40px */
+  /* Project desc — Figma 1440 (261:839): блок 969×120, инсеты 14px → max-width 969px */
   #Project-Section .project-section-desc {
     font-size: 32px;
     line-height: 40px;
+    max-width: 969px;
     padding: 0 14px;
   }
 
   /* ---------- Project-Section — Figma 261:835 (1440w) ---------- */
   #Project-Section.project-section {
-    padding-top: 120px;
+    padding-top: 150px;
     padding-left: 80px;
     padding-right: 80px;
   }
@@ -650,7 +870,9 @@ img {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 90px;
+    /* Vertical stack gap: Figma 261:838 (1440w) = 139.9px; overridden at ≥1441 by 120px (260:126) */
+    gap: 139.9px;
+    padding-bottom: 39.89px;
   }
 
   #Project-Section .sectitle-outer-box {
@@ -671,7 +893,8 @@ img {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 14px;
+    /* Figma 261:840: title ↔ desc gap 16px */
+    gap: 16px;
     min-width: 0;
     width: 100%;
   }
@@ -685,11 +908,14 @@ img {
 
   #Project-Section .project-section-title {
     margin: 0 !important;
-    padding: 0 !important;
+    padding: 0 14px !important;
     letter-spacing: -1px;
     color: #fff;
     font-weight: 600;
     white-space: normal;
+    max-width: 969px;
+    box-sizing: border-box;
+    width: 100%;
   }
 
   #Project-Section .project-section-title-line {
@@ -718,15 +944,34 @@ img {
     width: 100%;
     grid-column-gap: 0 !important;
     grid-row-gap: 0 !important;
-    gap: 90px !important;
+    /* Figma 261:848 / 261:865 (1440w): 90.02px image ↔ text */
+    gap: 90.02px !important;
     align-items: flex-end !important;
     overflow: visible;
+  }
+
+  /* Figma 261:865 / 261:882: row 2 pt 39.92px, row 3 (full bleed) pt 39.9px */
+  #Project-Section .container > .project-collection:nth-child(3) .project-block {
+    padding-top: 39.92px;
+  }
+
+  #Project-Section .container > .w-dyn-list .project-block {
+    padding-top: 39.9px;
   }
 
   #Project-Section .project-collection,
   #Project-Section .w-dyn-list {
     width: 100%;
     align-self: stretch;
+  }
+
+  #Project-Section .project-collection .w-dyn-items,
+  #Project-Section .project-collection .w-dyn-item,
+  #Project-Section .container.w-container > .w-dyn-list .w-dyn-items,
+  #Project-Section .container.w-container > .w-dyn-list .w-dyn-item {
+    margin: 0;
+    padding: 0;
+    list-style: none;
   }
 
   #Project-Section .project-image-box {
@@ -742,7 +987,8 @@ img {
     flex: 1 1 100%;
     max-width: none;
     width: 100%;
-    height: 520px;
+    aspect-ratio: 16 / 9;
+    height: auto;
   }
 
   #Project-Section .project-content-box {
@@ -752,7 +998,8 @@ img {
     min-width: 280px;
     display: flex !important;
     flex-direction: column !important;
-    gap: 8px !important;
+    /* Figma 261:851 / 261:866 (1440w): gap 12.6px between line → title → copy → button */
+    gap: 12.6px !important;
   }
 
   #Project-Section .project-content-box .project-line {
@@ -780,30 +1027,32 @@ img {
     font-weight: 400 !important;
   }
 
-  #Project-Section .theme-button.gray {
+  #Project-Section .theme-button--project-card {
     height: auto !important;
     min-height: 0;
     padding: 14px 30px 14px 54px !important;
     border-radius: 30px !important;
-    background-color: #242424 !important;
+    background-color: #ff61a6 !important;
+    color: #fff !important;
     margin-top: 0 !important;
     align-self: flex-start;
   }
 
-  #Project-Section .theme-button.gray .theme-btn-bg,
-  #Project-Section .theme-button.gray .theme-btn-bg.orange,
-  #Project-Section .theme-button.gray .theme-btn-icon-box {
+  #Project-Section .theme-button--project-card .theme-btn-bg,
+  #Project-Section .theme-button--project-card .theme-btn-bg.orange,
+  #Project-Section .theme-button--project-card .theme-btn-icon-box {
     width: 37px !important;
     height: 37px !important;
     left: 5px !important;
     top: 5px !important;
   }
 
-  #Project-Section .theme-button.gray .theme-btn-text,
-  #Project-Section .theme-button.gray .theme-btn-hover-text {
+  #Project-Section .theme-button--project-card .theme-btn-text,
+  #Project-Section .theme-button--project-card .theme-btn-hover-text {
     font-size: 13px !important;
     line-height: 1.427 !important;
     font-weight: 600 !important;
+    color: #fff !important;
   }
 }
 
@@ -820,7 +1069,7 @@ img {
 
   /* Nav-ссылки */
   .header-menu-link .header-menu-text {
-    font-size: 20px !important;
+    font-size: 16px !important;
     line-height: 24px !important;
   }
 
@@ -865,7 +1114,7 @@ img {
   /* Текст кнопки */
   .header-btn .theme-btn-text,
   .header-btn .theme-btn-hover-text {
-    font-size: 18px !important;
+    font-size: 16px !important;
     font-weight: 600 !important;
     color: #000 !important;
     white-space: nowrap !important;
@@ -981,11 +1230,12 @@ img {
     margin-bottom: 0 !important;
   }
 
-  /* Project desc — Figma 1920px: 32px / lh 36px */
+  /* Project desc — Figma 1920 (495:5): блок 957×108, слева 14px → max-width 957px */
   #Project-Section .project-section-desc {
     font-size: 32px;
     line-height: 36px;
-    padding: 0 14px;
+    max-width: 957px;
+    padding: 0 0 0 14px;
   }
 
   /* ---------- Project-Section — Figma 260:123 (1920w) ---------- */
@@ -995,8 +1245,9 @@ img {
     padding-right: clamp(100px, 8.333vw, 160px);
   }
 
+  /* Figma 260:126: inner strip width = 1920 − 160×2 = 1600 */
   #Project-Section .container.w-container {
-    max-width: 1630px;
+    max-width: 1600px;
     width: 100%;
     margin-left: auto;
     margin-right: auto;
@@ -1039,6 +1290,7 @@ img {
     font-weight: 500;
   }
 
+  /* Title flush with column (260:131 x=0); copy inset only on .project-section-desc → 495:6 x=14 */
   #Project-Section .project-section-title {
     margin: 0 !important;
     padding: 0 !important;
@@ -1046,6 +1298,9 @@ img {
     color: #fff;
     font-weight: 600;
     white-space: normal;
+    max-width: 957px;
+    box-sizing: border-box;
+    width: 100%;
   }
 
   #Project-Section .project-section-title-line {
@@ -1074,11 +1329,280 @@ img {
     display: block;
   }
 
+  /* ---------- Gallery (#Gallery-Section) — Figma 411:582 (1920w) ---------- */
+  #Gallery-Section.gallery-section {
+    padding-top: 150px;
+    padding-left: clamp(100px, 8.333vw, 160px);
+    padding-right: clamp(100px, 8.333vw, 160px);
+    /* Mirror Figma flex-col gap-[80px]: sectitle ↔ grid (no extra margin collapse) */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 80px;
+  }
+
+  #Gallery-Section > .gallery-sectitle-wrap.sectitle-outer-box {
+    grid-column-gap: 0;
+    grid-row-gap: 0;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 100%;
+    max-width: none;
+    margin-left: 0;
+    margin-right: 0;
+    margin-bottom: 0 !important;
+    padding-left: 0;
+    padding-right: 0;
+    box-sizing: border-box;
+  }
+
+  #Gallery-Section .section-title-box.mb-zero {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    min-width: 0;
+    width: 100%;
+  }
+
+  /* Figma 504:34 / 504:35: h2 без горизонтального инсета; px-[14px] только у подзаголовка (504:36) */
+  #Gallery-Section .project-section-title {
+    margin: 0 !important;
+    padding: 0 !important;
+    letter-spacing: -1.2px;
+    color: #fff;
+    font-weight: 600;
+    white-space: normal;
+    max-width: none;
+    box-sizing: border-box;
+    width: 100%;
+  }
+
+  #Gallery-Section .project-section-title-hash {
+    font-weight: 400;
+    font-size: clamp(88px, 5.729vw, 110px);
+    line-height: clamp(76px, 4.167vw, 80px);
+    color: #e53f88;
+    letter-spacing: -1.2px;
+    vertical-align: baseline;
+  }
+
+  #Gallery-Section .project-section-title-lead {
+    font-weight: 600;
+    font-size: clamp(80px, 5.208vw, 100px);
+    line-height: clamp(76px, 4.896vw, 94px);
+    color: #fff;
+    letter-spacing: -1.2px;
+  }
+
+  #Gallery-Section .project-section-desc {
+    font-size: 32px;
+    line-height: 36px;
+    max-width: 901px;
+    padding: 0 0 0 14px;
+  }
+
+  /* Контентная полоса 1920 − 160×2 = 1600px; сетка gallery — w-full внутри px-[160px] (411:582) */
+  #Gallery-Section .container.w-container {
+    max-width: 1600px;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  #Gallery-Section .gallery-grid {
+    grid-column-gap: 20px;
+    grid-row-gap: 20px;
+  }
+
+  /* ---------- Marquee (#Marquee-Section) — Figma 411:667 (1920w) ---------- */
+  #Marquee-Section.marquee-section {
+    padding-top: 150px;
+    padding-bottom: 150px;
+    padding-left: clamp(100px, 8.333vw, 160px);
+    padding-right: clamp(100px, 8.333vw, 160px);
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 80px;
+  }
+
+  #Marquee-Section > .marquee-sectitle-wrap.sectitle-outer-box {
+    grid-column-gap: 0;
+    grid-row-gap: 0;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 100%;
+    max-width: none;
+    margin-left: 0;
+    margin-right: 0;
+    margin-bottom: 0 !important;
+    padding-left: 0;
+    padding-right: 0;
+    box-sizing: border-box;
+    text-align: left;
+  }
+
+  #Marquee-Section .section-title-box.mb-zero {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    min-width: 0;
+    width: 100%;
+  }
+
+  #Marquee-Section .marquee-section-title {
+    margin: 0 !important;
+    padding: 0 !important;
+    letter-spacing: -1.2px;
+    color: #fff;
+    font-weight: 600;
+    white-space: normal;
+    max-width: none;
+    box-sizing: border-box;
+    width: 100%;
+  }
+
+  #Marquee-Section .marquee-section-title-hash {
+    font-weight: 400;
+    font-size: clamp(88px, 5.729vw, 110px);
+    line-height: clamp(76px, 4.167vw, 80px);
+    color: #e53f88;
+    letter-spacing: -1.2px;
+    vertical-align: baseline;
+  }
+
+  #Marquee-Section .marquee-section-title-lead {
+    font-weight: 600;
+    font-size: clamp(80px, 5.208vw, 100px);
+    line-height: clamp(76px, 4.896vw, 94px);
+    color: #fff;
+    letter-spacing: -1.2px;
+  }
+
+  #Marquee-Section .marquee-section-desc {
+    font-family: var(--_font-family---text-font);
+    font-size: 32px;
+    line-height: 36px;
+    letter-spacing: -0.72px;
+    color: rgba(255, 255, 255, 0.86);
+    font-weight: 400;
+    max-width: 901px;
+    margin: 0;
+    padding: 0 0 0 14px;
+    box-sizing: border-box;
+  }
+
+  #Marquee-Section .marquee-box {
+    margin-top: 0 !important;
+    align-self: center;
+    max-width: 1600px;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  #Marquee-Section.marquee-section .marquee-inner-box .marquee-image-box {
+    width: 280px;
+    height: 400px;
+  }
+
+  /* ---------- Service (#Service-Section) — Figma 411:600 (1920w frame) ---------- */
+  #Service-Section.service-section {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 80px;
+    padding-top: 150px !important;
+    padding-bottom: 150px !important;
+    padding-left: clamp(80px, 7.552vw, 145px) !important;
+    padding-right: clamp(80px, 7.552vw, 145px) !important;
+  }
+
+  /* Заголовок # — синхронизация с Gallery/Marquee 1920: hash #e53f88 clamp 88→110 */
+  #Service-Section.service-section .service-section-title {
+    margin: 0 !important;
+    padding: 0 !important;
+    letter-spacing: -1.2px !important;
+    color: #fff !important;
+    font-weight: 600 !important;
+    white-space: normal !important;
+    max-width: none !important;
+  }
+
+  #Service-Section.service-section .service-section-title-hash {
+    font-weight: 400 !important;
+    font-size: clamp(88px, 5.729vw, 110px) !important;
+    line-height: clamp(76px, 4.167vw, 80px) !important;
+    color: #e53f88 !important;
+    letter-spacing: -1.2px !important;
+    vertical-align: baseline;
+  }
+
+  #Service-Section.service-section .service-section-title-lead {
+    font-weight: 600 !important;
+    font-size: clamp(80px, 5.208vw, 100px) !important;
+    line-height: clamp(76px, 4.896vw, 94px) !important;
+    color: #fff !important;
+    letter-spacing: -1.2px !important;
+  }
+
+  #Service-Section.service-section .container.w-container {
+    max-width: 1630px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 15px !important;
+    padding-right: 15px !important;
+  }
+
+  #Service-Section.service-section .service-grid {
+    grid-template-columns: 1fr 1fr 1fr !important;
+    grid-column-gap: 20px !important;
+    grid-row-gap: 20px !important;
+    width: 100%;
+  }
+
+  #Service-Section.service-section .service-icon-box {
+    width: 80px !important;
+    height: 80px !important;
+    min-width: 80px !important;
+    min-height: 80px !important;
+  }
+
+  #Service-Section.service-section .service-line {
+    background-color: #e53f88 !important;
+  }
+
+  #Service-Section.service-section .service-title {
+    font-size: 48px !important;
+    line-height: 48px !important;
+    letter-spacing: -1.2px !important;
+  }
+
+  #Service-Section.service-section .service-text {
+    font-size: 16px !important;
+    line-height: 26px !important;
+    font-weight: 400 !important;
+  }
+
+  #Service-Section.service-section .service-block {
+    min-height: 500px !important;
+    padding: 40px !important;
+  }
+
+  /* Image–text gutters: Figma 260:136 gap 92.85px; row 261:2 overridden to 93px */
   #Project-Section .project-block {
     width: 100%;
     grid-column-gap: 0 !important;
     grid-row-gap: 0 !important;
-    gap: 90px !important;
+    gap: 92.85px !important;
     align-items: flex-end !important;
     overflow: visible;
   }
@@ -1089,12 +1613,23 @@ img {
     align-self: stretch;
   }
 
+  /* Webflow CMS wrappers — убираем дефолтные отступы списков между рядами */
+  #Project-Section .project-collection .w-dyn-items,
+  #Project-Section .project-collection .w-dyn-item,
+  #Project-Section .container.w-container > .w-dyn-list .w-dyn-items,
+  #Project-Section .container.w-container > .w-dyn-list .w-dyn-item {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
   #Project-Section .container > .project-collection:nth-child(2) .project-block {
     padding-top: 0;
   }
 
   #Project-Section .container > .project-collection:nth-child(3) .project-block {
     padding-top: 27.98px;
+    gap: 93px !important;
     justify-content: flex-end;
   }
 
@@ -1117,7 +1652,8 @@ img {
     flex: 1 1 100%;
     max-width: none;
     width: 100%;
-    height: clamp(320px, 39vw, 746px);
+    aspect-ratio: 16 / 9;
+    height: auto;
   }
 
   #Project-Section .project-content-box {
@@ -1142,16 +1678,18 @@ img {
     margin: 0 !important;
     padding-top: 1px;
     font-size: 48px !important;
-    line-height: 1.625 !important;
+    /* Figma 260:142 / 261:6: leading 48px на одну строку — убирает лишний вертикальный «воздух» над колонкой */
+    line-height: 48px !important;
     font-weight: 600 !important;
   }
 
+  /* Figma 260:143–144: 16px / 26px line-height */
   #Project-Section .project-content-box .project-text {
-    font-size: 14.9px !important;
-    line-height: 1.795 !important;
+    font-size: 16px !important;
+    line-height: 26px !important;
     opacity: 0.8;
     margin: 0 !important;
-    padding-bottom: 6px !important;
+    padding-bottom: 6.35px !important;
     font-weight: 400 !important;
   }
 
@@ -1159,18 +1697,19 @@ img {
     display: block;
   }
 
-  #Project-Section .theme-button.gray {
+  #Project-Section .theme-button--project-card {
     height: auto !important;
     min-height: 0;
     padding: 13.93px 32.5px 13.93px 55.71px !important;
     border-radius: 30px !important;
-    background-color: #242424 !important;
+    background-color: #ff61a6 !important;
+    color: #fff !important;
     margin-top: 0 !important;
     align-self: flex-start;
   }
 
-  #Project-Section .theme-button.gray .theme-btn-bg,
-  #Project-Section .theme-button.gray .theme-btn-bg.orange {
+  #Project-Section .theme-button--project-card .theme-btn-bg,
+  #Project-Section .theme-button--project-card .theme-btn-bg.orange {
     width: 37.14px !important;
     height: 37.14px !important;
     left: 4.64px !important;
@@ -1183,27 +1722,44 @@ img {
     background-image: none !important;
   }
 
-  #Project-Section .theme-button.gray .theme-btn-icon-box {
+  #Project-Section .theme-button--project-card .theme-btn-icon-box {
     left: 4.64px !important;
     top: 4.64px !important;
     width: 37.14px !important;
     height: 37.14px !important;
     border-radius: 999px !important;
-    background-color: #e53f88 !important;
+    background-color: #000 !important;
     background-image: none !important;
   }
 
-  #Project-Section .theme-button.gray .theme-btn-icon,
-  #Project-Section .theme-button.gray .theme-btn-hover-icon {
+  #Project-Section .theme-button--project-card .theme-btn-icon,
+  #Project-Section .theme-button--project-card .theme-btn-hover-icon {
     width: 18.57px !important;
     height: 18.57px !important;
   }
 
-  #Project-Section .theme-button.gray .theme-btn-text,
-  #Project-Section .theme-button.gray .theme-btn-hover-text {
+  #Project-Section .theme-button--project-card .theme-btn-text,
+  #Project-Section .theme-button--project-card .theme-btn-hover-text {
     font-size: 13px !important;
     line-height: 1.427 !important;
     font-weight: 600 !important;
+    color: #fff !important;
+  }
+}
+
+/* ≥1551px — заголовок Project: убираем max-width 957px из Figma 1920, чтобы clamp-шрифт
+   помещал «# Почему мне доверяют» в одну строку (иначе «доверяют» уезжало). */
+@media (min-width: 1551px) {
+  #Project-Section .project-section-title {
+    max-width: none;
+  }
+
+  #Gallery-Section .project-section-title {
+    max-width: none;
+  }
+
+  #Marquee-Section .marquee-section-title {
+    max-width: none;
   }
 }
 
@@ -1268,11 +1824,277 @@ img {
     color: #000 !important;
     white-space: nowrap !important;
   }
+
+  /* ---------- Gallery (#Gallery-Section) — Figma 261:904 (1440w frame) ---------- */
+  #Gallery-Section.gallery-section {
+    padding-top: 150px;
+    padding-left: 80px;
+    padding-right: 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 80px;
+  }
+
+  #Gallery-Section > .gallery-sectitle-wrap.sectitle-outer-box {
+    grid-column-gap: 0;
+    grid-row-gap: 0;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 100%;
+    max-width: none;
+    margin-left: 0;
+    margin-right: 0;
+    margin-bottom: 0 !important;
+    padding-left: 0;
+    padding-right: 0;
+    box-sizing: border-box;
+  }
+
+  #Gallery-Section .section-title-box.mb-zero {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    min-width: 0;
+    width: 100%;
+  }
+
+  #Gallery-Section .project-section-title {
+    margin: 0 !important;
+    padding: 0 !important;
+    letter-spacing: -1.2px;
+    color: #fff;
+    font-weight: 600;
+    white-space: normal;
+    max-width: none;
+    box-sizing: border-box;
+    width: 100%;
+  }
+
+  #Gallery-Section .project-section-title-hash {
+    font-weight: 400;
+    font-size: 88px;
+    line-height: 80px;
+    color: #ff61a6;
+    letter-spacing: -1.2px;
+    vertical-align: baseline;
+  }
+
+  #Gallery-Section .project-section-title-lead {
+    font-weight: 600;
+    font-size: 80px;
+    line-height: 80px;
+    color: #fff;
+    letter-spacing: -1.2px;
+  }
+
+  #Gallery-Section .project-section-desc {
+    font-size: 32px;
+    line-height: 36px;
+    letter-spacing: -0.72px;
+    max-width: 901px;
+    padding: 0 14px;
+  }
+
+  #Gallery-Section .container.w-container {
+    max-width: 1280px;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  /* Figma 261:905: gap-x/y 20px */
+  #Gallery-Section .gallery-grid {
+    grid-column-gap: 20px;
+    grid-row-gap: 20px;
+  }
+
+  /* ---------- Marquee (#Marquee-Section) — Figma 517:4274 (1440w frame) ---------- */
+  #Marquee-Section.marquee-section {
+    padding-top: 150px;
+    padding-bottom: 150px;
+    padding-left: 80px;
+    padding-right: 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 80px;
+  }
+
+  #Marquee-Section > .marquee-sectitle-wrap.sectitle-outer-box {
+    grid-column-gap: 0;
+    grid-row-gap: 0;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 100%;
+    max-width: none;
+    margin-left: 0;
+    margin-right: 0;
+    margin-bottom: 0 !important;
+    padding-left: 0;
+    padding-right: 0;
+    box-sizing: border-box;
+    text-align: left;
+  }
+
+  #Marquee-Section .section-title-box.mb-zero {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    min-width: 0;
+    width: 100%;
+  }
+
+  #Marquee-Section .marquee-section-title {
+    margin: 0 !important;
+    padding: 0 !important;
+    letter-spacing: -1.2px;
+    color: #fff;
+    font-weight: 600;
+    white-space: normal;
+    max-width: none;
+    box-sizing: border-box;
+    width: 100%;
+  }
+
+  #Marquee-Section .marquee-section-title-hash {
+    font-weight: 400;
+    font-size: 88px;
+    line-height: 80px;
+    color: #ff61a6;
+    letter-spacing: -1.2px;
+    vertical-align: baseline;
+  }
+
+  #Marquee-Section .marquee-section-title-lead {
+    font-weight: 600;
+    font-size: 80px;
+    line-height: 80px;
+    color: #fff;
+    letter-spacing: -1.2px;
+  }
+
+  #Marquee-Section .marquee-section-desc {
+    font-family: var(--_font-family---text-font);
+    font-size: 32px;
+    line-height: 36px;
+    letter-spacing: -0.72px;
+    color: rgba(255, 255, 255, 0.86);
+    font-weight: 400;
+    max-width: 901px;
+    margin: 0;
+    padding: 0 14px;
+    box-sizing: border-box;
+  }
+
+  #Marquee-Section .marquee-box {
+    margin-top: 0 !important;
+    align-self: center;
+    max-width: 1600px;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  #Marquee-Section.marquee-section .marquee-inner-box .marquee-image-box {
+    width: 280px;
+    height: 400px;
+  }
+
+  /* ---------- Service (#Service-Section) — Figma 261:1302 (1440w) ---------- */
+  #Service-Section.service-section {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 80px;
+    padding-top: 150px !important;
+    padding-bottom: 150px !important;
+    padding-left: 80px !important;
+    padding-right: 80px !important;
+  }
+
+  #Service-Section.service-section .service-section-title {
+    margin: 0 !important;
+    padding: 0 !important;
+    letter-spacing: -1.2px !important;
+    color: #fff !important;
+    font-weight: 600 !important;
+    white-space: normal !important;
+    max-width: none !important;
+  }
+
+  #Service-Section.service-section .service-section-title-hash {
+    font-weight: 400 !important;
+    font-size: 88px !important;
+    line-height: 80px !important;
+    color: #ff61a6 !important;
+    letter-spacing: -1.2px !important;
+    vertical-align: baseline;
+  }
+
+  #Service-Section.service-section .service-section-title-lead {
+    font-weight: 600 !important;
+    font-size: 80px !important;
+    line-height: 80px !important;
+    color: #fff !important;
+    letter-spacing: -1.2px !important;
+  }
+
+  #Service-Section.service-section .container.w-container {
+    max-width: 1280px;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 15px !important;
+    padding-right: 15px !important;
+  }
+
+  #Service-Section.service-section .service-grid {
+    grid-template-columns: 1fr 1fr 1fr !important;
+    grid-column-gap: 20px !important;
+    grid-row-gap: 20px !important;
+    width: 100%;
+  }
+
+  #Service-Section.service-section .service-icon-box {
+    width: 80px !important;
+    height: 80px !important;
+    min-width: 80px !important;
+    min-height: 80px !important;
+  }
+
+  #Service-Section.service-section .service-line {
+    background-color: #e53f88 !important;
+  }
+
+  #Service-Section.service-section .service-title {
+    font-size: 44px !important;
+    line-height: 48px !important;
+    letter-spacing: -1.2px !important;
+  }
+
+  #Service-Section.service-section .service-text {
+    font-size: 16px !important;
+    line-height: 26px !important;
+    font-weight: 400 !important;
+  }
+
+  #Service-Section.service-section .service-block {
+    min-height: 500px !important;
+    padding: 40px !important;
+  }
 }
 
 /* --------------------------------------------------------------------------
-   992–1279px — Figma 261:2391 (992px frame)
-   nav 16px, py 15px, кнопка 48px/14px, иконка 40px, padding 60px
+   992–1279px — header/nav from 992px frame (e.g. 261:2391); Project/Gallery
+   hero copy metrics from 1024 frame nodes 504:17–504:21, 261:1749
+   nav 16px, py 15px, кнопка 48px/16px, иконка 40px, padding 60px
    -------------------------------------------------------------------------- */
 @media (min-width: 992px) and (max-width: 1279px) {
   /* Боковые отступы */
@@ -1323,19 +2145,11 @@ img {
     background-color: #000 !important;
   }
 
-  /* Текст кнопки: 14px (Figma 992px: text-[14px]) */
-  .header-btn .theme-btn-text,
-  .header-btn .theme-btn-hover-text {
-    font-size: 14px !important;
-    font-weight: 600 !important;
-    color: #000 !important;
-    white-space: nowrap !important;
-  }
-
-  /* Project desc — Figma 992px: 24px / lh 32px */
+  /* Project desc — Figma 1024 (504:21): блок 842×96, инсеты 14px */
   #Project-Section .project-section-desc {
     font-size: 24px;
     line-height: 32px;
+    max-width: 842px;
     padding: 0 14px;
   }
 
@@ -1378,7 +2192,8 @@ img {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 12px;
+    /* Figma 504:18 (1024): title block 92px, copy starts y=108 → gap 16px */
+    gap: 16px;
     min-width: 0;
     width: 100%;
   }
@@ -1392,11 +2207,14 @@ img {
 
   #Project-Section .project-section-title {
     margin: 0 !important;
-    padding: 0 !important;
+    padding: 0 14px !important;
     letter-spacing: -0.8px;
     color: #fff;
     font-weight: 600;
     white-space: normal;
+    max-width: 842px;
+    box-sizing: border-box;
+    width: 100%;
   }
 
   #Project-Section .project-section-title-line {
@@ -1419,6 +2237,244 @@ img {
     line-height: 76px;
     color: #fff;
     letter-spacing: -1.2px;
+  }
+
+  /* Gallery — Figma 261:1749 (1024w frame → band 992–1279) */
+  #Gallery-Section.gallery-section {
+    padding-top: 150px;
+    padding-left: 60px;
+    padding-right: 60px;
+  }
+
+  #Gallery-Section > .gallery-sectitle-wrap.sectitle-outer-box {
+    width: 100%;
+    max-width: none;
+    margin-left: 0;
+    margin-right: 0;
+    margin-bottom: 80px;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  #Gallery-Section .section-title-box.mb-zero {
+    gap: 16px;
+  }
+
+  #Gallery-Section .project-section-title {
+    margin: 0 !important;
+    padding: 0 !important;
+    letter-spacing: -1.2px;
+    color: #fff;
+    font-weight: 600;
+    white-space: normal;
+    max-width: 904px;
+    box-sizing: border-box;
+    width: 100%;
+  }
+
+  #Gallery-Section .project-section-title-hash {
+    font-weight: 400;
+    font-size: 68px;
+    line-height: 76px;
+    color: #ff61a6;
+    letter-spacing: -1.2px;
+    vertical-align: baseline;
+  }
+
+  #Gallery-Section .project-section-title-lead {
+    font-weight: 600;
+    font-size: 60px;
+    line-height: 76px;
+    color: #fff;
+    letter-spacing: -1.2px;
+  }
+
+  #Gallery-Section .project-section-desc {
+    font-size: 24px;
+    line-height: 32px;
+    letter-spacing: -0.72px;
+    max-width: 901px;
+    padding: 0 14px;
+  }
+
+  #Gallery-Section .container.w-container {
+    max-width: 1180px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  /* Marquee — Figma 261:2300 (1024w → band 992–1279) */
+  #Marquee-Section.marquee-section {
+    padding-top: 150px;
+    padding-bottom: 150px;
+    padding-left: 60px;
+    padding-right: 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 80px;
+  }
+
+  #Marquee-Section > .marquee-sectitle-wrap.sectitle-outer-box {
+    width: 100%;
+    max-width: none;
+    margin-left: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    padding-left: 0;
+    padding-right: 0;
+    text-align: left;
+  }
+
+  #Marquee-Section .marquee-section-title {
+    margin: 0 !important;
+    padding: 0 !important;
+    letter-spacing: -1.2px;
+    color: #fff;
+    font-weight: 600;
+    white-space: normal;
+    max-width: 904px;
+    box-sizing: border-box;
+    width: 100%;
+  }
+
+  #Marquee-Section .marquee-section-title-hash {
+    font-weight: 400;
+    font-size: 68px;
+    line-height: 76px;
+    color: #ff61a6;
+    letter-spacing: -1.2px;
+    vertical-align: baseline;
+  }
+
+  #Marquee-Section .marquee-section-title-lead {
+    font-weight: 600;
+    font-size: 60px;
+    line-height: 76px;
+    color: #fff;
+    letter-spacing: -1.2px;
+  }
+
+  #Marquee-Section .marquee-section-desc {
+    font-family: var(--_font-family---text-font);
+    font-size: 24px;
+    line-height: 32px;
+    letter-spacing: -0.72px;
+    color: rgba(255, 255, 255, 0.86);
+    font-weight: 400;
+    max-width: 901px;
+    margin: 0;
+    padding: 0 14px;
+    box-sizing: border-box;
+  }
+
+  #Marquee-Section .marquee-box {
+    margin-top: 0 !important;
+    align-self: center;
+    max-width: 1180px;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  #Marquee-Section.marquee-section .marquee-inner-box .marquee-image-box {
+    width: 280px !important;
+    height: 400px !important;
+  }
+
+  /* ---------- Service (#Service-Section) — Figma 261:2150 (1024w band) ---------- */
+  #Service-Section.service-section {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 80px;
+    padding-top: 150px !important;
+    padding-bottom: 150px !important;
+    padding-left: 60px !important;
+    padding-right: 60px !important;
+  }
+
+  #Service-Section.service-section > .service-sectitle-wrap.sectitle-outer-box {
+    margin-bottom: 0 !important;
+  }
+
+  #Service-Section.service-section .service-section-title {
+    margin: 0 !important;
+    padding: 0 !important;
+    letter-spacing: -1.2px !important;
+    color: #fff !important;
+    font-weight: 600 !important;
+    white-space: normal !important;
+    max-width: 904px !important;
+  }
+
+  #Service-Section.service-section .service-section-title-hash {
+    font-weight: 400 !important;
+    font-size: 68px !important;
+    line-height: 76px !important;
+    color: #ff61a6 !important;
+    letter-spacing: -1.2px !important;
+    vertical-align: baseline;
+  }
+
+  #Service-Section.service-section .service-section-title-lead {
+    font-weight: 600 !important;
+    font-size: 60px !important;
+    line-height: 76px !important;
+    color: #fff !important;
+    letter-spacing: -1.2px !important;
+  }
+
+  #Service-Section.service-section .container.w-container {
+    max-width: 1180px;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 15px !important;
+    padding-right: 15px !important;
+  }
+
+  #Service-Section.service-section .service-grid {
+    grid-template-columns: 1fr 1fr 1fr !important;
+    grid-column-gap: 20px !important;
+    grid-row-gap: 20px !important;
+    width: 100%;
+  }
+
+  #Service-Section.service-section .service-icon-box {
+    width: 80px !important;
+    height: 80px !important;
+    min-width: 80px !important;
+    min-height: 80px !important;
+  }
+
+  #Service-Section.service-section .service-line {
+    background-color: #e53f88 !important;
+  }
+
+  #Service-Section.service-section .service-title {
+    font-size: 32px !important;
+    line-height: 42px !important;
+    letter-spacing: -1.2px !important;
+  }
+
+  #Service-Section.service-section .service-text {
+    font-size: 16px !important;
+    line-height: 26px !important;
+    font-weight: 400 !important;
+  }
+
+  /* Третья карточка «Креативы» — Figma body 14px / 25.2px */
+  #Service-Section.service-section .service-block.three .service-text {
+    font-size: 14px !important;
+    line-height: 25.2px !important;
+  }
+
+  #Service-Section.service-section .service-block {
+    min-height: 454px !important;
+    padding: 30px !important;
   }
 
   #Project-Section .project-block {
@@ -1450,7 +2506,8 @@ img {
     flex: 1 1 100% !important;
     max-width: none;
     width: 100%;
-    height: 460px !important;
+    aspect-ratio: 16 / 9;
+    height: auto !important;
   }
 
   #Project-Section .project-content-box {
@@ -1488,45 +2545,169 @@ img {
     font-weight: 400 !important;
   }
 
-  #Project-Section .theme-button.gray {
+  #Project-Section .theme-button--project-card {
     height: auto !important;
     min-height: 0;
     padding: 12px 26px 12px 50px !important;
     border-radius: 28px !important;
-    background-color: #242424 !important;
+    background-color: #ff61a6 !important;
+    color: #fff !important;
     margin-top: 0 !important;
     align-self: flex-start;
   }
 
-  #Project-Section .theme-button.gray .theme-btn-bg,
-  #Project-Section .theme-button.gray .theme-btn-bg.orange,
-  #Project-Section .theme-button.gray .theme-btn-icon-box {
+  #Project-Section .theme-button--project-card .theme-btn-bg,
+  #Project-Section .theme-button--project-card .theme-btn-bg.orange,
+  #Project-Section .theme-button--project-card .theme-btn-icon-box {
     width: 34px !important;
     height: 34px !important;
     left: 5px !important;
     top: 5px !important;
   }
 
-  #Project-Section .theme-button.gray .theme-btn-text,
-  #Project-Section .theme-button.gray .theme-btn-hover-text {
+  #Project-Section .theme-button--project-card .theme-btn-text,
+  #Project-Section .theme-button--project-card .theme-btn-hover-text {
     font-size: 13px !important;
     line-height: 1.4 !important;
     font-weight: 600 !important;
+    color: #fff !important;
   }
 }
 
 /* --------------------------------------------------------------------------
-   768–991px — Tablet: Project выравнивание паддингов
+   ≤991px — Mobile / tablet column layout (Figma 261:2516 @768 + узкие ширины)
    -------------------------------------------------------------------------- */
-@media (min-width: 768px) and (max-width: 991px) {
+@media (max-width: 991px) {
   #Project-Section.project-section {
     padding-left: 32px;
     padding-right: 32px;
   }
 
+  /* Flex gap задаёт title→cards; убираем лишний margin из main.css (.sectitle-outer-box) */
+  #Project-Section .sectitle-outer-box {
+    margin-bottom: 0 !important;
+  }
+
+  /* Gallery — Figma 261:2585: column gap 60px (title stack ↔ grid), items-center */
+  #Gallery-Section.gallery-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 60px;
+    padding-top: 120px;
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+
+  /* Service — Figma 261:2974 (~768 tablet): title + 2-col wrap; ≥768 внутри ≤991 */
+  #Service-Section.service-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 60px;
+    padding-top: 120px !important;
+    padding-bottom: 120px !important;
+    padding-left: 32px !important;
+    padding-right: 32px !important;
+  }
+
+  #Service-Section.service-section > .service-sectitle-wrap.sectitle-outer-box {
+    width: 100%;
+    max-width: 704px;
+    margin-bottom: 0 !important;
+    justify-content: flex-start !important;
+    column-gap: 0 !important;
+    row-gap: 0 !important;
+  }
+
+  #Service-Section.service-section .section-title-box.mb-zero {
+    gap: 8px;
+    width: 100%;
+  }
+
+  #Service-Section.service-section .service-section-title {
+    margin: 0 !important;
+    padding: 0 !important;
+    letter-spacing: -1.2px !important;
+    color: #fff !important;
+    font-weight: 600 !important;
+    white-space: normal !important;
+    max-width: 100% !important;
+  }
+
+  #Service-Section.service-section .service-section-title-hash {
+    font-weight: 400 !important;
+    font-size: 68px !important;
+    line-height: 76px !important;
+    color: #ff61a6 !important;
+    letter-spacing: -1.2px !important;
+    vertical-align: baseline;
+  }
+
+  #Service-Section.service-section .service-section-title-lead {
+    font-weight: 600 !important;
+    font-size: 56px !important;
+    line-height: 62px !important;
+    color: #fff !important;
+    letter-spacing: -1.2px !important;
+  }
+
+  #Service-Section.service-section .container.w-container {
+    max-width: 100%;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  #Service-Section.service-section .service-grid {
+    grid-template-columns: 1fr 1fr !important;
+    grid-column-gap: 20px !important;
+    grid-row-gap: 20px !important;
+    width: 100%;
+  }
+
+  #Service-Section.service-section .service-icon-box {
+    width: 80px !important;
+    height: 80px !important;
+    min-width: 80px !important;
+    min-height: 80px !important;
+  }
+
+  #Service-Section.service-section .service-line {
+    background-color: #d54793 !important;
+  }
+
+  #Service-Section.service-section .service-title {
+    font-size: 28px !important;
+    line-height: 39.2px !important;
+    letter-spacing: -1.2px !important;
+  }
+
+  #Service-Section.service-section .service-text {
+    font-size: 14px !important;
+    line-height: 24px !important;
+    font-weight: 400 !important;
+  }
+
+  #Service-Section.service-section .service-block {
+    min-height: 400px !important;
+    padding: 30px !important;
+  }
+
   #Project-Section .container.w-container {
     padding-left: 0 !important;
     padding-right: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 89.5px !important;
+    padding-bottom: 19.23px !important;
+  }
+
+  /* Figma 525:4740: h2 92px high, hero-text y=108 → 16px title ↔ desc */
+  #Project-Section .section-title-box.mb-zero {
+    gap: 16px;
   }
 
   /* Header fixed — даём то же боковое поле */
@@ -1536,27 +2717,134 @@ img {
     padding-right: 32px !important;
   }
 
-  /* Project в одну колонку (Webflow по умолчанию даёт column ≤991) — добавим интервал */
+  /* === Project Section — Figma 261:2516 (768px tablet) ===
+     Три части (артисты, бренды, секционный заголовок) без видео. */
+
+  /* Project block: gap 28px image ↔ content (Figma gap-[27.87px]) */
   #Project-Section .project-block {
-    gap: 32px !important;
+    gap: 28px !important;
+    align-items: stretch !important;
   }
 
+  /* Artist & brand image boxes: 557px (Figma), не затрагиваем видео */
+  #Project-Section .project-collection.w-dyn-list .project-image-box {
+    height: 557px !important;
+    border-radius: 30px !important;
+    width: 100% !important;
+    flex: none !important;
+    min-height: 0 !important;
+  }
+
+  /* Content box: flex-col, gap 13px (line → title → text → button).
+     order:0 сбрасывает main.css ≤991px order:-1, который поднимает content
+     НАД image. Figma: image first, content below. */
   #Project-Section .project-content-box {
+    order: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 13px !important;
     width: 100% !important;
     max-width: 100% !important;
   }
 
-  #Project-Section .project-content-box .project-title {
-    font-size: clamp(28px, 4vw, 36px) !important;
-    line-height: 1.2 !important;
-    font-weight: 600 !important;
+  /* Line: 2px (main.css base имеет 5px) */
+  #Project-Section .project-content-box .project-line {
+    height: 2px !important;
+    background-color: #d54793 !important;
+    border-radius: 10px !important;
   }
 
-  /* Project desc — Figma 768px: 24px / lh 32px */
+  /* Title: Figma 32px / 36px lh */
+  #Project-Section .project-content-box .project-title {
+    font-size: 32px !important;
+    line-height: 36px !important;
+    font-weight: 600 !important;
+    margin: 0 !important;
+  }
+
+  /* Text: Figma 14px / 24px; нижний инсет до кнопки ~6.3px (261:2534) */
+  #Project-Section .project-content-box .project-text {
+    font-size: 14px !important;
+    line-height: 24px !important;
+    margin: 0 !important;
+    padding-bottom: 6.3px !important;
+  }
+
+  /* Кнопка «Подробнее» — те же паттерны, что у pink CTA; IX задаёт ширину .theme-btn-bg */
+  #Project-Section .project-content-box .theme-button--project-card {
+    height: auto !important;
+    padding: 13.94px 32.52px 13.94px 55.75px !important;
+    border-radius: 30px !important;
+    background-color: #ff61a6 !important;
+    color: #fff !important;
+    font-size: 13px !important;
+    line-height: 1 !important;
+    font-weight: 600 !important;
+    align-self: flex-start !important;
+    margin: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 0 !important;
+    position: relative !important;
+  }
+
+  #Project-Section .project-content-box .theme-btn-text,
+  #Project-Section .project-content-box .theme-btn-hover-text {
+    font-size: 13px !important;
+    line-height: 18.58px !important;
+    font-weight: 600 !important;
+    color: #fff !important;
+  }
+
+  /* Sliding fill (IX hover): удерживаем в icon-size на рест-стейте (261:2537 чёрная подложка) */
+  #Project-Section .project-content-box .theme-btn-bg {
+    width: 37.16px !important;
+    height: 37.16px !important;
+    border-radius: 20px !important;
+    top: 4.65px !important;
+    left: 4.65px !important;
+    right: auto !important;
+    bottom: auto !important;
+    background-color: #000 !important;
+  }
+
+  /* Иконка-круг: как у Обсудить — чёрный диск под белой стрелкой */
+  #Project-Section .project-content-box .theme-btn-icon-box {
+    width: 37.16px !important;
+    height: 37.16px !important;
+    border-radius: 999px !important;
+    left: 4.65px !important;
+    top: 4.65px !important;
+    background-color: #000 !important;
+  }
+
+  /* Стрелка внутри: ~18.58px как в Figma */
+  #Project-Section .project-content-box .theme-btn-icon,
+  #Project-Section .project-content-box .theme-btn-hover-icon {
+    width: 18.58px !important;
+    height: 18.58px !important;
+  }
+
+  /* Заголовок секции — та же колонка 704px, что и описание */
+  #Project-Section .project-section-title {
+    margin: 0 !important;
+    padding: 0 14px !important;
+    letter-spacing: -1.2px;
+    color: #fff;
+    font-weight: 600;
+    white-space: normal;
+    max-width: 704px;
+    box-sizing: border-box;
+    width: 100%;
+  }
+
+  /* Project desc — Figma 768 (525:4743): блок 704×128, текст 676px + по 14px */
   #Project-Section .project-section-desc {
     font-size: 24px;
     line-height: 32px;
-    padding: 0;
+    letter-spacing: -0.72px;
+    max-width: 704px;
+    padding: 0 14px;
   }
 
   /* Figma 768px: заголовок секции */
@@ -1569,6 +2857,55 @@ img {
 
   #Project-Section .project-section-title-lead,
   #Project-Section .project-section-title-second {
+    font-size: 56px !important;
+    line-height: 62px !important;
+    letter-spacing: -1.2px !important;
+  }
+
+  /* Figma 261:2585: sectitle-outer-box = w-full.
+     Без width:100% при align-items:center на секции блок сжимается до
+     ширины содержимого (≤704px) и центрируется — на 800–991px заголовок
+     сдвигается вправо относительно сетки карточек. */
+  #Gallery-Section > .gallery-sectitle-wrap.sectitle-outer-box {
+    width: 100%;
+    margin-bottom: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  /* Figma 261:2585: section-title-box column gap 8px, полная ширина */
+  #Gallery-Section .section-title-box.mb-zero {
+    width: 100%;
+    gap: 8px;
+  }
+
+  #Gallery-Section .project-section-title {
+    margin: 0 !important;
+    padding: 0 !important;
+    letter-spacing: -1.2px;
+    color: #fff;
+    font-weight: 600;
+    white-space: normal;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  #Gallery-Section .project-section-desc {
+    font-size: 24px;
+    line-height: 32px;
+    letter-spacing: -0.72px;
+    padding: 0 14px;
+  }
+
+  #Gallery-Section .project-section-title-hash {
+    font-size: 68px !important;
+    line-height: 76px !important;
+    color: #ff61a6 !important;
+    letter-spacing: -1.2px !important;
+  }
+
+  #Gallery-Section .project-section-title-lead {
     font-size: 56px !important;
     line-height: 62px !important;
     letter-spacing: -1.2px !important;
@@ -1619,6 +2956,21 @@ img {
 
   .hero-section .banner-list-text {
     font-size: 12px !important;
+  }
+
+  /* Header CTA «Обсудить проект»: 16px для всего диапазона ≤1279px (ниже не дублировать font-size) */
+  .header-btn .theme-btn-text-box {
+    line-height: 20px !important;
+    min-height: 20px !important;
+  }
+
+  .header-btn .theme-btn-text,
+  .header-btn .theme-btn-hover-text {
+    font-size: 16px !important;
+    line-height: 20px !important;
+    font-weight: 600 !important;
+    color: #000 !important;
+    white-space: nowrap !important;
   }
 }
 
@@ -1713,18 +3065,34 @@ img {
     justify-content: center !important;
     flex-shrink: 0;
     cursor: pointer;
-    /* Размеры по умолчанию (390px Figma): 35×35px, r=5px */
-    width: 35px !important;
-    height: 35px !important;
+    box-sizing: border-box;
+    overflow: clip;
+    /* Внешний белый блок — Figma 557:5423: 54×54 */
+    width: 54px !important;
+    height: 54px !important;
+    padding: 0 !important;
     background-color: #fff !important;
-    border-radius: 5px !important;
+    border-radius: 7px !important;
   }
 
-  /* Иконка гамбургера */
-  .header-menu-icon {
-    width: 20px !important;
-    height: 20px !important;
+  /* Чёрный круг — пропорция к прежнему 46/56 от внешнего 54 (~44px) */
+  .mobile-menu-open-disc {
+    width: 44px !important;
+    height: 44px !important;
+  }
+
+  /* Иконка гамбургера — белые линии (~21px при 54 outer) */
+  .mobile-menu-open-btn .header-menu-icon {
+    width: 21px !important;
+    height: 21px !important;
     display: block;
+    flex-shrink: 0;
+  }
+
+  /* Верхняя строка выезжающего меню: X + LisaCreo подряд с фиксированным зазором */
+  .mobile-logo-box {
+    justify-content: flex-start !important;
+    gap: 12px;
   }
 
   /* button-box: бургер DOM-последним → row-reverse визуально ставит его СЛЕВА,
@@ -1782,16 +3150,6 @@ img {
     background-color: #000 !important;
   }
 
-  /* Текст кнопки: 10px (Figma: 9.912px ≈ 10px) */
-  .header-btn .theme-btn-text,
-  .header-btn .theme-btn-hover-text {
-    font-size: 10px !important;
-    font-weight: 600 !important;
-    color: #000 !important;
-    line-height: 1.4 !important;
-    white-space: nowrap !important;
-  }
-
   /* Вертикальные отступы (390px Figma: py=12px) */
   .main-header .header-main-box {
     padding-top: 12px !important;
@@ -1802,7 +3160,7 @@ img {
 /* --------------------------------------------------------------------------
    768–991px — Figma 261:3179 (768px frame): планшет
    Переопределяет размеры из ≤991px блока выше.
-   Бургер 56px, кнопка 56px, py 15px, padding-sides 32px (уже есть выше).
+   Бургер 54px (557:5423), кнопка CTA 56px, py 15px, padding-sides 32px.
    -------------------------------------------------------------------------- */
 @media (min-width: 768px) and (max-width: 991px) {
   /* Вертикальные отступы (768px Figma: py=15px, container h=96px) */
@@ -1811,17 +3169,23 @@ img {
     padding-bottom: 15px !important;
   }
 
-  /* Гамбургер: 56×56px, r=7px */
+  /* Гамбургер: 54×54px, r=7px (Figma 557:5423) */
   .mobile-menu-open-btn {
-    width: 56px !important;
-    height: 56px !important;
+    width: 54px !important;
+    height: 54px !important;
     border-radius: 7px !important;
   }
 
-  /* Иконка гамбургера */
-  .header-menu-icon {
-    width: 24px !important;
-    height: 24px !important;
+  .mobile-menu-open-disc {
+    width: 44px !important;
+    height: 44px !important;
+  }
+
+  /* Иконка гамбургера в кнопке меню — без brightness(0) */
+  .mobile-menu-open-btn .header-menu-icon {
+    filter: none !important;
+    width: 21px !important;
+    height: 21px !important;
   }
 
   /* Кнопка: h=56px, pl=60px, pr=35px, r=30px */
@@ -1860,31 +3224,211 @@ img {
     border-radius: 50% !important;
   }
 
-  /* Текст кнопки: 14px */
-  .header-btn .theme-btn-text,
-  .header-btn .theme-btn-hover-text {
-    font-size: 14px !important;
+  /* Marquee — планшет 768–991 (фрейм «Визуалы» 768 в задаче = Gallery; ключ к сетке здесь px 32) */
+  #Marquee-Section.marquee-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 60px;
+    padding-top: 120px;
+    padding-bottom: 120px;
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+
+  #Marquee-Section > .marquee-sectitle-wrap.sectitle-outer-box {
+    margin-bottom: 0;
+    width: 100%;
+    max-width: 704px;
+    text-align: left;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  #Marquee-Section .section-title-box.mb-zero {
+    gap: 8px;
+  }
+
+  #Marquee-Section .marquee-section-title {
+    margin: 0 !important;
+    padding: 0 !important;
+    letter-spacing: -1.2px;
+    max-width: 100%;
+  }
+
+  #Marquee-Section .marquee-section-title-hash {
+    font-size: 68px !important;
+    line-height: 76px !important;
+    color: #ff61a6 !important;
+  }
+
+  #Marquee-Section .marquee-section-title-lead {
+    font-size: 56px !important;
+    line-height: 62px !important;
+  }
+
+  #Marquee-Section .marquee-section-desc {
+    font-size: 24px;
+    line-height: 32px;
+    letter-spacing: -0.72px;
+    color: rgba(255, 255, 255, 0.86);
+    max-width: 100%;
+    padding: 0 14px;
+    margin: 0;
+    box-sizing: border-box;
+  }
+
+  #Marquee-Section .marquee-box {
+    margin-top: 0 !important;
+    max-width: none;
+    width: 100%;
+    align-self: stretch;
+  }
+
+  #Marquee-Section.marquee-section .marquee-inner-box .marquee-image-box {
+    width: 200px !important;
+    height: auto !important;
+    aspect-ratio: 280 / 400;
   }
 }
 
 /* ≤767px — мобильный / граница планшета */
 @media (max-width: 767px) {
-  /* Header боковые отступы выравниваем с секциями */
+  /* Header: те же боковые поля и размеры, что 768–991px (Figma 768 frame) */
   .main-header .w-layout-blockcontainer.container.w-container {
     max-width: 100% !important;
-    padding-left: 24px !important;
-    padding-right: 24px !important;
+    padding-left: 32px !important;
+    padding-right: 32px !important;
   }
 
+  .main-header .header-main-box {
+    padding-top: 15px !important;
+    padding-bottom: 15px !important;
+  }
+
+  .mobile-menu-open-btn {
+    width: 54px !important;
+    height: 54px !important;
+    border-radius: 7px !important;
+  }
+
+  .mobile-menu-open-disc {
+    width: 44px !important;
+    height: 44px !important;
+  }
+
+  .mobile-menu-open-btn .header-menu-icon {
+    filter: none !important;
+    width: 21px !important;
+    height: 21px !important;
+  }
+
+  .header-btn.theme-button {
+    display: inline-flex !important;
+    height: 56px !important;
+    padding: 5px 35px 5px 60px !important;
+    border-radius: 30px !important;
+    align-items: center !important;
+    box-sizing: border-box;
+  }
+
+  /* IX задаёт inline width на .theme-btn-bg — не фиксируем width !important */
   .header-btn .theme-btn-bg,
   .header-btn .theme-btn-bg.orange {
-    width: 28px !important;
+    height: auto !important;
+    left: 5px !important;
+    top: 5px !important;
+    bottom: 5px !important;
+    min-width: 46px !important;
+    border-radius: 999px !important;
+    background-color: #000 !important;
+    background-image: none !important;
   }
 
-  /* Project Section — единая колонка с разумным внутренним gap */
+  .header-btn .theme-btn-icon-box {
+    width: 46px !important;
+    height: 46px !important;
+    left: 5px !important;
+    top: 5px !important;
+    min-width: 46px !important;
+    min-height: 46px !important;
+    max-width: 46px !important;
+    max-height: 46px !important;
+    aspect-ratio: 1 / 1 !important;
+    border-radius: 50% !important;
+    background-color: #000 !important;
+  }
+
+  /* Project Section — колонка; боковые 32px как Figma 768 (704px полоса на 768px) */
   #Project-Section.project-section {
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+
+  /* Gallery — типографика/гуттеры как 768 (261:2585); боковые 24px для секций ≤767 */
+  #Gallery-Section.gallery-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 60px;
+    padding-top: 120px;
     padding-left: 24px;
     padding-right: 24px;
+  }
+
+  /* Service — Figma 261:3771 (~390 mobile): столбец, px 16, gap headline↔cards 66 */
+  #Service-Section.service-section {
+    align-items: center;
+    gap: 66px;
+    padding-top: 100px !important;
+    padding-bottom: 100px !important;
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+
+  #Service-Section.service-section > .service-sectitle-wrap.sectitle-outer-box {
+    max-width: 100%;
+  }
+
+  #Service-Section.service-section .section-title-box.mb-zero {
+    gap: 16px;
+  }
+
+  #Service-Section.service-section .service-section-title-hash {
+    font-size: 44px !important;
+    line-height: 48px !important;
+    color: #ff61a6 !important;
+  }
+
+  #Service-Section.service-section .service-section-title-lead {
+    font-size: 36px !important;
+    line-height: 44px !important;
+    color: #fff !important;
+  }
+
+  #Service-Section.service-section .service-grid {
+    grid-template-columns: 1fr !important;
+    grid-row-gap: 20px !important;
+    grid-column-gap: 0 !important;
+  }
+
+  #Service-Section.service-section .service-block {
+    min-height: 350px !important;
+    padding: 20px !important;
+  }
+
+  #Service-Section.service-section .service-line {
+    background-color: #e53f88 !important;
+  }
+
+  #Service-Section.service-section .service-title {
+    font-size: 24px !important;
+    line-height: 33.6px !important;
+  }
+
+  #Service-Section.service-section .service-text {
+    font-size: 14px !important;
+    line-height: 26px !important;
   }
 
   #Project-Section .container.w-container {
@@ -1893,7 +3437,7 @@ img {
   }
 
   #Project-Section .project-block {
-    gap: 24px !important;
+    gap: 28px !important;
     flex-direction: column;
   }
 
@@ -1902,9 +3446,12 @@ img {
     max-width: 100% !important;
   }
 
-  #Project-Section .project-content-box .project-title {
-    font-size: clamp(26px, 6vw, 34px) !important;
-    line-height: 1.2 !important;
+  #Project-Section .project-section-title {
+    margin: 0 !important;
+    padding: 0 14px !important;
+    max-width: min(704px, 100%);
+    box-sizing: border-box;
+    width: 100%;
   }
 
   /* Figma 768px → 56px; к 390px → 44/36px; плавно через clamp */
@@ -1920,6 +3467,10 @@ img {
     font-size: clamp(36px, 7.3vw, 56px) !important;
     line-height: clamp(40px, 8.1vw, 62px) !important;
     letter-spacing: -1.2px !important;
+  }
+
+  #Project-Section .section-title-box.mb-zero {
+    gap: 16px;
   }
 
   /* ≤767px: flex-строка из 3 элементов (3-й скрыт) */
@@ -1970,11 +3521,131 @@ img {
     line-height: 0.92 !important;
   }
 
-  /* Project desc — 480–767px: как на 768px брейкпойнте */
+  /* Project desc — как 768-макет до 479px; ширина не выходит за колонку */
   #Project-Section .project-section-desc {
     font-size: 24px;
     line-height: 32px;
-    padding: 0;
+    max-width: min(704px, 100%);
+    padding: 0 14px;
+    box-sizing: border-box;
+  }
+
+  /* Gallery — column gap 60px как 261:2585; title↔desc 8px внутри тем же правилом, что 768–991 */
+  #Gallery-Section > .gallery-sectitle-wrap.sectitle-outer-box {
+    max-width: none;
+    margin-bottom: 0;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  #Gallery-Section .section-title-box.mb-zero {
+    gap: 8px;
+  }
+
+  #Gallery-Section .project-section-title {
+    margin: 0 !important;
+    padding: 0 !important;
+    letter-spacing: -1.2px;
+    max-width: min(704px, 100%);
+    box-sizing: border-box;
+    width: 100%;
+  }
+
+  #Gallery-Section .project-section-title-hash {
+    font-size: 68px !important;
+    line-height: 76px !important;
+    color: #ff61a6 !important;
+    letter-spacing: -1.2px !important;
+  }
+
+  #Gallery-Section .project-section-title-lead {
+    font-size: 56px !important;
+    line-height: 62px !important;
+    letter-spacing: -1.2px !important;
+  }
+
+  #Gallery-Section .project-section-desc {
+    font-size: 24px;
+    line-height: 32px;
+    letter-spacing: -0.72px;
+    max-width: min(704px, 100%);
+    padding: 0 14px;
+    box-sizing: border-box;
+  }
+
+  /*
+   * Marquee (#Marquee-Section) — планшет/мобила ≤767.
+   * Примечание: фрейм «768» в задаче (261:2585) в Figma — Gallery, не marquee;
+   * отступы/типографика выровнены под соседнюю Gallery-секцию (боковые 24px, gap 60px).
+   */
+  #Marquee-Section.marquee-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 60px;
+    padding-top: 120px;
+    padding-bottom: 120px;
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+
+  #Marquee-Section > .marquee-sectitle-wrap.sectitle-outer-box {
+    max-width: none;
+    margin-bottom: 0;
+    padding-left: 0;
+    padding-right: 0;
+    text-align: left;
+    width: 100%;
+  }
+
+  #Marquee-Section .section-title-box.mb-zero {
+    gap: 8px;
+  }
+
+  #Marquee-Section .marquee-section-title {
+    margin: 0 !important;
+    padding: 0 !important;
+    letter-spacing: -1.2px;
+    max-width: min(704px, 100%);
+    box-sizing: border-box;
+    width: 100%;
+  }
+
+  #Marquee-Section .marquee-section-title-hash {
+    font-size: 68px !important;
+    line-height: 76px !important;
+    color: #ff61a6 !important;
+    letter-spacing: -1.2px !important;
+  }
+
+  #Marquee-Section .marquee-section-title-lead {
+    font-size: 56px !important;
+    line-height: 62px !important;
+    letter-spacing: -1.2px !important;
+  }
+
+  #Marquee-Section .marquee-section-desc {
+    font-size: 24px;
+    line-height: 32px;
+    letter-spacing: -0.72px;
+    color: rgba(255, 255, 255, 0.86);
+    max-width: min(704px, 100%);
+    padding: 0 14px;
+    box-sizing: border-box;
+    margin: 0;
+  }
+
+  #Marquee-Section .marquee-box {
+    margin-top: 0 !important;
+    max-width: none;
+    width: 100%;
+    align-self: stretch;
+  }
+
+  #Marquee-Section.marquee-section .marquee-inner-box .marquee-image-box {
+    width: 200px !important;
+    height: auto !important;
+    aspect-ratio: 280 / 400;
   }
 
   /* 480–767px: сохраняем 24px от Figma 768px, перенос только при ≤479 */
@@ -2000,10 +3671,22 @@ img {
     padding-right: 16px !important;
   }
 
-  /* ≤479px: возвращаем мобильный круг (Figma 390px: 28×28) */
-  .header-btn .theme-btn-bg,
-  .header-btn .theme-btn-bg.orange {
-    min-width: 28px !important;
+  /* Кнопка меню — тот же 54×54 tap target что ≤767 / ≤991 (Figma 557:5423), без уменьшения на узком экране */
+  .mobile-menu-open-btn {
+    width: 54px !important;
+    height: 54px !important;
+    border-radius: 7px !important;
+  }
+
+  .mobile-menu-open-disc {
+    width: 44px !important;
+    height: 44px !important;
+  }
+
+  .mobile-menu-open-btn .header-menu-icon {
+    filter: none !important;
+    width: 21px !important;
+    height: 21px !important;
   }
 
   /* Project Section — компактные отступы */
@@ -2012,11 +3695,20 @@ img {
     padding-right: 16px;
   }
 
-  /* Project desc — Figma 390px: 20px / lh 28px */
+  /* Project desc — Figma 390 (530:4798): на всю ширину колонки 358px, без боковых инсетов */
   #Project-Section .project-section-desc {
     font-size: 20px;
     line-height: 28px;
+    max-width: 100%;
     padding: 0;
+  }
+
+  #Project-Section .project-section-title {
+    margin: 0 !important;
+    padding: 0 !important;
+    max-width: 100%;
+    box-sizing: border-box;
+    width: 100%;
   }
 
   /* Figma 390px: # = 44px / 48px; текст = 36px / 40px */
@@ -2032,6 +3724,124 @@ img {
     font-size: 36px !important;
     line-height: 40px !important;
     letter-spacing: -1.2px !important;
+  }
+
+  /* Gallery — Figma 261:3372 (390w): pt 100, px 16, title-stack gap 16px */
+  #Gallery-Section.gallery-section {
+    gap: 56px;
+    padding-top: 100px;
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  #Gallery-Section > .gallery-sectitle-wrap.sectitle-outer-box {
+    margin-bottom: 0;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  #Gallery-Section .section-title-box.mb-zero {
+    gap: 16px;
+  }
+
+  #Gallery-Section .project-section-desc {
+    font-size: 20px;
+    line-height: 28px;
+    letter-spacing: -0.72px;
+    max-width: 100%;
+    padding: 0;
+  }
+
+  #Gallery-Section .project-section-title {
+    margin: 0 !important;
+    padding: 0 !important;
+    max-width: 100%;
+    box-sizing: border-box;
+    width: 100%;
+  }
+
+  #Gallery-Section .project-section-title-hash {
+    font-size: 44px !important;
+    line-height: 48px !important;
+    color: #ff61a6 !important;
+    letter-spacing: -1.2px !important;
+  }
+
+  #Gallery-Section .project-section-title-lead {
+    font-size: 36px !important;
+    line-height: 44px !important;
+    letter-spacing: -1.2px !important;
+  }
+
+  /* Marquee — Figma 261:3877 (390w frame) */
+  #Marquee-Section.marquee-section {
+    gap: 56px;
+    padding-top: 100px;
+    padding-bottom: 100px;
+    padding-left: 16px;
+    padding-right: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  #Marquee-Section > .marquee-sectitle-wrap.sectitle-outer-box {
+    margin-bottom: 0;
+    padding-left: 0;
+    padding-right: 0;
+    text-align: left;
+  }
+
+  #Marquee-Section .section-title-box.mb-zero {
+    gap: 16px;
+  }
+
+  #Marquee-Section .marquee-section-title {
+    margin: 0 !important;
+    padding: 0 !important;
+    max-width: 100%;
+    box-sizing: border-box;
+    width: 100%;
+  }
+
+  #Marquee-Section .marquee-section-title-hash {
+    font-size: 44px !important;
+    line-height: 48px !important;
+    color: #ff61a6 !important;
+    letter-spacing: -1.2px !important;
+  }
+
+  #Marquee-Section .marquee-section-title-lead {
+    font-size: 36px !important;
+    line-height: 44px !important;
+    letter-spacing: -1.2px !important;
+  }
+
+  #Marquee-Section .marquee-section-desc {
+    font-size: 20px !important;
+    line-height: 28px !important;
+    letter-spacing: -0.72px;
+    color: rgba(255, 255, 255, 0.86);
+    max-width: 100%;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+  }
+
+  #Marquee-Section .marquee-box {
+    margin-top: 0 !important;
+    max-width: 100%;
+    width: 100%;
+    height: 214px;
+  }
+
+  #Marquee-Section.marquee-section .marquee-inner-box .marquee-image-box {
+    width: 150px !important;
+    height: 214px !important;
+  }
+
+  #Marquee-Section .marquee-inner-box {
+    height: 214px;
   }
 
   .brands-gallery-grid {
@@ -2068,11 +3878,13 @@ img {
 
   /* Figma 390px: 20px, текст переносится на 2 строки */
   .hero-title-two {
-    font-size: 20px !important;
+    font-size: 16px !important;
     line-height: 28px !important;
     letter-spacing: -0.022em !important;
     white-space: normal !important;
   }
+
+  /* Gallery cards: same fluid 3-up as ≤991px (see block above max-width 991); no 1-col jump here */
 
   .banner-list-box {
     column-gap: 20px !important;
@@ -2088,6 +3900,178 @@ img {
 
   .banner-list-text {
     font-size: 12px;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Gallery (#Gallery-Section) — fluid single row, three cards (≤991px)
+
+   main.css used to force .gallery-grid to 2 cols (≤991/767) and 1 col (≤479),
+   which produced a 2+1 grid and uneven row heights / clipping inside
+   .gallery-section { overflow: hidden }.
+
+   Stay on display: grid (same as ≥992 + main .gallery-grid): IX uses
+   translate3d(±120%, …) on .gallery-block; flex + nowrap broke stable
+   column widths and gutters vs. percentage motion.
+
+   Gap matches desktop 20px at the top of this band, scales down by vw with a
+   floor so cards never touch. Section overflow visible so horizontal IX is
+   not clipped.
+
+   Typography for the gallery heading still follows the Figma breakpoints above.
+   -------------------------------------------------------------------------- */
+@media screen and (max-width: 991px) {
+  #Gallery-Section.gallery-section {
+    overflow: visible;
+  }
+
+  /* Grid wrapper: undo global `.container` side padding / width cap so it matches sectitle. */
+  #Gallery-Section .container.w-container {
+    max-width: none !important;
+    width: 100% !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    box-sizing: border-box;
+  }
+
+  #Gallery-Section .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-rows: auto;
+    align-items: stretch;
+    justify-items: stretch;
+    /* Figma 261:2585 (768px): gap 11px; масштабируется к 991px */
+    gap: clamp(8px, 1.4vw, 14px);
+    overflow: visible;
+    isolation: isolate;
+    contain: layout;
+  }
+
+  #Gallery-Section .gallery-grid > .gallery-block {
+    min-width: 0;
+    /* Figma 261:2585: карточка 227×358.81px ≈ 19:30 (портретная) */
+    aspect-ratio: 19 / 30;
+    /* Figma 261:2585: border-radius 11px (main.css даёт 20px) */
+    border-radius: 11px;
+    overflow: hidden;
+    backface-visibility: hidden;
+    /* Планшетный reveal: IX застрял в translate3d(±120%). Заменяем на
+       собственное начальное состояние — все три карточки появятся
+       одновременно через IntersectionObserver (JS добавит .lc-reveal).
+       ≤767px-блок ниже перекроет transform (56px) и ratio (4:7). */
+    opacity: 0;
+    transform: translateY(40px) !important;
+    transition:
+      opacity 900ms cubic-bezier(0.19, 1, 0.22, 1),
+      transform 900ms cubic-bezier(0.19, 1, 0.22, 1);
+    will-change: opacity, transform;
+  }
+
+  /* Revealed state (JS добавляет .lc-reveal на планшете — все три сразу) */
+  #Gallery-Section .gallery-grid > .gallery-block.lc-reveal {
+    opacity: 1;
+    transform: none !important;
+    will-change: auto;
+  }
+
+  #Gallery-Section .gallery-grid .gallery-image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    /* Сброс возможных IX-трансформов на самом изображении */
+    transform: none !important;
+    backface-visibility: hidden;
+  }
+}
+
+/* ==========================================================================
+   Gallery — мобиль ≤767px: 1 колонка, портретные блоки (Figma 261:3372, 390px)
+   Блок стоит ПОСЛЕ ≤991px, чтобы перекрыть его 3-column grid и aspect-ratio 16/9.
+   IX-анимации (translate3d ±120%) отключены: карточки статичны, transform сброшен.
+   ========================================================================== */
+@media (max-width: 767px) {
+  #Gallery-Section .gallery-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  /* Портретный кроп: Figma 390px — блок 358×622px ≈ 4:7
+     Начальное состояние: скрыт и смещён вниз.
+     JS (IntersectionObserver) добавит .lc-reveal → анимация появления. */
+  #Gallery-Section .gallery-grid > .gallery-block {
+    aspect-ratio: 4 / 7;
+    border-radius: 20px;
+    width: 100%;
+    min-width: 0;
+    opacity: 0;
+    transform: translateY(56px) !important;
+    transition:
+      opacity 900ms cubic-bezier(0.19, 1, 0.22, 1),
+      transform 900ms cubic-bezier(0.19, 1, 0.22, 1);
+    will-change: opacity, transform;
+  }
+
+  /* Revealed state: JS добавляет .lc-reveal через IntersectionObserver */
+  #Gallery-Section .gallery-grid > .gallery-block.lc-reveal {
+    opacity: 1;
+    transform: none !important;
+    will-change: auto;
+  }
+
+  /* Стаггер — 2-я и 3-я карточка чуть позже */
+  #Gallery-Section .gallery-grid > .gallery-block:nth-child(2) {
+    transition-delay: 110ms;
+  }
+  #Gallery-Section .gallery-grid > .gallery-block:nth-child(3) {
+    transition-delay: 220ms;
+  }
+
+  /* Параллакс внутри карточки — сбрасываем */
+  #Gallery-Section .gallery-grid > .gallery-block .gallery-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transform: none !important;
+    will-change: auto !important;
+  }
+}
+
+/* ≤479px: те же правила, grid 1-column */
+@media (max-width: 479px) {
+  #Gallery-Section .gallery-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  #Gallery-Section .gallery-grid > .gallery-block {
+    aspect-ratio: 4 / 7;
+    border-radius: 20px;
+    width: 100%;
+    opacity: 0;
+    transform: translateY(56px) !important;
+    transition:
+      opacity 900ms cubic-bezier(0.19, 1, 0.22, 1),
+      transform 900ms cubic-bezier(0.19, 1, 0.22, 1);
+  }
+
+  #Gallery-Section .gallery-grid > .gallery-block.lc-reveal {
+    opacity: 1;
+    transform: none !important;
+  }
+
+  #Gallery-Section .gallery-grid > .gallery-block:nth-child(2) {
+    transition-delay: 110ms;
+  }
+  #Gallery-Section .gallery-grid > .gallery-block:nth-child(3) {
+    transition-delay: 220ms;
+  }
+
+  #Gallery-Section .gallery-grid > .gallery-block .gallery-image {
+    transform: none !important;
+    will-change: auto !important;
   }
 }
 
@@ -2115,6 +4099,20 @@ img {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+/* ==========================================================================
+   Страницы artists / brands — декоративная линия у project-detail-title-two-box
+   ========================================================================== */
+body.page-artists .project-detail-line,
+body.page-brands .project-detail-line {
+  height: 2px;
+  background-color: #E53F88;
+}
+
+/* «Визуалы»: размер задают span’ы в строке заголовка (как в Figma), базовый размер h2 обнуляем */
+#Marquee-Section .marquee-section-title {
+  font-size: 0;
 }
 
 /* ==========================================================================
@@ -2158,5 +4156,15 @@ img {
     opacity: 1 !important;
     transform: none !important;
     animation: none !important;
+  }
+
+  /* Gallery: tram/IX uses inline transforms — snap to rest state, avoid jank */
+  #Gallery-Section .gallery-block {
+    transform: none !important;
+    opacity: 1 !important;
+  }
+
+  #Gallery-Section .gallery-block .gallery-image {
+    transform: none !important;
   }
 }

@@ -144,11 +144,72 @@
     });
   }
 
+  /**
+   * Scroll-reveal для карточек галереи на планшете (768–991px) и мобиле (≤767px).
+   *
+   * Планшет: IX застрял в translate3d(±120%) — CSS уже задаёт начальное
+   *   состояние (opacity:0, translateY(40px)). Наблюдаем за всей сеткой и
+   *   добавляем .lc-reveal ВСЕМ трём карточкам одновременно.
+   *
+   * Мобиль: CSS задаёт opacity:0, translateY(56px) + transition-delay на
+   *   nth-child(2,3). Наблюдаем каждую карточку индивидуально — стаггер
+   *   создаётся CSS delay, а не JS.
+   *
+   * Десктоп (≥992px): функция не запускается — Webflow IX управляет сам.
+   */
+  function initGalleryReveal() {
+    const isTablet = window.matchMedia(
+      "(min-width: 768px) and (max-width: 991px)"
+    ).matches;
+    const isMobile = window.matchMedia("(max-width: 767px)").matches;
+
+    if (!isTablet && !isMobile) return;
+
+    const blocks = document.querySelectorAll(
+      "#Gallery-Section .gallery-grid > .gallery-block"
+    );
+    if (!blocks.length) return;
+
+    if (isTablet) {
+      // Все три появляются одновременно, когда сетка входит во вьюпорт
+      const grid = document.querySelector("#Gallery-Section .gallery-grid");
+      if (!grid) return;
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          if (entries[0].isIntersecting) {
+            blocks.forEach((block) => block.classList.add("lc-reveal"));
+            observer.disconnect();
+          }
+        },
+        { threshold: 0.15 }
+      );
+
+      observer.observe(grid);
+    } else {
+      // Мобиль: каждая карточка индивидуально, стаггер через CSS delay
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("lc-reveal");
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.12 }
+      );
+
+      blocks.forEach((block) => observer.observe(block));
+    }
+  }
+
   document.addEventListener("DOMContentLoaded", () => {
     initStaticForms();
     hardenExternalLinks();
     improveImages();
     initReducedMotion();
     initHeaderGlassOnScroll();
+    initGalleryReveal();
   });
 })();

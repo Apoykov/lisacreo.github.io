@@ -2343,7 +2343,7 @@ p {
 
 .bg.marquee-bg-three {
   background-image: radial-gradient(circle farthest-corner at 50% 50%, var(--primary-color), var(--primary-color));
-  filter: blur(80px);
+  filter: blur(40px);
   height: 150px;
   top: calc(50% - 75px);
   left: calc(50% - 800px);
@@ -3321,6 +3321,14 @@ p {
   grid-column-gap: 30px;
   grid-row-gap: 30px;
   grid-template-rows: auto;
+}
+
+/* Desktop: minmax(0) + start align — overrides .w-layout-grid 1fr/stretch for this section */
+@media screen and (min-width: 992px) {
+  .contact-section .contact-grid {
+    align-items: start;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
 }
 
 .contact-form-block {
@@ -4409,10 +4417,6 @@ p {
     padding-bottom: 120px;
   }
 
-  .gallery-grid {
-    grid-template-columns: 1fr 1fr;
-  }
-
   .section-btn-box {
     text-align: left;
   }
@@ -4815,10 +4819,6 @@ p {
     width: 150px;
   }
 
-  .gallery-grid {
-    grid-template-columns: 1fr 1fr;
-  }
-
   .section-title-box {
     margin-bottom: 50px;
   }
@@ -5009,8 +5009,8 @@ p {
   }
 
   .header-main-box {
-    padding-top: 12px;
-    padding-bottom: 12px;
+    padding-top: 15px;
+    padding-bottom: 15px;
   }
 
   .header-logo-text {
@@ -5025,8 +5025,9 @@ p {
     margin-bottom: 30px;
   }
 
+  /* Кнопка в шапке видна на мобиле — размеры задаёт production.css (как 768–991) */
   .theme-button.light.header-btn {
-    display: none;
+    display: inline-flex;
   }
 
   .banner-list-box {
@@ -5069,10 +5070,6 @@ p {
   .gallery-section {
     padding-top: 100px;
     padding-bottom: 100px;
-  }
-
-  .gallery-grid {
-    grid-template-columns: 1fr;
   }
 
   .section-title-two {
@@ -5283,13 +5280,14 @@ p {
   }
 
   .mobile-menu-open-btn {
-    border-radius: 5px;
-    width: 35px;
-    height: 35px;
+    border-radius: 7px;
+    width: 54px;
+    height: 54px;
   }
 
-  .header-menu-icon {
-    width: 20px;
+  .mobile-menu-open-btn .header-menu-icon {
+    width: 21px;
+    height: 21px;
   }
 
   .sticky-info-box {
