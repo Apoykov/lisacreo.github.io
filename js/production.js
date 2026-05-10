@@ -1,4 +1,70 @@
 (function () {
+  const CONTACT_SECTION_ID = "Contact-Section";
+
+  /** Same logical page as root index — avoids missing clicks when URL is `/` vs `/index.html`. */
+  function normalizePathForIndexCompare(pathname) {
+    const p = (pathname || "/").replace(/\/$/, "") || "/";
+    if (p === "/" || /\/index\.html$/i.test(p)) return "__root_index__";
+    return p.toLowerCase();
+  }
+
+  function isSamePageContactSectionLink(anchor) {
+    if (!anchor || anchor.target === "_blank") return false;
+    const hrefAttr = anchor.getAttribute("href");
+    if (!hrefAttr || !hrefAttr.trim()) return false;
+    let dest;
+    try {
+      dest = new URL(anchor.href, window.location.href);
+    } catch {
+      return false;
+    }
+    if (dest.hash.replace(/^#/, "") !== CONTACT_SECTION_ID) return false;
+    const here = new URL(window.location.href);
+    return normalizePathForIndexCompare(dest.pathname) === normalizePathForIndexCompare(here.pathname);
+  }
+
+  function scrollToContactSection() {
+    const el = document.getElementById(CONTACT_SECTION_ID);
+    if (!el) return;
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    el.scrollIntoView({
+      behavior: reduce ? "auto" : "smooth",
+      block: "start",
+    });
+  }
+
+  /**
+   * Плавный скролл к футеру #Contact-Section (фиксированный хедер — через scroll-margin-top в CSS).
+   * Capture: раньше Webflow / дефолтного перехода по якорю, без Lenis (vendor — заглушка).
+   */
+  function initContactSectionAnchorScroll() {
+    document.addEventListener(
+      "click",
+      (event) => {
+        const link = event.target.closest("a");
+        if (!link || !isSamePageContactSectionLink(link)) return;
+        event.preventDefault();
+        scrollToContactSection();
+        try {
+          history.pushState(null, "", "#" + CONTACT_SECTION_ID);
+        } catch {
+          /* ignore */
+        }
+      },
+      true,
+    );
+
+    const runIfHash = () => {
+      if (window.location.hash.replace(/^#/, "") !== CONTACT_SECTION_ID) return;
+      if (!document.getElementById(CONTACT_SECTION_ID)) return;
+      requestAnimationFrame(() => {
+        requestAnimationFrame(scrollToContactSection);
+      });
+    };
+
+    window.addEventListener("load", runIfHash);
+  }
+
   const contactEmail = "hello@lisacreo.com";
 
   function initStaticForms() {
@@ -204,12 +270,117 @@
     }
   }
 
+  /**
+   * Scroll-reveal для карточек услуг на планшете 768–991px (только index / #Service-Section).
+   *
+   * IX a-21 задаёт TRANSFORM_MOVE ±120% по X на .service-block — перебиваем CSS !important
+   * и используем ту же хореографию, что Gallery на планшете: opacity + translateY(40px).
+   * На планшете видимы только .one/.two (.three «Креативы» скрыта CSS): .lc-reveal — у них же.
+   *
+   * ≥992 и ≤767 не трогаем — десктоп остаётся на Webflow IX, мобила — прежняя вёрстка.
+   */
+  function initServiceRevealTablet() {
+    const isTablet = window.matchMedia(
+      "(min-width: 768px) and (max-width: 991px)"
+    ).matches;
+    if (!isTablet) return;
+
+    const blocks = document.querySelectorAll(
+      "#Service-Section .service-grid > .service-block:not(.three)"
+    );
+    if (!blocks.length) return;
+
+    const grid = document.querySelector("#Service-Section .service-grid");
+    if (!grid) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          blocks.forEach((block) => block.classList.add("lc-reveal"));
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.15 }
+    );
+
+    observer.observe(grid);
+  }
+
+  /**
+   * Scroll-reveal для карточек услуг на мобиле ≤767px.
+   *
+   * Как Gallery mobile: threshold 0.12, стаггер 110ms между карточками.
+   * В отличие от Gallery (per-card observer), наблюдаем .service-grid и по
+   * входу во вьюпорт вешаем .lc-reveal на каждый .service-block с задержкой
+   * по индексу — последовательное появление без горизонтального IX.
+   *
+   * При смене ширины (например поворот) — пересоздаём observer.
+   */
+  function initServiceRevealMobile() {
+    const mq = window.matchMedia("(max-width: 767px)");
+    let observer = null;
+    const timeouts = [];
+
+    const cleanup = () => {
+      timeouts.forEach((id) => window.clearTimeout(id));
+      timeouts.length = 0;
+      if (observer) {
+        observer.disconnect();
+        observer = null;
+      }
+    };
+
+    const setup = () => {
+      cleanup();
+      if (!mq.matches) return;
+
+      const grid = document.querySelector("#Service-Section .service-grid");
+      const blocks = document.querySelectorAll(
+        "#Service-Section .service-grid > .service-block"
+      );
+      if (!grid || !blocks.length) return;
+
+      let triggered = false;
+      const staggerMs = 110;
+
+      observer = new IntersectionObserver(
+        (entries) => {
+          if (!entries[0]?.isIntersecting || triggered) return;
+          triggered = true;
+          if (observer) {
+            observer.disconnect();
+            observer = null;
+          }
+          blocks.forEach((block, i) => {
+            const id = window.setTimeout(() => {
+              block.classList.add("lc-reveal");
+            }, i * staggerMs);
+            timeouts.push(id);
+          });
+        },
+        { threshold: 0.12 }
+      );
+
+      observer.observe(grid);
+    };
+
+    setup();
+    if (typeof mq.addEventListener === "function") {
+      mq.addEventListener("change", setup);
+    } else if (typeof mq.addListener === "function") {
+      mq.addListener(setup);
+    }
+  }
+
   document.addEventListener("DOMContentLoaded", () => {
+    initContactSectionAnchorScroll();
     initStaticForms();
     hardenExternalLinks();
     improveImages();
     initReducedMotion();
     initHeaderGlassOnScroll();
     initGalleryReveal();
+    initServiceRevealTablet();
+    initServiceRevealMobile();
   });
 })();
