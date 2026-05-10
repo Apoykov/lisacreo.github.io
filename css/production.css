@@ -224,62 +224,36 @@ img {
   color: rgba(255, 255, 255, 0.86);
 }
 
-@media (max-width: 767px) {
-  #Service-Section .service-section-intro {
-    display: block !important;
-  }
-}
-
-@media (min-width: 768px) {
-  #Service-Section .service-section-intro {
+/* ≤991: eyebrow, .service-section-intro, aside + «Обсудить проект» stay in flow (tablet / mobile). */
+/* ≥992: Figma desktop service frames — headline + grid only; no pink «Услуги», no intro line, no header CTA column. */
+@media (min-width: 992px) {
+  #Service-Section.service-section .service-section-eyebrow,
+  #Service-Section .service-section-intro,
+  #Service-Section.service-section > .service-sectitle-wrap.sectitle-outer-box > .service-section-heading-aside {
     display: none !important;
   }
-}
 
-@media (max-width: 1279px) {
-  #Service-Section.service-section > .service-sectitle-wrap.sectitle-outer-box > .service-section-heading-aside,
-  #Service-Section.service-section .service-section-eyebrow {
-    display: none !important;
+  #Service-Section.service-section > .service-sectitle-wrap.sectitle-outer-box {
+    justify-content: flex-start !important;
+    column-gap: 0 !important;
+    row-gap: 0 !important;
   }
 }
 
-@media (min-width: 1280px) {
+@media (max-width: 991px) {
   #Service-Section.service-section .service-section-eyebrow {
-    display: block !important;
+    margin-bottom: 0 !important;
+    font-size: 30px !important;
+    line-height: 42px !important;
+    font-weight: 500 !important;
+    color: var(--lc-accent) !important;
   }
 
   #Service-Section.service-section > .service-sectitle-wrap.sectitle-outer-box > .service-section-heading-aside {
     display: flex !important;
     flex-direction: column;
-  }
-
-  #Service-Section.service-section > .service-sectitle-wrap.sectitle-outer-box {
-    display: flex !important;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 0 !important;
-    column-gap: 60px;
-    row-gap: 40px;
-    width: 100%;
-    max-width: none;
-    padding-left: 0;
-    padding-right: 0;
-  }
-
-  #Service-Section.service-section > .service-sectitle-wrap.sectitle-outer-box .section-title-box.mb-zero {
-    flex: 1 1 auto;
-    min-width: 0;
-    gap: 12px;
-  }
-
-  #Service-Section.service-section .service-section-heading-aside {
-    flex: 0 0 auto;
-    max-width: min(470px, 34vw);
     align-items: flex-start !important;
     gap: 32px;
-    width: auto;
-    min-width: 300px;
   }
 
   #Service-Section.service-section .service-section-aside-copy.section-title-two {
@@ -294,14 +268,6 @@ img {
   #Service-Section.service-section .service-section-aside-cta.section-btn-box {
     margin-top: 0 !important;
     text-align: left !important;
-  }
-
-  #Service-Section.service-section .service-section-eyebrow {
-    margin-bottom: 0 !important;
-    font-size: 30px !important;
-    line-height: 42px !important;
-    font-weight: 500 !important;
-    color: var(--lc-accent) !important;
   }
 }
 
