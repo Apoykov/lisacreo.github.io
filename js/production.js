@@ -280,6 +280,8 @@
    * ≥992 и ≤767 не трогаем — десктоп остаётся на Webflow IX, мобила — прежняя вёрстка.
    */
   function initServiceRevealTablet() {
+    if (!document.querySelector("#Service-Section")) return;
+
     const isTablet = window.matchMedia(
       "(min-width: 768px) and (max-width: 991px)"
     ).matches;
@@ -317,6 +319,8 @@
    * При смене ширины (например поворот) — пересоздаём observer.
    */
   function initServiceRevealMobile() {
+    if (!document.querySelector("#Service-Section")) return;
+
     const mq = window.matchMedia("(max-width: 767px)");
     let observer = null;
     const timeouts = [];

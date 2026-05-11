@@ -2733,11 +2733,13 @@ img {
     gap: 16px;
   }
 
-  /* Header fixed — даём то же боковое поле */
+  /* Header: ровно 16px от края экрана (без суммирования с width: min(100% - 32px) у .container) */
   .main-header .w-layout-blockcontainer.container.w-container {
     max-width: 100% !important;
-    padding-left: 32px !important;
-    padding-right: 32px !important;
+    width: 100% !important;
+    box-sizing: border-box;
+    padding-left: 16px !important;
+    padding-right: 16px !important;
   }
 
   /* === Project Section — Figma 261:2516 (768px tablet) ===
@@ -3194,7 +3196,7 @@ img {
 /* --------------------------------------------------------------------------
    768–991px — Figma 261:3179 (768px frame): планшет
    Переопределяет размеры из ≤991px блока выше.
-   Бургер Figma 798:345 (56×56, диск 46), кнопка CTA 56px, py 15px, padding-sides 32px.
+   Бургер Figma 798:345 (56×56, диск 46), кнопка CTA 56px, py 15px; горизонтальный gutter — см. ≤991px.
    -------------------------------------------------------------------------- */
 @media (min-width: 768px) and (max-width: 991px) {
   /* Вертикальные отступы (768px Figma: py=15px, container h=96px) */
@@ -3410,11 +3412,13 @@ img {
 
 /* ≤767px — мобильный / граница планшета */
 @media (max-width: 767px) {
-  /* Header: те же боковые поля и размеры, что 768–991px (Figma 768 frame) */
+  /* Header: 16px от края экрана (как ≤991px) */
   .main-header .w-layout-blockcontainer.container.w-container {
     max-width: 100% !important;
-    padding-left: 32px !important;
-    padding-right: 32px !important;
+    width: 100% !important;
+    box-sizing: border-box;
+    padding-left: 16px !important;
+    padding-right: 16px !important;
   }
 
   .main-header .header-main-box {
@@ -3830,9 +3834,11 @@ img {
     width: min(100% - 24px, 100%);
   }
 
-  /* Header — компактный отступ, тот же что у секций */
+  /* Header — 16px от края (перебивает .container width: min(100% - 24px)) */
   .main-header .w-layout-blockcontainer.container.w-container {
     max-width: 100% !important;
+    width: 100% !important;
+    box-sizing: border-box;
     padding-left: 16px !important;
     padding-right: 16px !important;
   }
