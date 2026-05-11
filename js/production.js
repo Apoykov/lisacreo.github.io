@@ -376,6 +376,106 @@
     }
   }
 
+  /**
+   * Scroll-play для project-video в #Project-Section.
+   *
+   * IO (threshold 0.5) запускает видео при ≥50 % видимости и ставит на паузу
+   * при уходе. При первом intersect пытаемся воспроизвести с unmute; если
+   * браузер блокирует (нет user-gesture), фолбэк — muted + оверлей
+   * «Нажмите для звука». Одноразовый click/touchstart на document разблокирует
+   * звук. prefers-reduced-motion — не автоплеим.
+   */
+  function initProjectVideoScrollPlay() {
+    var video = document.querySelector(
+      "#Project-Section .project-video"
+    );
+    if (!video) return;
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      video.pause();
+      return;
+    }
+
+    var wrapper = video.closest(".project-image-box") || video.parentElement;
+    var audioUnlocked = false;
+    var overlayShown = false;
+
+    function createOverlay() {
+      if (overlayShown) return;
+      overlayShown = true;
+
+      var overlay = document.createElement("button");
+      overlay.className = "lc-video-sound-overlay";
+      overlay.setAttribute("aria-label", "Включить звук");
+      overlay.textContent = "\uD83D\uDD0A Нажмите для звука";
+
+      overlay.addEventListener("click", function (e) {
+        e.stopPropagation();
+        video.muted = false;
+        audioUnlocked = true;
+        overlay.remove();
+        overlayShown = false;
+      });
+
+      wrapper.style.position = wrapper.style.position || "relative";
+      wrapper.appendChild(overlay);
+    }
+
+    function removeOverlay() {
+      var el = wrapper.querySelector(".lc-video-sound-overlay");
+      if (el) {
+        el.remove();
+        overlayShown = false;
+      }
+    }
+
+    function tryPlayWithSound() {
+      video.muted = false;
+      var promise = video.play();
+      if (promise && typeof promise.catch === "function") {
+        promise.catch(function () {
+          video.muted = true;
+          video.play();
+          if (!audioUnlocked) createOverlay();
+        });
+      }
+    }
+
+    function onDocumentInteraction() {
+      if (audioUnlocked) return;
+      audioUnlocked = true;
+      if (!video.paused) {
+        video.muted = false;
+      }
+      removeOverlay();
+      document.removeEventListener("click", onDocumentInteraction, true);
+      document.removeEventListener("touchstart", onDocumentInteraction, true);
+    }
+
+    document.addEventListener("click", onDocumentInteraction, true);
+    document.addEventListener("touchstart", onDocumentInteraction, true);
+
+    var observer = new IntersectionObserver(
+      function (entries) {
+        var entry = entries[0];
+        if (entry.isIntersecting) {
+          if (audioUnlocked) {
+            video.muted = false;
+            video.play();
+          } else {
+            tryPlayWithSound();
+          }
+        } else {
+          video.pause();
+          removeOverlay();
+        }
+      },
+      { threshold: 0.5 }
+    );
+
+    observer.observe(wrapper);
+  }
+
   document.addEventListener("DOMContentLoaded", () => {
     initContactSectionAnchorScroll();
     initStaticForms();
@@ -386,5 +486,6 @@
     initGalleryReveal();
     initServiceRevealTablet();
     initServiceRevealMobile();
+    initProjectVideoScrollPlay();
   });
 })();

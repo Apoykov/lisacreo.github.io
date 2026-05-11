@@ -71,6 +71,9 @@ img {
  * (992 / 768 / 390 …), that offset goes negative: the layer moves off the left,
  * but filter: blur(40px) still bleeds into the visible track — a dark/pink band.
  * The radial gradient is already centered at 50% 50%; anchor the layer to the box.
+ *
+ * Glow height: mobile 59px (Figma); tablet + desktop 150px (main.css / wide frames).
+ * All breakpoint rules for this selector live here — avoid duplicating in large @media blocks below.
  */
 #Marquee-Section .marquee-box {
   overflow: hidden;
@@ -80,6 +83,34 @@ img {
   left: 0 !important;
   width: 100% !important;
   box-sizing: border-box;
+}
+
+@media (max-width: 767px) {
+  /* Pink pill — Figma ~340×59, blur ~32.5px; beats main.css height: 150px */
+  #Marquee-Section .bg.marquee-bg-three {
+    height: 59px !important;
+    top: calc(50% - 29.5px) !important;
+    filter: blur(32.514px) !important;
+    -webkit-filter: blur(32.514px) !important;
+    background-image: none !important;
+    background-color: var(--lc-pink) !important;
+    border-radius: 9999px !important;
+    opacity: 1 !important;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  #Marquee-Section .bg.marquee-bg-three {
+    height: 100px !important;
+    top: calc(50% - 50px) !important;
+  }
+}
+
+@media (min-width: 992px) {
+  #Marquee-Section .bg.marquee-bg-three {
+    height: 150px !important;
+    top: calc(50% - 75px) !important;
+  }
 }
 
 /* --------------------------------------------------------------------------
@@ -212,6 +243,33 @@ img {
 #Project-Section .w-dyn-list .project-image-box {
   aspect-ratio: 16 / 9 !important;
   height: auto !important;
+}
+
+/* Секционный project-block с video.project-video: Figma div.project-image-box
+   get_metadata 261:2563 = 704×561.54 (tablet), 261:3350 = 358×323 (phone).
+   Перекрываем 16:9 только <992 — десктоп без изменений. */
+@media (min-width: 768px) and (max-width: 991px) {
+  #Project-Section .container.w-container > .w-dyn-list:not(.project-collection) .project-image-box,
+  #Project-Section .project-image-box:has(.project-video) {
+    aspect-ratio: 704 / 561.5399780273438 !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    border-radius: 30px !important;
+    overflow: hidden !important;
+  }
+}
+
+@media (max-width: 767px) {
+  #Project-Section .container.w-container > .w-dyn-list:not(.project-collection) .project-image-box,
+  #Project-Section .project-image-box:has(.project-video) {
+    aspect-ratio: 358 / 323 !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    border-radius: 30px !important;
+    overflow: hidden !important;
+  }
 }
 
 /* Dot-иконка соцсетей (font-size:0 скрывает символ, ::before рисует кружок) */
@@ -3296,6 +3354,7 @@ img {
     text-align: left;
     margin: 0 !important;
     padding: 0 !important;
+    padding-bottom: 16px !important;
     letter-spacing: -1.2px !important;
     color: #fff !important;
     font-weight: 600 !important;
@@ -3345,6 +3404,25 @@ img {
     width: 200px !important;
     height: auto !important;
     aspect-ratio: 280 / 400;
+  }
+
+  /* +16px под h2 перед desc; переопределяет padding:0 из ≤991 на Gallery / Project */
+  #Gallery-Section .project-section-title,
+  #Gallery-Section #Gallery-Section-Title,
+  #Project-Section h2.project-section-title,
+  #Project-Section #Project-Section-Title {
+    padding-bottom: 16px !important;
+  }
+
+  /* Gallery — tablet title: fixed sizes; lh aligned with #Marquee-Section spans in this @media */
+  #Gallery-Section .project-section-title-hash {
+    font-size: 68px !important;
+    line-height: 76px !important;
+  }
+
+  #Gallery-Section .project-section-title-lead {
+    font-size: 56px !important;
+    line-height: 62px !important;
   }
 
   /* Service — 768–991: как Marquee (text-align в .sectitle) + Gallery (flex-start в .sectitle-outer-box).
@@ -3595,6 +3673,13 @@ img {
   #Project-Section .container.w-container {
     padding-left: 0 !important;
     padding-right: 0 !important;
+    padding-bottom: 20px !important;
+  }
+
+  /* Video row (.w-dyn-list without .project-collection): halve top gap
+     89.5px → 44.75px via negative margin (keeps sibling gaps unchanged) */
+  #Project-Section .container.w-container > .w-dyn-list:not(.project-collection) {
+    margin-top: -44.75px;
   }
 
   #Project-Section .project-block {
@@ -4075,7 +4160,7 @@ img {
     white-space: normal !important;
   }
 
-  /* Gallery cards: same fluid 3-up as ≤991px (see block above max-width 991); no 1-col jump here */
+  /* Gallery: 3-up только на 768–991px (см. @media min 768 max 991 ниже); здесь без скачка в 1 колонку до max-width 767 */
 
   .banner-list-box {
     column-gap: 20px !important;
@@ -4095,7 +4180,7 @@ img {
 }
 
 /* --------------------------------------------------------------------------
-   Gallery (#Gallery-Section) — fluid single row, three cards (≤991px)
+   Gallery (#Gallery-Section)
 
    main.css used to force .gallery-grid to 2 cols (≤991/767) and 1 col (≤479),
    which produced a 2+1 grid and uneven row heights / clipping inside
@@ -4105,11 +4190,11 @@ img {
    translate3d(±120%, …) on .gallery-block; flex + nowrap broke stable
    column widths and gutters vs. percentage motion.
 
-   Gap matches desktop 20px at the top of this band, scales down by vw with a
-   floor so cards never touch. Section overflow visible so horizontal IX is
-   not clipped.
-
-   Typography for the gallery heading still follows the Figma breakpoints above.
+   Figma (file 3VymViruWWKqV3sGgnJkxO): `get_design_context` on 261:2563 /
+   261:3350 returns `div.project-image-box` (tablet 704×561.54 r30; phone
+   358×323 r30), not `div.gallery-block`. Gallery row/card tokens below follow
+   `section.gallery-section` 261:2585 + grid 676:7245 / card 676:7246 (tablet)
+   and 261:3372 + card 673:7231 (phone). ≥992 / ≥1440 gallery rules unchanged.
    -------------------------------------------------------------------------- */
 @media screen and (max-width: 991px) {
   #Gallery-Section.gallery-section {
@@ -4124,15 +4209,17 @@ img {
     padding-right: 0 !important;
     box-sizing: border-box;
   }
+}
 
+/* Tablet 768–991: Figma 261:2585 row 676:7245 (gap 11px), card 676:7246 (r11, 227.33×358.81) */
+@media screen and (min-width: 768px) and (max-width: 991px) {
   #Gallery-Section .gallery-grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     grid-template-rows: auto;
     align-items: stretch;
     justify-items: stretch;
-    /* Figma 261:2585 (768px): gap 11px; масштабируется к 991px */
-    gap: clamp(8px, 1.4vw, 14px);
+    gap: 11px;
     overflow: visible;
     isolation: isolate;
     contain: layout;
@@ -4140,16 +4227,14 @@ img {
 
   #Gallery-Section .gallery-grid > .gallery-block {
     min-width: 0;
-    /* Figma 261:2585: карточка 227×358.81px ≈ 19:30 (портретная) */
-    aspect-ratio: 19 / 30;
-    /* Figma 261:2585: border-radius 11px (main.css даёт 20px) */
+    aspect-ratio: 227.33334 / 358.80624;
     border-radius: 11px;
     overflow: hidden;
     backface-visibility: hidden;
     /* Планшетный reveal: IX застрял в translate3d(±120%). Заменяем на
        собственное начальное состояние — все три карточки появятся
        одновременно через IntersectionObserver (JS добавит .lc-reveal).
-       ≤767px-блок ниже перекроет transform (56px) и ratio (4:7). */
+       ≤767px-блок ниже перекроет transform (56px) и ratio. */
     opacity: 0;
     transform: translateY(40px) !important;
     transition:
@@ -4158,7 +4243,6 @@ img {
     will-change: opacity, transform;
   }
 
-  /* Revealed state (JS добавляет .lc-reveal на планшете — все три сразу) */
   #Gallery-Section .gallery-grid > .gallery-block.lc-reveal {
     opacity: 1;
     transform: none !important;
@@ -4171,28 +4255,31 @@ img {
     height: 100%;
     object-fit: cover;
     object-position: center;
-    /* Сброс возможных IX-трансформов на самом изображении */
     transform: none !important;
     backface-visibility: hidden;
   }
 }
 
 /* ==========================================================================
-   Gallery — мобиль ≤767px: 1 колонка, портретные блоки (Figma 261:3372, 390px)
-   Блок стоит ПОСЛЕ ≤991px, чтобы перекрыть его 3-column grid и aspect-ratio 16/9.
-   IX-анимации (translate3d ±120%) отключены: карточки статичны, transform сброшен.
+   Gallery — мобиль ≤767px: 1 колонка (Figma 261:3372; карточка 673:7231)
+   Блок после shell ≤991; перекрывает только <768px.
    ========================================================================== */
 @media (max-width: 767px) {
   #Gallery-Section .gallery-grid {
+    display: grid;
     grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    align-items: stretch;
+    justify-items: stretch;
     gap: 20px;
+    overflow: visible;
+    isolation: isolate;
+    contain: layout;
   }
 
-  /* Портретный кроп: Figma 390px — блок 358×622px ≈ 4:7
-     Начальное состояние: скрыт и смещён вниз.
-     JS (IntersectionObserver) добавит .lc-reveal → анимация появления. */
+  /* Figma 261:3372: div.gallery-block 358×622.843994; вертикальный gap ряда 20px */
   #Gallery-Section .gallery-grid > .gallery-block {
-    aspect-ratio: 4 / 7;
+    aspect-ratio: 358 / 622.843994;
     border-radius: 20px;
     width: 100%;
     min-width: 0;
@@ -4219,13 +4306,17 @@ img {
     transition-delay: 220ms;
   }
 
-  /* Параллакс внутри карточки — сбрасываем */
-  #Gallery-Section .gallery-grid > .gallery-block .gallery-image {
+  #Gallery-Section .gallery-grid .gallery-image {
+    display: block;
     width: 100%;
     height: 100%;
     object-fit: cover;
     object-position: center;
     transform: none !important;
+    backface-visibility: hidden;
+  }
+
+  #Gallery-Section .gallery-grid > .gallery-block .gallery-image {
     will-change: auto !important;
   }
 }
@@ -4238,7 +4329,7 @@ img {
   }
 
   #Gallery-Section .gallery-grid > .gallery-block {
-    aspect-ratio: 4 / 7;
+    aspect-ratio: 358 / 622.843994;
     border-radius: 20px;
     width: 100%;
     opacity: 0;
@@ -4517,4 +4608,30 @@ body.page-brands .project-detail-line {
     transform: none !important;
     opacity: 1 !important;
   }
+}
+
+/* ── Project-video sound overlay ── */
+.lc-video-sound-overlay {
+  position: absolute;
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  padding: 0.5rem 1.25rem;
+  border: none;
+  border-radius: 2rem;
+  background: rgba(0, 0, 0, 0.65);
+  color: #fff;
+  font-family: inherit;
+  font-size: 0.875rem;
+  line-height: 1.4;
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  transition: opacity 0.25s ease;
+}
+
+.lc-video-sound-overlay:hover,
+.lc-video-sound-overlay:focus-visible {
+  background: rgba(0, 0, 0, 0.82);
 }
