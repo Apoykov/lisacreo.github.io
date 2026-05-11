@@ -5285,14 +5285,14 @@ p {
   }
 
   .mobile-menu-open-btn {
-    border-radius: 7px;
-    width: 54px;
-    height: 54px;
+    border-radius: 28px;
+    width: 56px;
+    height: 56px;
   }
 
   .mobile-menu-open-btn .header-menu-icon {
-    width: 21px;
-    height: 21px;
+    width: 22px;
+    height: 22px;
   }
 
   .sticky-info-box {
