@@ -1,4 +1,70 @@
 (function () {
+  const CONTACT_SECTION_ID = "Contact-Section";
+
+  /** Same logical page as root index — avoids missing clicks when URL is `/` vs `/index.html`. */
+  function normalizePathForIndexCompare(pathname) {
+    const p = (pathname || "/").replace(/\/$/, "") || "/";
+    if (p === "/" || /\/index\.html$/i.test(p)) return "__root_index__";
+    return p.toLowerCase();
+  }
+
+  function isSamePageContactSectionLink(anchor) {
+    if (!anchor || anchor.target === "_blank") return false;
+    const hrefAttr = anchor.getAttribute("href");
+    if (!hrefAttr || !hrefAttr.trim()) return false;
+    let dest;
+    try {
+      dest = new URL(anchor.href, window.location.href);
+    } catch {
+      return false;
+    }
+    if (dest.hash.replace(/^#/, "") !== CONTACT_SECTION_ID) return false;
+    const here = new URL(window.location.href);
+    return normalizePathForIndexCompare(dest.pathname) === normalizePathForIndexCompare(here.pathname);
+  }
+
+  function scrollToContactSection() {
+    const el = document.getElementById(CONTACT_SECTION_ID);
+    if (!el) return;
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    el.scrollIntoView({
+      behavior: reduce ? "auto" : "smooth",
+      block: "start",
+    });
+  }
+
+  /**
+   * Плавный скролл к футеру #Contact-Section (фиксированный хедер — через scroll-margin-top в CSS).
+   * Capture: раньше Webflow / дефолтного перехода по якорю, без Lenis (vendor — заглушка).
+   */
+  function initContactSectionAnchorScroll() {
+    document.addEventListener(
+      "click",
+      (event) => {
+        const link = event.target.closest("a");
+        if (!link || !isSamePageContactSectionLink(link)) return;
+        event.preventDefault();
+        scrollToContactSection();
+        try {
+          history.pushState(null, "", "#" + CONTACT_SECTION_ID);
+        } catch {
+          /* ignore */
+        }
+      },
+      true,
+    );
+
+    const runIfHash = () => {
+      if (window.location.hash.replace(/^#/, "") !== CONTACT_SECTION_ID) return;
+      if (!document.getElementById(CONTACT_SECTION_ID)) return;
+      requestAnimationFrame(() => {
+        requestAnimationFrame(scrollToContactSection);
+      });
+    };
+
+    window.addEventListener("load", runIfHash);
+  }
+
   const contactEmail = "hello@lisacreo.com";
 
   function initStaticForms() {
@@ -33,6 +99,16 @@
 
         window.location.href = `mailto:${contactEmail}?subject=${subject}&body=${body}`;
       });
+    });
+  }
+
+  function initMobileMenuEscClose() {
+    document.addEventListener("keydown", (e) => {
+      if (e.key !== "Escape") return;
+      const outer = document.querySelector(".mobile-menu-outer");
+      if (!outer || outer.style.display === "none" || !outer.offsetParent) return;
+      const closeBtn = outer.querySelector(".mobile-menu-close-btn");
+      if (closeBtn) closeBtn.click();
     });
   }
 
@@ -204,12 +280,235 @@
     }
   }
 
-  document.addEventListener("DOMContentLoaded", () => {
-    initStaticForms();
-    hardenExternalLinks();
-    improveImages();
-    initReducedMotion();
-    initHeaderGlassOnScroll();
-    initGalleryReveal();
-  });
+  /**
+   * Scroll-reveal для карточек услуг на планшете 768–991px (только index / #Service-Section).
+   *
+   * IX a-21 задаёт TRANSFORM_MOVE ±120% по X на .service-block — перебиваем CSS !important
+   * и используем ту же хореографию, что Gallery на планшете: opacity + translateY(40px).
+   * На планшете видимы только .one/.two (.three «Креативы» скрыта CSS): .lc-reveal — у них же.
+   *
+   * ≥992 и ≤767 не трогаем — десктоп остаётся на Webflow IX, мобила — прежняя вёрстка.
+   */
+  function initServiceRevealTablet() {
+    if (!document.querySelector("#Service-Section")) return;
+
+    const isTablet = window.matchMedia(
+      "(min-width: 768px) and (max-width: 991px)"
+    ).matches;
+    if (!isTablet) return;
+
+    const blocks = document.querySelectorAll(
+      "#Service-Section .service-grid > .service-block:not(.three)"
+    );
+    if (!blocks.length) return;
+
+    const grid = document.querySelector("#Service-Section .service-grid");
+    if (!grid) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          blocks.forEach((block) => block.classList.add("lc-reveal"));
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.15 }
+    );
+
+    observer.observe(grid);
+  }
+
+  /**
+   * Scroll-reveal для карточек услуг на мобиле ≤767px.
+   *
+   * Как Gallery mobile: threshold 0.12, стаггер 110ms между карточками.
+   * В отличие от Gallery (per-card observer), наблюдаем .service-grid и по
+   * входу во вьюпорт вешаем .lc-reveal на каждый .service-block с задержкой
+   * по индексу — последовательное появление без горизонтального IX.
+   *
+   * При смене ширины (например поворот) — пересоздаём observer.
+   */
+  function initServiceRevealMobile() {
+    if (!document.querySelector("#Service-Section")) return;
+
+    const mq = window.matchMedia("(max-width: 767px)");
+    let observer = null;
+    const timeouts = [];
+
+    const cleanup = () => {
+      timeouts.forEach((id) => window.clearTimeout(id));
+      timeouts.length = 0;
+      if (observer) {
+        observer.disconnect();
+        observer = null;
+      }
+    };
+
+    const setup = () => {
+      cleanup();
+      if (!mq.matches) return;
+
+      const grid = document.querySelector("#Service-Section .service-grid");
+      const blocks = document.querySelectorAll(
+        "#Service-Section .service-grid > .service-block"
+      );
+      if (!grid || !blocks.length) return;
+
+      let triggered = false;
+      const staggerMs = 110;
+
+      observer = new IntersectionObserver(
+        (entries) => {
+          if (!entries[0]?.isIntersecting || triggered) return;
+          triggered = true;
+          if (observer) {
+            observer.disconnect();
+            observer = null;
+          }
+          blocks.forEach((block, i) => {
+            const id = window.setTimeout(() => {
+              block.classList.add("lc-reveal");
+            }, i * staggerMs);
+            timeouts.push(id);
+          });
+        },
+        { threshold: 0.12 }
+      );
+
+      observer.observe(grid);
+    };
+
+    setup();
+    if (typeof mq.addEventListener === "function") {
+      mq.addEventListener("change", setup);
+    } else if (typeof mq.addListener === "function") {
+      mq.addListener(setup);
+    }
+  }
+
+  /**
+   * Scroll-play для project-video в #Project-Section.
+   *
+   * IO (threshold 0.5) запускает видео при ≥50 % видимости и ставит на паузу
+   * при уходе. При первом intersect пытаемся воспроизвести с unmute; если
+   * браузер блокирует (нет user-gesture), фолбэк — muted + оверлей
+   * «Нажмите для звука». Одноразовый click/touchstart на document разблокирует
+   * звук. prefers-reduced-motion — не автоплеим.
+   */
+  function initProjectVideoScrollPlay() {
+    var video = document.querySelector(
+      "#Project-Section .project-video"
+    );
+    if (!video) return;
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      video.pause();
+      return;
+    }
+
+    var wrapper = video.closest(".project-image-box") || video.parentElement;
+    var audioUnlocked = false;
+    var overlayShown = false;
+
+    function createOverlay() {
+      if (overlayShown) return;
+      overlayShown = true;
+
+      var overlay = document.createElement("button");
+      overlay.className = "lc-video-sound-overlay";
+      overlay.setAttribute("aria-label", "Включить звук");
+      overlay.textContent = "\uD83D\uDD0A Нажмите для звука";
+
+      overlay.addEventListener("click", function (e) {
+        e.stopPropagation();
+        video.muted = false;
+        audioUnlocked = true;
+        overlay.remove();
+        overlayShown = false;
+      });
+
+      wrapper.style.position = wrapper.style.position || "relative";
+      wrapper.appendChild(overlay);
+    }
+
+    function removeOverlay() {
+      var el = wrapper.querySelector(".lc-video-sound-overlay");
+      if (el) {
+        el.remove();
+        overlayShown = false;
+      }
+    }
+
+    function tryPlayWithSound() {
+      video.muted = false;
+      var promise = video.play();
+      if (promise && typeof promise.catch === "function") {
+        promise.catch(function () {
+          video.muted = true;
+          video.play();
+          if (!audioUnlocked) createOverlay();
+        });
+      }
+    }
+
+    function onDocumentInteraction() {
+      if (audioUnlocked) return;
+      audioUnlocked = true;
+      if (!video.paused) {
+        video.muted = false;
+      }
+      removeOverlay();
+      document.removeEventListener("click", onDocumentInteraction, true);
+      document.removeEventListener("touchstart", onDocumentInteraction, true);
+    }
+
+    document.addEventListener("click", onDocumentInteraction, true);
+    document.addEventListener("touchstart", onDocumentInteraction, true);
+
+    var observer = new IntersectionObserver(
+      function (entries) {
+        var entry = entries[0];
+        if (entry.isIntersecting) {
+          if (audioUnlocked) {
+            video.muted = false;
+            video.play();
+          } else {
+            tryPlayWithSound();
+          }
+        } else {
+          video.pause();
+          removeOverlay();
+        }
+      },
+      { threshold: 0.5 }
+    );
+
+    observer.observe(wrapper);
+  }
+
+  function safeCall(name, fn) {
+    try { fn(); }
+    catch (err) { console.error("[LisaCreo] " + name + " failed:", err); }
+  }
+
+  function boot() {
+    safeCall("initContactSectionAnchorScroll", initContactSectionAnchorScroll);
+    safeCall("initStaticForms", initStaticForms);
+    safeCall("initMobileMenuEscClose", initMobileMenuEscClose);
+    safeCall("hardenExternalLinks", hardenExternalLinks);
+    safeCall("improveImages", improveImages);
+    safeCall("initReducedMotion", initReducedMotion);
+    safeCall("initHeaderGlassOnScroll", initHeaderGlassOnScroll);
+    safeCall("initGalleryReveal", initGalleryReveal);
+    safeCall("initServiceRevealTablet", initServiceRevealTablet);
+    safeCall("initServiceRevealMobile", initServiceRevealMobile);
+    safeCall("initProjectVideoScrollPlay", initProjectVideoScrollPlay);
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", boot);
+  } else {
+    boot();
+  }
+
 })();

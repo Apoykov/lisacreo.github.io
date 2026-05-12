@@ -1,0 +1,17 @@
+node_modules/
+assets/optimized/
+# Heavy local source videos
+assets/video/*.mp4
+assets/video/**/*.mp4
+
+# macOS
+.DS_Store
+
+# Logs
+*.log
+npm-debug.log*
+
+# Temp/cache
+.cache/
+tmp/
+temp/

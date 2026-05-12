@@ -20,12 +20,25 @@
    -------------------------------------------------------------------------- */
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
+/* Якорь «Контакты» — отступ под фиксированный .main-header (scrollIntoView / hash) */
+#Contact-Section {
+  scroll-margin-top: 96px;
+}
+
+@media (max-width: 991px) {
+  #Contact-Section {
+    scroll-margin-top: 80px;
+  }
 }
 
 body {
   font-family: Raleway, sans-serif;
   text-rendering: geometricPrecision;
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
 }
 
 body :where(h1, h2, h3, h4, h5, h6, p, a, span, div, button, input, textarea, select, label) {
@@ -43,7 +56,61 @@ img {
 }
 
 .page-wrapper {
-  overflow: clip;
+  /* Webflow IX uses horizontal TRANSLATE ±120% (Service a-21, Gallery, …).
+     clip/hidden on this ancestor flattens the scroll tween (cards appear “stuck”).
+     Prefer site-wide horizontal discipline via inner sections (e.g. html/body) if needed. */
+  overflow: visible;
+}
+
+/* --------------------------------------------------------------------------
+   2b. Marquee (#Marquee-Section) — radial glow under the image row
+   -------------------------------------------------------------------------- */
+/*
+ * main.css (Webflow) uses left: calc(50% - 800px) on .bg.marquee-bg-three so the
+ * glow matches a 1600px artboard. When #Marquee-Section .marquee-box is narrower
+ * (992 / 768 / 390 …), that offset goes negative: the layer moves off the left,
+ * but filter: blur(40px) still bleeds into the visible track — a dark/pink band.
+ * The radial gradient is already centered at 50% 50%; anchor the layer to the box.
+ *
+ * Glow height: mobile 59px (Figma); tablet + desktop 150px (main.css / wide frames).
+ * All breakpoint rules for this selector live here — avoid duplicating in large @media blocks below.
+ */
+#Marquee-Section .marquee-box {
+  overflow: hidden;
+}
+
+#Marquee-Section .bg.marquee-bg-three {
+  left: 0 !important;
+  width: 100% !important;
+  box-sizing: border-box;
+}
+
+@media (max-width: 767px) {
+  /* Pink pill — Figma ~340×59, blur ~32.5px; beats main.css height: 150px */
+  #Marquee-Section .bg.marquee-bg-three {
+    height: 59px !important;
+    top: calc(50% - 29.5px) !important;
+    filter: blur(32.514px) !important;
+    -webkit-filter: blur(32.514px) !important;
+    background-image: none !important;
+    background-color: var(--lc-pink) !important;
+    border-radius: 9999px !important;
+    opacity: 1 !important;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  #Marquee-Section .bg.marquee-bg-three {
+    height: 100px !important;
+    top: calc(50% - 50px) !important;
+  }
+}
+
+@media (min-width: 992px) {
+  #Marquee-Section .bg.marquee-bg-three {
+    height: 150px !important;
+    top: calc(50% - 75px) !important;
+  }
 }
 
 /* --------------------------------------------------------------------------
@@ -178,6 +245,33 @@ img {
   height: auto !important;
 }
 
+/* Секционный project-block с video.project-video: Figma div.project-image-box
+   get_metadata 261:2563 = 704×561.54 (tablet), 261:3350 = 358×323 (phone).
+   Перекрываем 16:9 только <992 — десктоп без изменений. */
+@media (min-width: 768px) and (max-width: 991px) {
+  #Project-Section .container.w-container > .w-dyn-list:not(.project-collection) .project-image-box,
+  #Project-Section .project-image-box:has(.project-video) {
+    aspect-ratio: 704 / 561.5399780273438 !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    border-radius: 30px !important;
+    overflow: hidden !important;
+  }
+}
+
+@media (max-width: 767px) {
+  #Project-Section .container.w-container > .w-dyn-list:not(.project-collection) .project-image-box,
+  #Project-Section .project-image-box:has(.project-video) {
+    aspect-ratio: 358 / 323 !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    border-radius: 30px !important;
+    overflow: hidden !important;
+  }
+}
+
 /* Dot-иконка соцсетей (font-size:0 скрывает символ, ::before рисует кружок) */
 .social-icon {
   font-family: Arial, sans-serif !important;
@@ -207,6 +301,13 @@ img {
    -------------------------------------------------------------------------- */
 #Service-Section.service-section {
   box-sizing: border-box;
+  /* main.css .service-section uses overflow:hidden — clips IX a-21 horizontal slide (±120% X) */
+  overflow: visible !important;
+}
+
+/* Card uses overflow:hidden in main — clips 3D hover (a-32 rotateY on .service-icon-box) */
+#Service-Section.service-section .service-block {
+  overflow: visible !important;
 }
 
 #Service-Section.service-section > .service-sectitle-wrap.sectitle-outer-box {
@@ -214,94 +315,24 @@ img {
   margin-bottom: 0 !important;
 }
 
-#Service-Section .service-section-intro {
-  margin: 0;
-  padding: 0;
-  font-size: 20px;
-  line-height: 28px;
-  letter-spacing: -0.72px;
-  font-weight: 400;
-  color: rgba(255, 255, 255, 0.86);
-}
-
-@media (max-width: 767px) {
-  #Service-Section .service-section-intro {
-    display: block !important;
-  }
-}
-
-@media (min-width: 768px) {
-  #Service-Section .service-section-intro {
-    display: none !important;
-  }
-}
-
-@media (max-width: 1279px) {
-  #Service-Section.service-section > .service-sectitle-wrap.sectitle-outer-box > .service-section-heading-aside,
-  #Service-Section.service-section .service-section-eyebrow {
-    display: none !important;
-  }
-}
-
-@media (min-width: 1280px) {
-  #Service-Section.service-section .service-section-eyebrow {
-    display: block !important;
-  }
-
+/* ≤991: Figma 261:3771 (390) — headline + сетка; без «Услуги», без текста aside/CTA. Figma 261:2974 (768) — только headline + сетка. */
+/* ≥992: те же десктоп-фреймы — headline + grid; eyebrow, aside скрыты. */
+@media (min-width: 992px) {
+  #Service-Section.service-section .service-section-eyebrow,
   #Service-Section.service-section > .service-sectitle-wrap.sectitle-outer-box > .service-section-heading-aside {
-    display: flex !important;
-    flex-direction: column;
+    display: none !important;
   }
 
   #Service-Section.service-section > .service-sectitle-wrap.sectitle-outer-box {
-    display: flex !important;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 0 !important;
-    column-gap: 60px;
-    row-gap: 40px;
-    width: 100%;
-    max-width: none;
-    padding-left: 0;
-    padding-right: 0;
+    column-gap: 0 !important;
+    row-gap: 0 !important;
   }
+}
 
-  #Service-Section.service-section > .service-sectitle-wrap.sectitle-outer-box .section-title-box.mb-zero {
-    flex: 1 1 auto;
-    min-width: 0;
-    gap: 12px;
-  }
-
-  #Service-Section.service-section .service-section-heading-aside {
-    flex: 0 0 auto;
-    max-width: min(470px, 34vw);
-    align-items: flex-start !important;
-    gap: 32px;
-    width: auto;
-    min-width: 300px;
-  }
-
-  #Service-Section.service-section .service-section-aside-copy.section-title-two {
-    margin-top: 0 !important;
-    margin-bottom: 0 !important;
-    font-size: clamp(18px, 1.56vw, 22px) !important;
-    line-height: 1.35 !important;
-    font-weight: 400 !important;
-    color: rgba(255, 255, 255, 0.88) !important;
-  }
-
-  #Service-Section.service-section .service-section-aside-cta.section-btn-box {
-    margin-top: 0 !important;
-    text-align: left !important;
-  }
-
-  #Service-Section.service-section .service-section-eyebrow {
-    margin-bottom: 0 !important;
-    font-size: 30px !important;
-    line-height: 42px !important;
-    font-weight: 500 !important;
-    color: var(--lc-accent) !important;
+@media (max-width: 991px) {
+  #Service-Section.service-section .service-section-eyebrow,
+  #Service-Section.service-section > .service-sectitle-wrap.sectitle-outer-box > .service-section-heading-aside {
+    display: none !important;
   }
 }
 
@@ -333,7 +364,7 @@ img {
 
 #Service-Section.service-section .service-text {
   margin: 0 !important;
-  opacity: 0.8 !important;
+  /* never use opacity !important here — tram/IX cannot override it */
 }
 
 #Service-Section.service-section .service-section-header-cta.theme-button {
@@ -749,7 +780,7 @@ img {
   display: none !important;
 }
 
-/* Figma 557:5423 — чёрный круг с иконкой внутри белого скругления (размеры в @media ≤991) */
+/* Figma 798:345 — диск 46px + иконка 22px в белом 56×56, r=28px (@media ≤991) */
 .mobile-menu-open-disc {
   pointer-events: none;
   box-sizing: border-box;
@@ -1418,7 +1449,7 @@ img {
     grid-row-gap: 20px;
   }
 
-  /* ---------- Marquee (#Marquee-Section) — Figma 411:667 (1920w) ---------- */
+  /* ---------- Marquee (#Marquee-Section) — Figma 411:667 секция / 411:673 .marquee-box (1920w) ---------- */
   #Marquee-Section.marquee-section {
     padding-top: 150px;
     padding-bottom: 150px;
@@ -1507,6 +1538,11 @@ img {
     margin-right: auto;
     padding-left: 0;
     padding-right: 0;
+  }
+
+  /* Figma 411:673 .marquee-inner-box: абсолютные inset left −289.33px / right +289.33px при ширине полосы 1600px → сдвиг ряда влево на −18.083% ширины .marquee-box */
+  #Marquee-Section .marquee-inner-box {
+    margin-left: -18.083%;
   }
 
   #Marquee-Section.marquee-section .marquee-inner-box .marquee-image-box {
@@ -2092,6 +2128,21 @@ img {
 }
 
 /* --------------------------------------------------------------------------
+   ≥1440px — заголовки секций: +20px снизу под title-stack (скриншоты).
+   Ниже существующего padding-bottom нет (0 в правилах ≥1280 / title-stack gap на .section-title-box).
+   -------------------------------------------------------------------------- */
+@media (min-width: 1440px) {
+  #Project-Section h2.project-section-title,
+  #Project-Section #Project-Section-Title,
+  #Gallery-Section .project-section-title,
+  #Gallery-Section #Gallery-Section-Title,
+  #Marquee-Section .marquee-section-title,
+  #Marquee-Section #Marquee-Section-Title {
+    padding-bottom: 20px !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
    992–1279px — header/nav from 992px frame (e.g. 261:2391); Project/Gallery
    hero copy metrics from 1024 frame nodes 504:17–504:21, 261:1749
    nav 16px, py 15px, кнопка 48px/16px, иконка 40px, padding 60px
@@ -2599,7 +2650,7 @@ img {
     padding-right: 32px;
   }
 
-  /* Service — Figma 261:2974 (~768 tablet): title + 2-col wrap; ≥768 внутри ≤991 */
+  /* Service — Figma 261:2975 (~768 tablet grid); заголовок + 2 колонки в ≤991; деталь 768–991 см. блок ниже */
   #Service-Section.service-section {
     display: flex;
     flex-direction: column;
@@ -2645,6 +2696,36 @@ img {
   }
 
   #Service-Section.service-section .service-section-title-lead {
+    font-weight: 600 !important;
+    font-size: 56px !important;
+    line-height: 62px !important;
+    color: #fff !important;
+    letter-spacing: -1.2px !important;
+  }
+
+  /* Marquee — те же font-weight / letter-spacing, что Service, на всём ≤991 (в т.ч. мобила ≤767).
+     Иначе без min-width 768 вложенного блока заголовок остаётся на h2/main.css (700). */
+  #Marquee-Section .marquee-section-title,
+  #Marquee-Section #Marquee-Section-Title {
+    margin: 0 !important;
+    padding: 0 !important;
+    letter-spacing: -1.2px !important;
+    color: #fff !important;
+    font-weight: 600 !important;
+    white-space: normal !important;
+    max-width: 100% !important;
+  }
+
+  #Marquee-Section .marquee-section-title-hash {
+    font-weight: 400 !important;
+    font-size: 68px !important;
+    line-height: 76px !important;
+    color: #ff61a6 !important;
+    letter-spacing: -1.2px !important;
+    vertical-align: baseline;
+  }
+
+  #Marquee-Section .marquee-section-title-lead {
     font-weight: 600 !important;
     font-size: 56px !important;
     line-height: 62px !important;
@@ -2710,11 +2791,13 @@ img {
     gap: 16px;
   }
 
-  /* Header fixed — даём то же боковое поле */
+  /* Header: ровно 16px от края экрана (без суммирования с width: min(100% - 32px) у .container) */
   .main-header .w-layout-blockcontainer.container.w-container {
     max-width: 100% !important;
-    padding-left: 32px !important;
-    padding-right: 32px !important;
+    width: 100% !important;
+    box-sizing: border-box;
+    padding-left: 16px !important;
+    padding-right: 16px !important;
   }
 
   /* === Project Section — Figma 261:2516 (768px tablet) ===
@@ -2898,16 +2981,17 @@ img {
     padding: 0 14px;
   }
 
+  /* Gallery «# Видеопродакшн»: fluid type — one line @320px; ~56/68px by wide ≤991 */
   #Gallery-Section .project-section-title-hash {
-    font-size: 68px !important;
-    line-height: 76px !important;
+    font-size: clamp(20px, 6.05vw + 10px, 68px) !important;
+    line-height: 1.07 !important;
     color: #ff61a6 !important;
     letter-spacing: -1.2px !important;
   }
 
   #Gallery-Section .project-section-title-lead {
-    font-size: 56px !important;
-    line-height: 62px !important;
+    font-size: clamp(18px, 5.2vw + 8.5px, 56px) !important;
+    line-height: 1.07 !important;
     letter-spacing: -1.2px !important;
   }
 }
@@ -3058,7 +3142,20 @@ img {
     display: none !important;
   }
 
-  /* Показываем гамбургер */
+  /*
+   Полноэкранный контейнер мобильного меню в main.css: top/right + width:100%.
+   При translateX(-100%) у .mobile-menu / .mobile-menu-bg (особенно backdrop-filter)
+   WebKit иногда даёт полупрозрачную полоску по левому краю — фиксируем якорём inset
+   и отсекаем содержимое вне области.
+   */
+  .mobile-menu-outer {
+    inset: 0;
+    width: auto;
+    height: auto;
+    overflow: hidden;
+  }
+
+  /* Показываем гамбургер — Figma 798:345 */
   .mobile-menu-open-btn {
     display: flex !important;
     align-items: center !important;
@@ -3067,24 +3164,21 @@ img {
     cursor: pointer;
     box-sizing: border-box;
     overflow: clip;
-    /* Внешний белый блок — Figma 557:5423: 54×54 */
-    width: 54px !important;
-    height: 54px !important;
+    width: 56px !important;
+    height: 56px !important;
     padding: 0 !important;
     background-color: #fff !important;
-    border-radius: 7px !important;
+    border-radius: 28px !important;
   }
 
-  /* Чёрный круг — пропорция к прежнему 46/56 от внешнего 54 (~44px) */
   .mobile-menu-open-disc {
-    width: 44px !important;
-    height: 44px !important;
+    width: 46px !important;
+    height: 46px !important;
   }
 
-  /* Иконка гамбургера — белые линии (~21px при 54 outer) */
   .mobile-menu-open-btn .header-menu-icon {
-    width: 21px !important;
-    height: 21px !important;
+    width: 22px !important;
+    height: 22px !important;
     display: block;
     flex-shrink: 0;
   }
@@ -3160,7 +3254,7 @@ img {
 /* --------------------------------------------------------------------------
    768–991px — Figma 261:3179 (768px frame): планшет
    Переопределяет размеры из ≤991px блока выше.
-   Бургер 54px (557:5423), кнопка CTA 56px, py 15px, padding-sides 32px.
+   Бургер Figma 798:345 (56×56, диск 46), кнопка CTA 56px, py 15px; горизонтальный gutter — см. ≤991px.
    -------------------------------------------------------------------------- */
 @media (min-width: 768px) and (max-width: 991px) {
   /* Вертикальные отступы (768px Figma: py=15px, container h=96px) */
@@ -3169,23 +3263,22 @@ img {
     padding-bottom: 15px !important;
   }
 
-  /* Гамбургер: 54×54px, r=7px (Figma 557:5423) */
+  /* Гамбургер — Figma 798:345 */
   .mobile-menu-open-btn {
-    width: 54px !important;
-    height: 54px !important;
-    border-radius: 7px !important;
+    width: 56px !important;
+    height: 56px !important;
+    border-radius: 28px !important;
   }
 
   .mobile-menu-open-disc {
-    width: 44px !important;
-    height: 44px !important;
+    width: 46px !important;
+    height: 46px !important;
   }
 
-  /* Иконка гамбургера в кнопке меню — без brightness(0) */
   .mobile-menu-open-btn .header-menu-icon {
     filter: none !important;
-    width: 21px !important;
-    height: 21px !important;
+    width: 22px !important;
+    height: 22px !important;
   }
 
   /* Кнопка: h=56px, pl=60px, pr=35px, r=30px */
@@ -3224,11 +3317,12 @@ img {
     border-radius: 50% !important;
   }
 
-  /* Marquee — планшет 768–991 (фрейм «Визуалы» 768 в задаче = Gallery; ключ к сетке здесь px 32) */
+  /* Marquee — планшет 768–991 (фрейм «Визуалы» 768 в задаче = Gallery; ключ к сетке здесь px 32).
+     Заголовок + desc — как #Service-Section: flex-start на секции, колонка в .sectitle-outer-box, без лишнего inset у desc. */
   #Marquee-Section.marquee-section {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
     gap: 60px;
     padding-top: 120px;
     padding-bottom: 120px;
@@ -3237,6 +3331,9 @@ img {
   }
 
   #Marquee-Section > .marquee-sectitle-wrap.sectitle-outer-box {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
     margin-bottom: 0;
     width: 100%;
     max-width: 704px;
@@ -3247,33 +3344,51 @@ img {
 
   #Marquee-Section .section-title-box.mb-zero {
     gap: 8px;
+    text-align: left;
+    width: 100%;
   }
 
-  #Marquee-Section .marquee-section-title {
+  #Marquee-Section .marquee-section-title,
+  #Marquee-Section #Marquee-Section-Title {
+    display: block;
+    text-align: left;
     margin: 0 !important;
     padding: 0 !important;
-    letter-spacing: -1.2px;
+    padding-bottom: 16px !important;
+    letter-spacing: -1.2px !important;
+    color: #fff !important;
+    font-weight: 600 !important;
+    white-space: normal !important;
     max-width: 100%;
   }
 
   #Marquee-Section .marquee-section-title-hash {
+    margin: 0 !important;
+    font-weight: 400 !important;
     font-size: 68px !important;
     line-height: 76px !important;
     color: #ff61a6 !important;
+    letter-spacing: -1.2px !important;
+    vertical-align: baseline;
   }
 
   #Marquee-Section .marquee-section-title-lead {
+    margin: 0 !important;
+    font-weight: 600 !important;
     font-size: 56px !important;
     line-height: 62px !important;
+    color: #fff !important;
+    letter-spacing: -1.2px !important;
   }
 
   #Marquee-Section .marquee-section-desc {
+    text-align: left;
     font-size: 24px;
     line-height: 32px;
     letter-spacing: -0.72px;
     color: rgba(255, 255, 255, 0.86);
     max-width: 100%;
-    padding: 0 14px;
+    padding: 0;
     margin: 0;
     box-sizing: border-box;
   }
@@ -3290,15 +3405,98 @@ img {
     height: auto !important;
     aspect-ratio: 280 / 400;
   }
+
+  /* +16px под h2 перед desc; переопределяет padding:0 из ≤991 на Gallery / Project */
+  #Gallery-Section .project-section-title,
+  #Gallery-Section #Gallery-Section-Title,
+  #Project-Section h2.project-section-title,
+  #Project-Section #Project-Section-Title {
+    padding-bottom: 16px !important;
+  }
+
+  /* Gallery — tablet title: fixed sizes; lh aligned with #Marquee-Section spans in this @media */
+  #Gallery-Section .project-section-title-hash {
+    font-size: 68px !important;
+    line-height: 76px !important;
+  }
+
+  #Gallery-Section .project-section-title-lead {
+    font-size: 56px !important;
+    line-height: 62px !important;
+  }
+
+  /* Service — 768–991: как Marquee (text-align в .sectitle) + Gallery (flex-start в .sectitle-outer-box).
+     ≤991 задаёт align-items:center на секции — центрирует узкий title-wrap относительно полной ширины сетки. */
+  #Service-Section.service-section {
+    align-items: flex-start;
+  }
+
+  #Service-Section.service-section > .service-sectitle-wrap.sectitle-outer-box {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    padding-left: 0;
+    padding-right: 0;
+    margin-bottom: 0 !important;
+  }
+
+  #Service-Section.service-section .section-title-box.mb-zero {
+    text-align: left;
+    width: 100%;
+  }
+
+  #Service-Section.service-section .service-section-title,
+  #Service-Section #Service-Section-Title {
+    text-align: left;
+  }
+
+  #Service-Section.service-section .container.w-container {
+    align-self: stretch;
+    width: 100%;
+  }
+
+  /* ---------- Service — Figma 261:2975 (768 frame): 2×342 + gap 20 в полосе 704px ---------- */
+  #Service-Section.service-section .service-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    grid-column-gap: 20px !important;
+    grid-row-gap: 20px !important;
+    width: 100%;
+    overflow-x: clip;
+    isolation: isolate;
+  }
+
+  /* «Креативы»: скрыта на планшете; на ≤767 и ≥992 три карточки видимы в других @media */
+  #Service-Section .service-block.three {
+    display: none !important;
+  }
+
+  /* IX a-21 «Service Scroll»: ±120% X ломает планшет — как Gallery ≤991: fade + translateY, reveal через JS .lc-reveal */
+  #Service-Section.service-section .service-grid > .service-block {
+    opacity: 0;
+    transform: translateY(40px) !important;
+    transition:
+      opacity 900ms cubic-bezier(0.19, 1, 0.22, 1),
+      transform 900ms cubic-bezier(0.19, 1, 0.22, 1);
+    will-change: opacity, transform;
+  }
+
+  #Service-Section.service-section .service-grid > .service-block.lc-reveal {
+    opacity: 1;
+    transform: none !important;
+    will-change: auto;
+  }
 }
 
 /* ≤767px — мобильный / граница планшета */
 @media (max-width: 767px) {
-  /* Header: те же боковые поля и размеры, что 768–991px (Figma 768 frame) */
+  /* Header: 16px от края экрана (как ≤991px) */
   .main-header .w-layout-blockcontainer.container.w-container {
     max-width: 100% !important;
-    padding-left: 32px !important;
-    padding-right: 32px !important;
+    width: 100% !important;
+    box-sizing: border-box;
+    padding-left: 16px !important;
+    padding-right: 16px !important;
   }
 
   .main-header .header-main-box {
@@ -3307,20 +3505,20 @@ img {
   }
 
   .mobile-menu-open-btn {
-    width: 54px !important;
-    height: 54px !important;
-    border-radius: 7px !important;
+    width: 56px !important;
+    height: 56px !important;
+    border-radius: 28px !important;
   }
 
   .mobile-menu-open-disc {
-    width: 44px !important;
-    height: 44px !important;
+    width: 46px !important;
+    height: 46px !important;
   }
 
   .mobile-menu-open-btn .header-menu-icon {
     filter: none !important;
-    width: 21px !important;
-    height: 21px !important;
+    width: 22px !important;
+    height: 22px !important;
   }
 
   .header-btn.theme-button {
@@ -3376,7 +3574,7 @@ img {
     padding-right: 24px;
   }
 
-  /* Service — Figma 261:3771 (~390 mobile): столбец, px 16, gap headline↔cards 66 */
+  /* Service — Figma 261:3771 (~390 mobile): headline + intro + столбец карточек; px 16; gap headline↔cards 66 */
   #Service-Section.service-section {
     align-items: center;
     gap: 66px;
@@ -3391,7 +3589,18 @@ img {
   }
 
   #Service-Section.service-section .section-title-box.mb-zero {
-    gap: 16px;
+    /* Title↔intro spacing from .service-section-title padding-bottom — gap off so flex gap isn’t stacked */
+    gap: 0;
+  }
+
+  /* Title↔intro: 16px (Figma); mirrors #Project-Section .project-section-title ≤767 */
+  #Service-Section.service-section .service-section-title,
+  #Service-Section #Service-Section-Title {
+    margin: 0 !important;
+    padding: 0 0 16px 0 !important;
+    max-width: min(704px, 100%);
+    box-sizing: border-box;
+    width: 100%;
   }
 
   #Service-Section.service-section .service-section-title-hash {
@@ -3407,9 +3616,39 @@ img {
   }
 
   #Service-Section.service-section .service-grid {
+    display: grid !important;
     grid-template-columns: 1fr !important;
     grid-row-gap: 20px !important;
     grid-column-gap: 0 !important;
+    width: 100%;
+  }
+
+  /* Планшет 768–991 скрывает .three — на мобиле Figma 261:3771 все три карточки в столбик */
+  #Service-Section .service-block.three {
+    display: flex !important;
+  }
+
+  /* IX a-21: сбрасываем горизонтальный slide на карточке; появление — fade + translateY как Gallery ≤767 */
+  #Service-Section.service-section .service-grid > .service-block {
+    opacity: 0;
+    transform: translateY(56px) !important;
+    transition:
+      opacity 900ms cubic-bezier(0.19, 1, 0.22, 1),
+      transform 900ms cubic-bezier(0.19, 1, 0.22, 1);
+    will-change: opacity, transform;
+    border-radius: 30px;
+  }
+
+  #Service-Section.service-section .service-grid > .service-block.lc-reveal {
+    opacity: 1;
+    transform: none !important;
+    will-change: auto;
+  }
+
+  /* Внутренние IX-трансформы на иконке — статичны на мобиле */
+  #Service-Section.service-section .service-grid > .service-block .service-icon-box {
+    transform: none !important;
+    will-change: auto !important;
   }
 
   #Service-Section.service-section .service-block {
@@ -3434,6 +3673,13 @@ img {
   #Project-Section .container.w-container {
     padding-left: 0 !important;
     padding-right: 0 !important;
+    padding-bottom: 20px !important;
+  }
+
+  /* Video row (.w-dyn-list without .project-collection): halve top gap
+     89.5px → 44.75px via negative margin (keeps sibling gaps unchanged) */
+  #Project-Section .container.w-container > .w-dyn-list:not(.project-collection) {
+    margin-top: -44.75px;
   }
 
   #Project-Section .project-block {
@@ -3448,24 +3694,25 @@ img {
 
   #Project-Section .project-section-title {
     margin: 0 !important;
-    padding: 0 14px !important;
+    /* Title ↔ desc: 16px (Figma); scoped to ≤767 so desktop flex gap:16 isn’t doubled */
+    padding: 0 14px 16px 14px !important;
     max-width: min(704px, 100%);
     box-sizing: border-box;
     width: 100%;
   }
 
-  /* Figma 768px → 56px; к 390px → 44/36px; плавно через clamp */
+  /* Figma mobile 530:4794: # 44×48, lead 36×40 (не clamp — совпадает с ≤479) */
   #Project-Section .project-section-title-hash {
-    font-size: clamp(44px, 7.3vw, 56px) !important;
-    line-height: clamp(48px, 8.3vw, 64px) !important;
+    font-size: 44px !important;
+    line-height: 48px !important;
     color: #ff61a6 !important;
     letter-spacing: -1.2px !important;
   }
 
   #Project-Section .project-section-title-lead,
   #Project-Section .project-section-title-second {
-    font-size: clamp(36px, 7.3vw, 56px) !important;
-    line-height: clamp(40px, 8.1vw, 62px) !important;
+    font-size: 36px !important;
+    line-height: 40px !important;
     letter-spacing: -1.2px !important;
   }
 
@@ -3521,16 +3768,18 @@ img {
     line-height: 0.92 !important;
   }
 
-  /* Project desc — как 768-макет до 479px; ширина не выходит за колонку */
+  /* Project desc — Figma 530:4798: 20×28, tracking -0.72 (768-макет desc был 24×32) */
   #Project-Section .project-section-desc {
-    font-size: 24px;
-    line-height: 32px;
+    font-size: 20px;
+    line-height: 28px;
+    letter-spacing: -0.72px;
+    color: rgba(255, 255, 255, 0.86);
     max-width: min(704px, 100%);
     padding: 0 14px;
     box-sizing: border-box;
   }
 
-  /* Gallery — column gap 60px как 261:2585; title↔desc 8px внутри тем же правилом, что 768–991 */
+  /* Gallery — column gap 60px как 261:2585; title↔desc от padding-bottom заголовка — gap off */
   #Gallery-Section > .gallery-sectitle-wrap.sectitle-outer-box {
     max-width: none;
     margin-bottom: 0;
@@ -3539,28 +3788,32 @@ img {
   }
 
   #Gallery-Section .section-title-box.mb-zero {
-    gap: 8px;
+    /* Same as Service/Marquee ≤767: title padding-bottom carries title↔desc — don’t stack flex gap */
+    gap: 0;
   }
 
-  #Gallery-Section .project-section-title {
+  /* Title ↔ desc: 16px; mirrors #Project-Section .project-section-title ≤767 */
+  #Gallery-Section .project-section-title,
+  #Gallery-Section #Gallery-Section-Title {
     margin: 0 !important;
-    padding: 0 !important;
+    padding: 0 14px 16px 14px !important;
     letter-spacing: -1.2px;
     max-width: min(704px, 100%);
     box-sizing: border-box;
     width: 100%;
   }
 
+  /* Same fluid scale as ≤991 — #Gallery-Section only (Видеопродакшн one line) */
   #Gallery-Section .project-section-title-hash {
-    font-size: 68px !important;
-    line-height: 76px !important;
+    font-size: clamp(20px, 6.05vw + 10px, 68px) !important;
+    line-height: 1.07 !important;
     color: #ff61a6 !important;
     letter-spacing: -1.2px !important;
   }
 
   #Gallery-Section .project-section-title-lead {
-    font-size: 56px !important;
-    line-height: 62px !important;
+    font-size: clamp(18px, 5.2vw + 8.5px, 56px) !important;
+    line-height: 1.07 !important;
     letter-spacing: -1.2px !important;
   }
 
@@ -3599,12 +3852,14 @@ img {
   }
 
   #Marquee-Section .section-title-box.mb-zero {
-    gap: 8px;
+    /* Title↔desc spacing from .marquee-section-title padding-bottom — gap off so flex gap isn’t stacked */
+    gap: 0;
   }
 
-  #Marquee-Section .marquee-section-title {
+  #Marquee-Section .marquee-section-title,
+  #Marquee-Section #Marquee-Section-Title {
     margin: 0 !important;
-    padding: 0 !important;
+    padding: 0 0 16px 0 !important;
     letter-spacing: -1.2px;
     max-width: min(704px, 100%);
     box-sizing: border-box;
@@ -3664,29 +3919,31 @@ img {
     width: min(100% - 24px, 100%);
   }
 
-  /* Header — компактный отступ, тот же что у секций */
+  /* Header — 16px от края (перебивает .container width: min(100% - 24px)) */
   .main-header .w-layout-blockcontainer.container.w-container {
     max-width: 100% !important;
+    width: 100% !important;
+    box-sizing: border-box;
     padding-left: 16px !important;
     padding-right: 16px !important;
   }
 
-  /* Кнопка меню — тот же 54×54 tap target что ≤767 / ≤991 (Figma 557:5423), без уменьшения на узком экране */
+  /* Кнопка меню — Figma 798:345 (56×56), без уменьшения на узком экране */
   .mobile-menu-open-btn {
-    width: 54px !important;
-    height: 54px !important;
-    border-radius: 7px !important;
+    width: 56px !important;
+    height: 56px !important;
+    border-radius: 28px !important;
   }
 
   .mobile-menu-open-disc {
-    width: 44px !important;
-    height: 44px !important;
+    width: 46px !important;
+    height: 46px !important;
   }
 
   .mobile-menu-open-btn .header-menu-icon {
     filter: none !important;
-    width: 21px !important;
-    height: 21px !important;
+    width: 22px !important;
+    height: 22px !important;
   }
 
   /* Project Section — компактные отступы */
@@ -3706,6 +3963,7 @@ img {
   #Project-Section .project-section-title {
     margin: 0 !important;
     padding: 0 !important;
+    padding-bottom: 16px !important;
     max-width: 100%;
     box-sizing: border-box;
     width: 100%;
@@ -3726,7 +3984,18 @@ img {
     letter-spacing: -1.2px !important;
   }
 
-  /* Gallery — Figma 261:3372 (390w): pt 100, px 16, title-stack gap 16px */
+  /* Service — title stack: horizontal padding clears like Project; keep 16px title↔intro */
+  #Service-Section.service-section .service-section-title,
+  #Service-Section #Service-Section-Title {
+    margin: 0 !important;
+    padding: 0 !important;
+    padding-bottom: 16px !important;
+    max-width: 100%;
+    box-sizing: border-box;
+    width: 100%;
+  }
+
+  /* Gallery — Figma 261:3372 (390w): pt 100, px 16; title↔desc via title padding-bottom */
   #Gallery-Section.gallery-section {
     gap: 56px;
     padding-top: 100px;
@@ -3741,7 +4010,8 @@ img {
   }
 
   #Gallery-Section .section-title-box.mb-zero {
-    gap: 16px;
+    /* Same as Marquee ≤479: title padding-bottom carries title↔desc — don’t stack flex gap */
+    gap: 0;
   }
 
   #Gallery-Section .project-section-desc {
@@ -3752,24 +4022,27 @@ img {
     padding: 0;
   }
 
-  #Gallery-Section .project-section-title {
+  #Gallery-Section .project-section-title,
+  #Gallery-Section #Gallery-Section-Title {
     margin: 0 !important;
     padding: 0 !important;
+    padding-bottom: 16px !important;
     max-width: 100%;
     box-sizing: border-box;
     width: 100%;
   }
 
+  /* ≤479: same clamp as ≤767/≤991 so 320px doesn’t jump to fixed 44/36 and re-wrap */
   #Gallery-Section .project-section-title-hash {
-    font-size: 44px !important;
-    line-height: 48px !important;
+    font-size: clamp(20px, 6.05vw + 10px, 68px) !important;
+    line-height: 1.07 !important;
     color: #ff61a6 !important;
     letter-spacing: -1.2px !important;
   }
 
   #Gallery-Section .project-section-title-lead {
-    font-size: 36px !important;
-    line-height: 44px !important;
+    font-size: clamp(18px, 5.2vw + 8.5px, 56px) !important;
+    line-height: 1.07 !important;
     letter-spacing: -1.2px !important;
   }
 
@@ -3793,12 +4066,15 @@ img {
   }
 
   #Marquee-Section .section-title-box.mb-zero {
-    gap: 16px;
+    /* Same as ≤767: title padding-bottom carries title↔desc — don’t stack flex gap */
+    gap: 0;
   }
 
-  #Marquee-Section .marquee-section-title {
+  #Marquee-Section .marquee-section-title,
+  #Marquee-Section #Marquee-Section-Title {
     margin: 0 !important;
     padding: 0 !important;
+    padding-bottom: 16px !important;
     max-width: 100%;
     box-sizing: border-box;
     width: 100%;
@@ -3884,7 +4160,7 @@ img {
     white-space: normal !important;
   }
 
-  /* Gallery cards: same fluid 3-up as ≤991px (see block above max-width 991); no 1-col jump here */
+  /* Gallery: 3-up только на 768–991px (см. @media min 768 max 991 ниже); здесь без скачка в 1 колонку до max-width 767 */
 
   .banner-list-box {
     column-gap: 20px !important;
@@ -3904,7 +4180,7 @@ img {
 }
 
 /* --------------------------------------------------------------------------
-   Gallery (#Gallery-Section) — fluid single row, three cards (≤991px)
+   Gallery (#Gallery-Section)
 
    main.css used to force .gallery-grid to 2 cols (≤991/767) and 1 col (≤479),
    which produced a 2+1 grid and uneven row heights / clipping inside
@@ -3914,11 +4190,11 @@ img {
    translate3d(±120%, …) on .gallery-block; flex + nowrap broke stable
    column widths and gutters vs. percentage motion.
 
-   Gap matches desktop 20px at the top of this band, scales down by vw with a
-   floor so cards never touch. Section overflow visible so horizontal IX is
-   not clipped.
-
-   Typography for the gallery heading still follows the Figma breakpoints above.
+   Figma (file 3VymViruWWKqV3sGgnJkxO): `get_design_context` on 261:2563 /
+   261:3350 returns `div.project-image-box` (tablet 704×561.54 r30; phone
+   358×323 r30), not `div.gallery-block`. Gallery row/card tokens below follow
+   `section.gallery-section` 261:2585 + grid 676:7245 / card 676:7246 (tablet)
+   and 261:3372 + card 673:7231 (phone). ≥992 / ≥1440 gallery rules unchanged.
    -------------------------------------------------------------------------- */
 @media screen and (max-width: 991px) {
   #Gallery-Section.gallery-section {
@@ -3933,15 +4209,17 @@ img {
     padding-right: 0 !important;
     box-sizing: border-box;
   }
+}
 
+/* Tablet 768–991: Figma 261:2585 row 676:7245 (gap 11px), card 676:7246 (r11, 227.33×358.81) */
+@media screen and (min-width: 768px) and (max-width: 991px) {
   #Gallery-Section .gallery-grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     grid-template-rows: auto;
     align-items: stretch;
     justify-items: stretch;
-    /* Figma 261:2585 (768px): gap 11px; масштабируется к 991px */
-    gap: clamp(8px, 1.4vw, 14px);
+    gap: 11px;
     overflow: visible;
     isolation: isolate;
     contain: layout;
@@ -3949,16 +4227,14 @@ img {
 
   #Gallery-Section .gallery-grid > .gallery-block {
     min-width: 0;
-    /* Figma 261:2585: карточка 227×358.81px ≈ 19:30 (портретная) */
-    aspect-ratio: 19 / 30;
-    /* Figma 261:2585: border-radius 11px (main.css даёт 20px) */
+    aspect-ratio: 227.33334 / 358.80624;
     border-radius: 11px;
     overflow: hidden;
     backface-visibility: hidden;
     /* Планшетный reveal: IX застрял в translate3d(±120%). Заменяем на
        собственное начальное состояние — все три карточки появятся
        одновременно через IntersectionObserver (JS добавит .lc-reveal).
-       ≤767px-блок ниже перекроет transform (56px) и ratio (4:7). */
+       ≤767px-блок ниже перекроет transform (56px) и ratio. */
     opacity: 0;
     transform: translateY(40px) !important;
     transition:
@@ -3967,7 +4243,6 @@ img {
     will-change: opacity, transform;
   }
 
-  /* Revealed state (JS добавляет .lc-reveal на планшете — все три сразу) */
   #Gallery-Section .gallery-grid > .gallery-block.lc-reveal {
     opacity: 1;
     transform: none !important;
@@ -3980,28 +4255,31 @@ img {
     height: 100%;
     object-fit: cover;
     object-position: center;
-    /* Сброс возможных IX-трансформов на самом изображении */
     transform: none !important;
     backface-visibility: hidden;
   }
 }
 
 /* ==========================================================================
-   Gallery — мобиль ≤767px: 1 колонка, портретные блоки (Figma 261:3372, 390px)
-   Блок стоит ПОСЛЕ ≤991px, чтобы перекрыть его 3-column grid и aspect-ratio 16/9.
-   IX-анимации (translate3d ±120%) отключены: карточки статичны, transform сброшен.
+   Gallery — мобиль ≤767px: 1 колонка (Figma 261:3372; карточка 673:7231)
+   Блок после shell ≤991; перекрывает только <768px.
    ========================================================================== */
 @media (max-width: 767px) {
   #Gallery-Section .gallery-grid {
+    display: grid;
     grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    align-items: stretch;
+    justify-items: stretch;
     gap: 20px;
+    overflow: visible;
+    isolation: isolate;
+    contain: layout;
   }
 
-  /* Портретный кроп: Figma 390px — блок 358×622px ≈ 4:7
-     Начальное состояние: скрыт и смещён вниз.
-     JS (IntersectionObserver) добавит .lc-reveal → анимация появления. */
+  /* Figma 261:3372: div.gallery-block 358×622.843994; вертикальный gap ряда 20px */
   #Gallery-Section .gallery-grid > .gallery-block {
-    aspect-ratio: 4 / 7;
+    aspect-ratio: 358 / 622.843994;
     border-radius: 20px;
     width: 100%;
     min-width: 0;
@@ -4028,13 +4306,17 @@ img {
     transition-delay: 220ms;
   }
 
-  /* Параллакс внутри карточки — сбрасываем */
-  #Gallery-Section .gallery-grid > .gallery-block .gallery-image {
+  #Gallery-Section .gallery-grid .gallery-image {
+    display: block;
     width: 100%;
     height: 100%;
     object-fit: cover;
     object-position: center;
     transform: none !important;
+    backface-visibility: hidden;
+  }
+
+  #Gallery-Section .gallery-grid > .gallery-block .gallery-image {
     will-change: auto !important;
   }
 }
@@ -4047,7 +4329,7 @@ img {
   }
 
   #Gallery-Section .gallery-grid > .gallery-block {
-    aspect-ratio: 4 / 7;
+    aspect-ratio: 358 / 622.843994;
     border-radius: 20px;
     width: 100%;
     opacity: 0;
@@ -4116,6 +4398,153 @@ body.page-brands .project-detail-line {
 }
 
 /* ==========================================================================
+   Footer (#Contact-Section) — перенос перед «нейросетей» только на планшете (768–991px)
+   ========================================================================== */
+@media (min-width: 768px) and (max-width: 991px) {
+  #Contact-Section .footer-text-from-neuro {
+    display: block;
+  }
+}
+
+/* ==========================================================================
+   Footer mobile — Figma 261:3694 (layout), 776:6 (three-column row)
+   Tablet/desktop ≥768: grid unchanged (wrapper uses display: contents).
+   ========================================================================== */
+
+@media (min-width: 768px) {
+  #Contact-Section .footer-list-bottom {
+    display: contents;
+  }
+}
+
+@media (max-width: 767px) {
+  /* Фрейм mobile footer: вертикальные отступы 80px (261:3694 py-80), перекрывает main.css 100px */
+  #Contact-Section.main-footer {
+    padding-top: 80px;
+    padding-bottom: 80px;
+  }
+
+  #Contact-Section .footer-grid.w-layout-grid {
+    display: flex;
+    flex-direction: column;
+    grid-template-columns: unset;
+    grid-column-gap: 0;
+    grid-row-gap: 0;
+    gap: 52px;
+    align-items: stretch;
+  }
+
+  /* About — stack + gaps (Figma gap 15px inner) */
+  #Contact-Section .footer-widget.about-widget {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding-right: 0;
+    max-width: none;
+  }
+
+  #Contact-Section .footer-logo-link {
+    margin-bottom: 0;
+  }
+
+  #Contact-Section .footer-logo-text {
+    font-size: 24px;
+    line-height: 43.2px;
+  }
+
+  #Contact-Section .footer-title {
+    margin-bottom: 0;
+    font-size: 20px;
+    line-height: 28px;
+  }
+
+  #Contact-Section .footer-text {
+    margin-bottom: 0;
+    font-size: 14px;
+    line-height: 25.2px;
+  }
+
+  #Contact-Section .footer-copyright {
+    font-size: 14px;
+    line-height: 25.2px;
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  /* 776:6 — row: Меню | Услуги | Соцсети */
+  #Contact-Section .footer-list-bottom {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  #Contact-Section .footer-list-bottom .footer-widget.links-widget {
+    flex: 0 1 auto;
+    min-width: 0;
+  }
+
+  #Contact-Section .footer-list-bottom > .footer-widget.links-widget:last-child {
+    padding-bottom: 16px;
+  }
+
+  #Contact-Section .footer-list-bottom .footer-list-box {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    width: 100%;
+  }
+
+  #Contact-Section .footer-list-bottom .footer-list-title {
+    margin-bottom: 0;
+    color: #ff61a6;
+    font-size: 18px;
+    line-height: 25.2px;
+    font-weight: 600;
+  }
+
+  #Contact-Section .footer-list-bottom .footer-list-link {
+    margin-bottom: 0;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: nowrap;
+  }
+
+  #Contact-Section .footer-list-bottom .footer-list-box > .footer-list-link:first-of-type {
+    padding-top: 4px;
+    min-height: 29px;
+    box-sizing: border-box;
+  }
+
+  #Contact-Section .footer-list-bottom .footer-widget.links-widget:last-child .footer-list-box > .footer-list-link:first-of-type {
+    padding-top: 4px;
+  }
+
+  #Contact-Section .footer-list-bottom .footer-list-text {
+    font-size: 13px;
+    line-height: 23px;
+    color: #fff;
+    opacity: 0.8;
+    overflow-wrap: break-word;
+  }
+
+  /* Меню: «Для артистов» / «Для брендов» — 14px / 25.2px в макете */
+  #Contact-Section .footer-list-bottom .footer-widget.links-widget:nth-child(1) .footer-list-box > a:nth-child(3) .footer-list-text,
+  #Contact-Section .footer-list-bottom .footer-widget.links-widget:nth-child(1) .footer-list-box > a:nth-child(4) .footer-list-text {
+    font-size: 14px;
+    line-height: 25.2px;
+  }
+
+  #Contact-Section .footer-list-bottom .footer-list-icon {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+    object-fit: contain;
+  }
+}
+
+/* ==========================================================================
    prefers-reduced-motion
    ========================================================================== */
 @media (prefers-reduced-motion: reduce) {
@@ -4167,4 +4596,48 @@ body.page-brands .project-detail-line {
   #Gallery-Section .gallery-block .gallery-image {
     transform: none !important;
   }
+
+  /* Service: то же для планшетного fade-up (.lc-reveal / IX a-21) */
+  #Service-Section .service-block {
+    transform: none !important;
+    opacity: 1 !important;
+  }
+
+  /* Mobile Service: выше специфичность opacity/transform — дублируем snap-visible */
+  #Service-Section.service-section .service-grid > .service-block {
+    transform: none !important;
+    opacity: 1 !important;
+  }
 }
+
+/* ── Project-video sound overlay ── */
+.lc-video-sound-overlay {
+  position: absolute;
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  padding: 0.5rem 1.25rem;
+  border: none;
+  border-radius: 2rem;
+  background: rgba(0, 0, 0, 0.65);
+  color: #fff;
+  font-family: inherit;
+  font-size: 0.875rem;
+  line-height: 1.4;
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  transition: opacity 0.25s ease;
+}
+
+.lc-video-sound-overlay:hover,
+.lc-video-sound-overlay:focus-visible {
+  background: rgba(0, 0, 0, 0.82);
+}
+
+/* Override Webflow's transition:all on lightbox controls (main.css) */
+.w-lightbox-control {
+  transition: opacity .3s;
+}
+
