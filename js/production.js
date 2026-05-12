@@ -523,12 +523,12 @@
     var prevBtn = document.createElement("button");
     prevBtn.className = "lc-gallery-overlay__nav lc-gallery-overlay__nav--prev";
     prevBtn.setAttribute("aria-label", "Предыдущее видео");
-    prevBtn.innerHTML = "&#8249;";
+    prevBtn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>';
 
     var nextBtn = document.createElement("button");
     nextBtn.className = "lc-gallery-overlay__nav lc-gallery-overlay__nav--next";
     nextBtn.setAttribute("aria-label", "Следующее видео");
-    nextBtn.innerHTML = "&#8250;";
+    nextBtn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg>';
 
     overlay.appendChild(video);
     overlay.appendChild(closeBtn);
@@ -546,6 +546,7 @@
         console.warn("[LisaCreo] data-video-src missing on gallery-block index " + index);
         return;
       }
+      console.log("[LisaCreo] opening video", src);
       video.src = src;
       video.load();
 
@@ -598,6 +599,21 @@
         openVideo(i);
       });
     });
+
+    document.addEventListener("click", function (event) {
+      var card = event.target.closest(".gallery-block[data-video-src]");
+      if (!card) return;
+
+      event.preventDefault();
+      event.stopPropagation();
+
+      var liveCards = Array.from(
+        document.querySelectorAll(".gallery-block[data-video-src]")
+      );
+      var index = liveCards.indexOf(card);
+
+      openVideo(index >= 0 ? index : 0);
+    }, true);
 
     closeBtn.addEventListener("click", closeOverlay);
     prevBtn.addEventListener("click", function (e) { e.stopPropagation(); navigatePrev(); });

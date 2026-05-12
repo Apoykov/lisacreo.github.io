@@ -4683,7 +4683,6 @@ body.page-brands .project-detail-line {
   border: none;
   background: rgba(255, 255, 255, 0.1);
   color: #fff;
-  font-size: 2.5rem;
   width: 3rem;
   height: 3rem;
   border-radius: 50%;
@@ -4693,6 +4692,7 @@ body.page-brands .project-detail-line {
   cursor: pointer;
   opacity: 0.7;
   transition: opacity 0.2s, background 0.2s;
+  padding: 0;
 }
 .lc-gallery-overlay__nav:hover,
 .lc-gallery-overlay__nav:focus-visible {
@@ -4707,7 +4707,7 @@ body.page-brands .project-detail-line {
     max-width: 96vw;
     max-height: 75vh;
   }
-  .lc-gallery-overlay__nav { width: 2.5rem; height: 2.5rem; font-size: 2rem; }
+  .lc-gallery-overlay__nav { width: 2.5rem; height: 2.5rem; }
   .lc-gallery-overlay__close { font-size: 2rem; top: 0.5rem; right: 0.75rem; }
 }
 
