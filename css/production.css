@@ -4716,3 +4716,68 @@ body.page-brands .project-detail-line {
   transition: opacity .3s;
 }
 
+/* === Video duration badge — Видеопродакшн gallery cards ===
+   Figma file 3VymViruWWKqV3sGgnJkxO
+   Nodes: 850:978 (tablet+small-desktop), 850:1013 (mobile), 901:1020 (desktop 1440+)
+   ======================================================================== */
+
+/* Base: tablet + small-desktop (768px–1439px) — Figma 850:978: 51×24, r6, blur 2px */
+.gallery-badge {
+  position: absolute;
+  bottom: 14px;
+  left: 14px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: 0 8px 0 4px;
+  height: 24px;
+  border-radius: 6px;
+  background: rgba(0, 0, 8, 0.44);
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 14px;
+  letter-spacing: 0;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.gallery-badge-icon {
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
+}
+
+/* Desktop 1440+ — Figma 901:1020: ~70×34, r8.5, blur 2.8px, font 17/20 */
+@media screen and (min-width: 1440px) {
+  .gallery-badge {
+    bottom: 24px;
+    left: 24px;
+    gap: 3px;
+    padding: 0 11px 0 6px;
+    height: 34px;
+    border-radius: 8.5px;
+    -webkit-backdrop-filter: blur(2.8px);
+    backdrop-filter: blur(2.8px);
+    font-size: 17px;
+    line-height: 20px;
+  }
+
+  .gallery-badge-icon {
+    width: 17px;
+    height: 17px;
+  }
+}
+
+/* Mobile ≤767px — Figma 850:1013: 51×24, same size as tablet, larger offsets */
+@media screen and (max-width: 767px) {
+  .gallery-badge {
+    bottom: 24px;
+    left: 24px;
+  }
+}
+
