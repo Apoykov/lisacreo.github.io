@@ -546,6 +546,7 @@
         console.warn("[LisaCreo] data-video-src missing on gallery-block index " + index);
         return;
       }
+      console.log("[LisaCreo] opening video", src);
       video.src = src;
       video.load();
 
@@ -598,6 +599,21 @@
         openVideo(i);
       });
     });
+
+    document.addEventListener("click", function (event) {
+      var card = event.target.closest(".gallery-block[data-video-src]");
+      if (!card) return;
+
+      event.preventDefault();
+      event.stopPropagation();
+
+      var liveCards = Array.from(
+        document.querySelectorAll(".gallery-block[data-video-src]")
+      );
+      var index = liveCards.indexOf(card);
+
+      openVideo(index >= 0 ? index : 0);
+    }, true);
 
     closeBtn.addEventListener("click", closeOverlay);
     prevBtn.addEventListener("click", function (e) { e.stopPropagation(); navigatePrev(); });
