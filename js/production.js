@@ -486,6 +486,135 @@
     observer.observe(wrapper);
   }
 
+  /**
+   * Fullscreen video overlay for gallery cards with data-video-src.
+   *
+   * Clicking a .gallery-block[data-video-src] (or any nested picture/img)
+   * opens a dark overlay with the video. Supports prev/next navigation
+   * between video cards and Escape to close.
+   */
+  function initGalleryVideoOverlay() {
+    var cards = Array.from(
+      document.querySelectorAll(".gallery-block[data-video-src]")
+    );
+    if (!cards.length) {
+      console.warn("[LisaCreo] No .gallery-block[data-video-src] found — video overlay disabled.");
+      return;
+    }
+
+    var overlay = document.createElement("div");
+    overlay.className = "lc-gallery-overlay";
+    overlay.setAttribute("role", "dialog");
+    overlay.setAttribute("aria-modal", "true");
+    overlay.setAttribute("aria-label", "Видеоплеер");
+    overlay.hidden = true;
+
+    var video = document.createElement("video");
+    video.className = "lc-gallery-overlay__video";
+    video.setAttribute("playsinline", "");
+    video.setAttribute("controls", "");
+    video.setAttribute("preload", "metadata");
+
+    var closeBtn = document.createElement("button");
+    closeBtn.className = "lc-gallery-overlay__close";
+    closeBtn.setAttribute("aria-label", "Закрыть");
+    closeBtn.textContent = "\u00D7";
+
+    var prevBtn = document.createElement("button");
+    prevBtn.className = "lc-gallery-overlay__nav lc-gallery-overlay__nav--prev";
+    prevBtn.setAttribute("aria-label", "Предыдущее видео");
+    prevBtn.innerHTML = "&#8249;";
+
+    var nextBtn = document.createElement("button");
+    nextBtn.className = "lc-gallery-overlay__nav lc-gallery-overlay__nav--next";
+    nextBtn.setAttribute("aria-label", "Следующее видео");
+    nextBtn.innerHTML = "&#8250;";
+
+    overlay.appendChild(video);
+    overlay.appendChild(closeBtn);
+    overlay.appendChild(prevBtn);
+    overlay.appendChild(nextBtn);
+    document.body.appendChild(overlay);
+
+    var currentIndex = -1;
+
+    function openVideo(index) {
+      if (index < 0 || index >= cards.length) return;
+      currentIndex = index;
+      var src = cards[index].getAttribute("data-video-src");
+      if (!src) {
+        console.warn("[LisaCreo] data-video-src missing on gallery-block index " + index);
+        return;
+      }
+      video.src = src;
+      video.load();
+
+      video.play().catch(function (err) {
+        console.warn("[LisaCreo] Video play blocked:", err.message);
+      });
+
+      overlay.hidden = false;
+      document.body.style.overflow = "hidden";
+
+      prevBtn.style.display = cards.length > 1 ? "" : "none";
+      nextBtn.style.display = cards.length > 1 ? "" : "none";
+    }
+
+    function closeOverlay() {
+      overlay.hidden = true;
+      video.pause();
+      video.currentTime = 0;
+      video.removeAttribute("src");
+      video.load();
+      document.body.style.overflow = "";
+      currentIndex = -1;
+    }
+
+    function navigatePrev() {
+      if (currentIndex <= 0) {
+        openVideo(cards.length - 1);
+      } else {
+        openVideo(currentIndex - 1);
+      }
+    }
+
+    function navigateNext() {
+      if (currentIndex >= cards.length - 1) {
+        openVideo(0);
+      } else {
+        openVideo(currentIndex + 1);
+      }
+    }
+
+    video.addEventListener("error", function () {
+      console.warn("[LisaCreo] Failed to load video: " + (video.src || "(empty)"));
+    });
+
+    cards.forEach(function (card, i) {
+      card.style.cursor = "pointer";
+      card.addEventListener("click", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        openVideo(i);
+      });
+    });
+
+    closeBtn.addEventListener("click", closeOverlay);
+    prevBtn.addEventListener("click", function (e) { e.stopPropagation(); navigatePrev(); });
+    nextBtn.addEventListener("click", function (e) { e.stopPropagation(); navigateNext(); });
+
+    overlay.addEventListener("click", function (e) {
+      if (e.target === overlay) closeOverlay();
+    });
+
+    document.addEventListener("keydown", function (e) {
+      if (overlay.hidden) return;
+      if (e.key === "Escape") { closeOverlay(); return; }
+      if (e.key === "ArrowLeft") { navigatePrev(); return; }
+      if (e.key === "ArrowRight") { navigateNext(); return; }
+    });
+  }
+
   function safeCall(name, fn) {
     try { fn(); }
     catch (err) { console.error("[LisaCreo] " + name + " failed:", err); }
@@ -503,6 +632,7 @@
     safeCall("initServiceRevealTablet", initServiceRevealTablet);
     safeCall("initServiceRevealMobile", initServiceRevealMobile);
     safeCall("initProjectVideoScrollPlay", initProjectVideoScrollPlay);
+    safeCall("initGalleryVideoOverlay", initGalleryVideoOverlay);
   }
 
   if (document.readyState === "loading") {
