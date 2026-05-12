@@ -1,5 +1,4 @@
 node_modules/
-assets/optimized/
 # Heavy local source videos
 assets/video/*.mp4
 assets/video/**/*.mp4
