@@ -4782,55 +4782,50 @@ body.page-brands .project-detail-line {
 }
 
 /* ==========================================================================
-   Footer (#Contact-Section) — horizontal padding aligned with content sections
-   (Project, Gallery, Marquee use the same values at each breakpoint)
+   Footer (#Contact-Section) — horizontal inset on inner .w-layout-blockcontainer
+   mirrors .main-header .w-layout-blockcontainer.container.w-container (same
+   max-width / width / box-sizing / padding at each breakpoint). Outer #Contact-Section
+   stays free of horizontal padding so the math cannot double with the inner box.
    ========================================================================== */
-#Contact-Section .container.w-container {
+#Contact-Section .w-layout-blockcontainer.container.w-container {
   max-width: 100% !important;
   width: 100% !important;
+  box-sizing: border-box;
   padding-left: 0 !important;
   padding-right: 0 !important;
 }
 
 @media (min-width: 1441px) {
-  #Contact-Section.main-footer {
-    padding-left: clamp(100px, 8.333vw, 160px);
-    padding-right: clamp(100px, 8.333vw, 160px);
+  #Contact-Section .w-layout-blockcontainer.container.w-container {
+    max-width: 100% !important;
+    padding-left: clamp(100px, 8.333vw, 160px) !important;
+    padding-right: clamp(100px, 8.333vw, 160px) !important;
   }
 }
 
 @media (min-width: 1280px) and (max-width: 1440px) {
-  #Contact-Section.main-footer {
-    padding-left: 80px;
-    padding-right: 80px;
+  #Contact-Section .w-layout-blockcontainer.container.w-container {
+    max-width: 100% !important;
+    padding-left: 80px !important;
+    padding-right: 80px !important;
   }
 }
 
 @media (min-width: 992px) and (max-width: 1279px) {
-  #Contact-Section.main-footer {
-    padding-left: 60px;
-    padding-right: 60px;
+  #Contact-Section .w-layout-blockcontainer.container.w-container {
+    max-width: 100% !important;
+    padding-left: 60px !important;
+    padding-right: 60px !important;
   }
 }
 
 @media (max-width: 991px) {
-  #Contact-Section.main-footer {
-    padding-left: 32px;
-    padding-right: 32px;
-  }
-}
-
-@media (max-width: 767px) {
-  #Contact-Section.main-footer {
-    padding-left: 24px;
-    padding-right: 24px;
-  }
-}
-
-@media (max-width: 479px) {
-  #Contact-Section.main-footer {
-    padding-left: 16px;
-    padding-right: 16px;
+  #Contact-Section .w-layout-blockcontainer.container.w-container {
+    max-width: 100% !important;
+    width: 100% !important;
+    box-sizing: border-box;
+    padding-left: 16px !important;
+    padding-right: 16px !important;
   }
 }
 
