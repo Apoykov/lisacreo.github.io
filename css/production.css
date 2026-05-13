@@ -393,7 +393,7 @@ img {
                 └── .hero-left-box (flex-column)
                       ├── .hero-title-outer (order: 1) → h1.hero-title
                       └── .hero-text-box    (order: 2) → h2.hero-title-two
-              .banner-list-box (grid 4-col, сестра .hero-content-box)
+              #Hero-Section .banner-list-box (grid 4-col, сестра .hero-content-box)
    -------------------------------------------------------------------------- */
 
 .hero-section,
@@ -587,9 +587,9 @@ img {
 
 
 /* --------------------------------------------------------------------------
-   8. Banner-list (теги #01–04 в hero)
+   8. Banner-list (теги #01–04 в hero — только #Hero-Section, см. index.html)
    -------------------------------------------------------------------------- */
-.banner-list-box {
+#Hero-Section .banner-list-box {
   width: 100%;
   display: grid !important;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -598,7 +598,7 @@ img {
   align-items: start !important;
 }
 
-.banner-list {
+#Hero-Section .banner-list {
   width: auto !important;
   min-width: 0;
   opacity: 0;
@@ -606,9 +606,9 @@ img {
   animation: heroSmallTitleFade 700ms cubic-bezier(0.19, 1, 0.22, 1) 2300ms forwards !important;
 }
 
-.banner-list:nth-child(2) { animation-delay: 2380ms !important; }
-.banner-list:nth-child(3) { animation-delay: 2460ms !important; }
-.banner-list:nth-child(4) { animation-delay: 2540ms !important; }
+#Hero-Section .banner-list:nth-child(2) { animation-delay: 2380ms !important; }
+#Hero-Section .banner-list:nth-child(3) { animation-delay: 2460ms !important; }
+#Hero-Section .banner-list:nth-child(4) { animation-delay: 2540ms !important; }
 
 .banner-list-count {
   font-size: clamp(11px, 0.82vw, 14px);
@@ -864,15 +864,15 @@ img {
     white-space: nowrap !important;
   }
 
-  .banner-list-box {
+  #Hero-Section .banner-list-box {
     column-gap: 72px !important;
   }
 
-  .hero-section .banner-list-count {
+  #Hero-Section .banner-list-count {
     font-size: 12px;
   }
 
-  .hero-section .banner-list-text {
+  #Hero-Section .banner-list-text {
     font-size: 13px !important;
   }
 
@@ -1224,38 +1224,38 @@ img {
     opacity: 1 !important;
   }
 
-  .banner-list-box {
+  #Hero-Section .banner-list-box {
     padding: 0 14px !important;
     box-sizing: border-box;
     column-gap: 96px !important;
     row-gap: 16px !important;
   }
 
-  .hero-section .banner-list {
+  #Hero-Section .banner-list {
     display: flex !important;
     flex-direction: column !important;
     align-items: flex-start !important;
     gap: 5px !important;
   }
 
-  .hero-section .banner-list-count {
+  #Hero-Section .banner-list-count {
     font-size: 14px;
     font-weight: 400;
     line-height: 1.1;
     margin-bottom: 0 !important;
   }
 
-  .hero-section .banner-list-count-span {
+  #Hero-Section .banner-list-count-span {
     font-weight: 400;
     color: var(--lc-pink);
   }
 
-  .hero-section .banner-list-count-num {
+  #Hero-Section .banner-list-count-num {
     font-weight: 600;
     color: #fff;
   }
 
-  .hero-section .banner-list-text {
+  #Hero-Section .banner-list-text {
     font-size: 15px !important;
     line-height: 1.25 !important;
     margin-bottom: 0 !important;
@@ -3030,15 +3030,15 @@ img {
     white-space: nowrap !important;
   }
 
-  .banner-list-box {
+  #Hero-Section .banner-list-box {
     column-gap: 51px !important;
   }
 
-  .hero-section .banner-list-count {
+  #Hero-Section .banner-list-count {
     font-size: 11px;
   }
 
-  .hero-section .banner-list-text {
+  #Hero-Section .banner-list-text {
     font-size: 12px !important;
   }
 
@@ -3103,15 +3103,15 @@ img {
     white-space: nowrap !important;
   }
 
-  .banner-list-box {
+  #Hero-Section .banner-list-box {
     column-gap: 38px !important;
   }
 
-  .hero-section .banner-list-count {
+  #Hero-Section .banner-list-count {
     font-size: 11px;
   }
 
-  .hero-section .banner-list-text {
+  #Hero-Section .banner-list-text {
     font-size: 12px !important;
   }
 
@@ -3720,8 +3720,8 @@ img {
     gap: 16px;
   }
 
-  /* ≤767px: flex-строка из 3 элементов (3-й скрыт) */
-  .banner-list-box {
+  /* ≤767px: flex-строка из 3 элементов (3-й скрыт) — только главный hero */
+  #Hero-Section .banner-list-box {
     display: flex !important;
     flex-direction: row !important;
     flex-wrap: nowrap !important;
@@ -3730,13 +3730,13 @@ img {
     gap: 20px !important;
   }
 
-  /* Скрываем 3-й элемент (100+ / музыкальных видео) */
-  .banner-list:nth-child(3) {
+  /* Скрываем 3-й элемент (100+ / музыкальных видео) — только главный hero */
+  #Hero-Section .banner-list:nth-child(3) {
     display: none !important;
   }
 
   /* Оставшиеся 3 элемента — равномерно занимают строку */
-  .banner-list {
+  #Hero-Section .banner-list {
     flex: 1 1 0 !important;
     min-width: 0 !important;
     width: auto !important;
@@ -4162,15 +4162,15 @@ img {
 
   /* Gallery: 3-up только на 768–991px (см. @media min 768 max 991 ниже); здесь без скачка в 1 колонку до max-width 767 */
 
-  .banner-list-box {
+  #Hero-Section .banner-list-box {
     column-gap: 20px !important;
   }
 
-  .hero-section .banner-list-count {
+  #Hero-Section .banner-list-count {
     font-size: 11px;
   }
 
-  .hero-section .banner-list-text {
+  #Hero-Section .banner-list-text {
     font-size: 12px !important;
   }
 
@@ -4580,8 +4580,8 @@ body.page-brands .project-detail-line {
     animation: none !important;
   }
 
-  /* Теги banner-list сразу видны */
-  .banner-list {
+  /* Теги banner-list сразу видны (только главный hero) */
+  #Hero-Section .banner-list {
     opacity: 1 !important;
     transform: none !important;
     animation: none !important;
@@ -4778,6 +4778,59 @@ body.page-brands .project-detail-line {
   .gallery-badge {
     bottom: 24px;
     left: 24px;
+  }
+}
+
+/* ==========================================================================
+   Footer (#Contact-Section) — horizontal padding aligned with content sections
+   (Project, Gallery, Marquee use the same values at each breakpoint)
+   ========================================================================== */
+#Contact-Section .container.w-container {
+  max-width: 100% !important;
+  width: 100% !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+@media (min-width: 1441px) {
+  #Contact-Section.main-footer {
+    padding-left: clamp(100px, 8.333vw, 160px);
+    padding-right: clamp(100px, 8.333vw, 160px);
+  }
+}
+
+@media (min-width: 1280px) and (max-width: 1440px) {
+  #Contact-Section.main-footer {
+    padding-left: 80px;
+    padding-right: 80px;
+  }
+}
+
+@media (min-width: 992px) and (max-width: 1279px) {
+  #Contact-Section.main-footer {
+    padding-left: 60px;
+    padding-right: 60px;
+  }
+}
+
+@media (max-width: 991px) {
+  #Contact-Section.main-footer {
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+}
+
+@media (max-width: 767px) {
+  #Contact-Section.main-footer {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+}
+
+@media (max-width: 479px) {
+  #Contact-Section.main-footer {
+    padding-left: 16px;
+    padding-right: 16px;
   }
 }
 
