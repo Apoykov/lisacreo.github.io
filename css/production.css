@@ -4392,6 +4392,49 @@ body.page-brands .project-detail-line {
   background-color: #E53F88;
 }
 
+/* ==========================================================================
+   brands.html — hero meta (≤479px, Figma 390w): Клиент + Категория в ряд, без
+   «Сроки», CTA на всю ширину под мета-рядом (не в 2×2 с тегами).
+   Только body.page-brands — artists.html / index не затрагиваются.
+   ========================================================================== */
+@media (max-width: 479px) {
+  body.page-brands .project-info-box .banner-list-box {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+    column-gap: 15px;
+    row-gap: 20px;
+  }
+
+  /* «Сроки» — третий .banner-list в разметке brands.html */
+  body.page-brands .project-info-box .banner-list-box > .banner-list:nth-child(3) {
+    display: none !important;
+  }
+
+  /* Две мета-колонки поровну (перебиваем main.css width: 47%) */
+  body.page-brands .project-info-box .banner-list-box > .banner-list:nth-child(1),
+  body.page-brands .project-info-box .banner-list-box > .banner-list:nth-child(2) {
+    flex: 1 1 0;
+    min-width: 0;
+    width: auto;
+    max-width: none;
+  }
+
+  /* CTA: отдельная строка на всю ширину (flex-basis 100% + перенос) */
+  body.page-brands .project-info-box .banner-list-box > .banner-list.two {
+    flex: 0 0 100%;
+    width: 100%;
+    max-width: none;
+    align-self: stretch;
+  }
+
+  body.page-brands .project-info-box .banner-list-box > .banner-list.two .theme-button.light {
+    width: 100%;
+    box-sizing: border-box;
+  }
+}
+
 /* «Визуалы»: размер задают span’ы в строке заголовка (как в Figma), базовый размер h2 обнуляем */
 #Marquee-Section .marquee-section-title {
   font-size: 0;
