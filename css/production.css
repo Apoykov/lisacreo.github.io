@@ -4872,3 +4872,579 @@ body.page-brands .project-detail-line {
   }
 }
 
+/* ==========================================================================
+   brands.html — spacing / rhythm (hero → galleries → project-detail)
+   Только body.page-brands (index / artists не затрагиваются).
+   Figma 3VymViruWWKqV3sGgnJkxO: 1920 626:5473, 1440 626:5691, 1024 626:5908,
+   768 626:6127, 390 626:6342.
+   ========================================================================== */
+
+/* Hero — padding по фреймам (main.css .project-info-section 300/100 — здесь brands-only) */
+@media (min-width: 1280px) {
+  body.page-brands .project-info-section {
+    padding-top: 320px;
+    padding-bottom: 100px;
+  }
+}
+
+@media (min-width: 992px) and (max-width: 1279px) {
+  body.page-brands .project-info-section {
+    padding-top: 330px;
+    padding-bottom: 40px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  body.page-brands .project-info-section {
+    padding-top: 360px;
+    padding-bottom: 40px;
+  }
+}
+
+@media (max-width: 767px) {
+  body.page-brands .project-info-section {
+    padding-top: 200px;
+    padding-bottom: 50px;
+  }
+}
+
+/* Между двумя галереями — чуть больше «воздуха», как в 1920/1440 (суммарный ритм pb+pt) */
+@media (min-width: 992px) {
+  body.page-brands .brands-gallery-section + .brands-gallery-section {
+    padding-top: 116px;
+  }
+}
+
+body.page-brands .brands-gallery-section {
+  box-sizing: border-box;
+  padding-top: 80px;
+  padding-bottom: 40px;
+}
+
+body.page-brands .brands-gallery-section .section-subtitle {
+  margin-top: 0;
+  margin-bottom: 8px;
+  font-style: italic;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.35;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+body.page-brands .brands-gallery-section .section-title {
+  margin-top: 0;
+  margin-bottom: 0;
+  font-weight: 600;
+  letter-spacing: -1.2px;
+  color: #fff;
+}
+
+/* # в начале заголовка — отдельный размер/вес от основного текста (Figma: span # vs span lead) */
+body.page-brands .brands-gallery-section .section-title::first-letter {
+  font-weight: 400;
+  color: #ff61a6;
+}
+
+body.page-brands .brands-gallery-section .brands-gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 16px;
+  /* Figma: flex-gap до сетки + pt-[40px] на сетке; на desktop заголовок→ряд ≈ 20+40 */
+  margin-top: 40px;
+}
+
+body.page-brands .brands-gallery-section .brands-gallery-card {
+  border-radius: 16px;
+  overflow: hidden;
+  aspect-ratio: 7 / 10;
+  min-height: 0;
+}
+
+body.page-brands .brands-gallery-section .brands-gallery-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+@media (hover: hover) {
+  body.page-brands .brands-gallery-section .brands-gallery-card:hover {
+    transform: none;
+    box-shadow: none;
+  }
+}
+
+/* ≥992: Figma 626:5473 / 626:5691 — gap-[20px] + pt-[40px] на сетке при двух дочерних;
+   в разметке есть .section-subtitle — оставляем суммарно 60px до сетки. */
+@media (min-width: 992px) {
+  body.page-brands .brands-gallery-section .brands-gallery-grid {
+    margin-top: 60px;
+  }
+
+  body.page-brands .brands-gallery-section .section-subtitle {
+    font-size: 22px;
+  }
+
+  body.page-brands .brands-gallery-section .section-title {
+    font-size: 80px;
+    line-height: 76px;
+  }
+
+  body.page-brands .brands-gallery-section .section-title::first-letter {
+    font-size: 88px;
+    line-height: 76px;
+  }
+}
+
+/* ==========================================================================
+   brands.html — 992–1279: горизонтальные инсеты (как index) + убираем горизонтальный скролл.
+   body.page-brands / body.page-artists — index не затрагивается.
+   Причины overflow (brands/artists): (1) h1.project-info-title наследует --_font-size---h1 200px;
+   (2) .project-detail-title-box / .project-detail-content — два flex-ребёнка с max-width 750px.
+   Блок после @media (min-width: 992px) для галереи — перебивает 80px/88px заголовки.
+   ========================================================================== */
+@media (min-width: 992px) and (max-width: 1279px) {
+  /* Horizontal insets — same band as index #Project-Section / #Gallery-Section (60px + 1180px inner) */
+  body.page-brands .project-info-section,
+  body.page-artists .project-info-section {
+    padding-left: 60px;
+    padding-right: 60px;
+    box-sizing: border-box;
+  }
+
+  body.page-brands .project-info-section .w-layout-blockcontainer.container.w-container,
+  body.page-artists .project-info-section .w-layout-blockcontainer.container.w-container {
+    max-width: 1180px;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    box-sizing: border-box;
+    min-width: 0;
+  }
+
+  body.page-brands .project-info-box,
+  body.page-brands .project-info-box .banner-list-box {
+    max-width: 100%;
+    box-sizing: border-box;
+    min-width: 0;
+  }
+
+  body.page-brands .project-info-title,
+  body.page-artists .project-info-title {
+    font-size: clamp(72px, 10.8vw, 123px);
+    line-height: 1.05;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  body.page-brands .banner-list-box {
+    flex-wrap: wrap;
+    row-gap: 20px;
+  }
+
+  body.page-brands .brands-gallery-section {
+    padding-left: 60px;
+    padding-right: 60px;
+    box-sizing: border-box;
+    min-width: 0;
+  }
+
+  body.page-brands .brands-gallery-section .w-layout-blockcontainer.container.w-container {
+    max-width: 1180px;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    box-sizing: border-box;
+    min-width: 0;
+  }
+
+  body.page-brands .brands-gallery-section .brands-gallery-grid {
+    max-width: 100%;
+    box-sizing: border-box;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: clamp(10px, 1.25vw, 16px);
+  }
+
+  body.page-brands .brands-gallery-section .section-title {
+    font-size: clamp(44px, 5.4vw, 68px);
+    line-height: 1.08;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  body.page-brands .brands-gallery-section .section-title::first-letter {
+    font-size: clamp(50px, 5.9vw, 76px);
+    line-height: 1.08;
+  }
+
+  body.page-brands .project-detail .w-layout-blockcontainer.container.w-container,
+  body.page-artists .project-detail .w-layout-blockcontainer.container.w-container {
+    max-width: 1180px;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    box-sizing: border-box;
+    min-width: 0;
+  }
+
+  body.page-brands .project-detail,
+  body.page-artists .project-detail {
+    padding-left: 60px;
+    padding-right: 60px;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  body.page-brands .project-detail-title-box,
+  body.page-brands .project-detail-content,
+  body.page-artists .project-detail-title-box,
+  body.page-artists .project-detail-content {
+    max-width: 100%;
+    box-sizing: border-box;
+    flex-flow: column;
+    align-items: stretch;
+    row-gap: 24px;
+    column-gap: 0;
+  }
+
+  body.page-brands .project-detail-title-box .project-detail-title,
+  body.page-brands .project-detail-title-box .project-detail-text,
+  body.page-brands .project-detail-content .project-detail-text,
+  body.page-artists .project-detail-title-box .project-detail-title,
+  body.page-artists .project-detail-title-box .project-detail-text,
+  body.page-artists .project-detail-content .project-detail-text {
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  body.page-brands .project-detail-title-two-box,
+  body.page-artists .project-detail-title-two-box {
+    max-width: 100%;
+    min-width: 0;
+    flex-wrap: wrap;
+  }
+
+  body.page-brands .project-detail-image,
+  body.page-brands .project-detail-image-box,
+  body.page-artists .project-detail-image,
+  body.page-artists .project-detail-image-box {
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  body.page-brands .project-detail-image,
+  body.page-artists .project-detail-image {
+    width: 100%;
+    height: auto;
+  }
+
+  body.page-brands .project-detail-image-box,
+  body.page-artists .project-detail-image-box {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+
+  body.page-brands #Contact-Section .w-layout-blockcontainer.container.w-container {
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   brands.html / artists.html — 1280–1440: horizontal insets = index Project/Gallery
+   (80px band + 1280px inner .w-layout-blockcontainer.container.w-container).
+   -------------------------------------------------------------------------- */
+@media (min-width: 1280px) and (max-width: 1440px) {
+  body.page-brands .project-info-section,
+  body.page-artists .project-info-section {
+    padding-left: 80px;
+    padding-right: 80px;
+    box-sizing: border-box;
+  }
+
+  body.page-brands .project-info-section .w-layout-blockcontainer.container.w-container,
+  body.page-artists .project-info-section .w-layout-blockcontainer.container.w-container {
+    max-width: 1280px;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    box-sizing: border-box;
+    min-width: 0;
+  }
+
+  body.page-brands .brands-gallery-section {
+    padding-left: 80px;
+    padding-right: 80px;
+    box-sizing: border-box;
+    min-width: 0;
+  }
+
+  body.page-brands .brands-gallery-section .w-layout-blockcontainer.container.w-container {
+    max-width: 1280px;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    box-sizing: border-box;
+    min-width: 0;
+  }
+
+  body.page-brands .project-detail,
+  body.page-artists .project-detail {
+    padding-left: 80px;
+    padding-right: 80px;
+    box-sizing: border-box;
+    max-width: 100%;
+  }
+
+  body.page-brands .project-detail .w-layout-blockcontainer.container.w-container,
+  body.page-artists .project-detail .w-layout-blockcontainer.container.w-container {
+    max-width: 1280px;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    box-sizing: border-box;
+    min-width: 0;
+  }
+
+  body.page-brands .project-detail-title-box,
+  body.page-brands .project-detail-content,
+  body.page-artists .project-detail-title-box,
+  body.page-artists .project-detail-content {
+    max-width: 100%;
+    box-sizing: border-box;
+    flex-flow: column;
+    align-items: stretch;
+    row-gap: 24px;
+    column-gap: 0;
+  }
+
+  body.page-brands .project-detail-title-box .project-detail-title,
+  body.page-brands .project-detail-title-box .project-detail-text,
+  body.page-brands .project-detail-content .project-detail-text,
+  body.page-artists .project-detail-title-box .project-detail-title,
+  body.page-artists .project-detail-title-box .project-detail-text,
+  body.page-artists .project-detail-content .project-detail-text {
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  body.page-brands .project-detail-title-two-box,
+  body.page-artists .project-detail-title-two-box {
+    max-width: 100%;
+    min-width: 0;
+    flex-wrap: wrap;
+  }
+
+  body.page-brands .project-detail-image,
+  body.page-brands .project-detail-image-box,
+  body.page-artists .project-detail-image,
+  body.page-artists .project-detail-image-box {
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  body.page-brands .project-detail-image,
+  body.page-artists .project-detail-image {
+    width: 100%;
+    height: auto;
+  }
+
+  body.page-brands .project-detail-image-box,
+  body.page-artists .project-detail-image-box {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   brands.html / artists.html — 1441+: horizontal insets = index Project/Gallery
+   (clamp(100px, 8.333vw, 160px) band + 1600px inner strip).
+   -------------------------------------------------------------------------- */
+@media (min-width: 1441px) {
+  body.page-brands .project-info-section,
+  body.page-artists .project-info-section {
+    padding-left: clamp(100px, 8.333vw, 160px);
+    padding-right: clamp(100px, 8.333vw, 160px);
+    box-sizing: border-box;
+  }
+
+  body.page-brands .project-info-section .w-layout-blockcontainer.container.w-container,
+  body.page-artists .project-info-section .w-layout-blockcontainer.container.w-container {
+    max-width: 1600px;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    box-sizing: border-box;
+    min-width: 0;
+  }
+
+  body.page-brands .brands-gallery-section {
+    padding-left: clamp(100px, 8.333vw, 160px);
+    padding-right: clamp(100px, 8.333vw, 160px);
+    box-sizing: border-box;
+    min-width: 0;
+  }
+
+  body.page-brands .brands-gallery-section .w-layout-blockcontainer.container.w-container {
+    max-width: 1600px;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    box-sizing: border-box;
+    min-width: 0;
+  }
+
+  body.page-brands .project-detail,
+  body.page-artists .project-detail {
+    padding-left: clamp(100px, 8.333vw, 160px);
+    padding-right: clamp(100px, 8.333vw, 160px);
+    box-sizing: border-box;
+    max-width: 100%;
+  }
+
+  body.page-brands .project-detail .w-layout-blockcontainer.container.w-container,
+  body.page-artists .project-detail .w-layout-blockcontainer.container.w-container {
+    max-width: 1600px;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    box-sizing: border-box;
+    min-width: 0;
+  }
+
+  body.page-brands .project-detail-title-box,
+  body.page-brands .project-detail-content,
+  body.page-artists .project-detail-title-box,
+  body.page-artists .project-detail-content {
+    max-width: 100%;
+    box-sizing: border-box;
+    flex-flow: column;
+    align-items: stretch;
+    row-gap: 24px;
+    column-gap: 0;
+  }
+
+  body.page-brands .project-detail-title-box .project-detail-title,
+  body.page-brands .project-detail-title-box .project-detail-text,
+  body.page-brands .project-detail-content .project-detail-text,
+  body.page-artists .project-detail-title-box .project-detail-title,
+  body.page-artists .project-detail-title-box .project-detail-text,
+  body.page-artists .project-detail-content .project-detail-text {
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  body.page-brands .project-detail-title-two-box,
+  body.page-artists .project-detail-title-two-box {
+    max-width: 100%;
+    min-width: 0;
+    flex-wrap: wrap;
+  }
+
+  body.page-brands .project-detail-image,
+  body.page-brands .project-detail-image-box,
+  body.page-artists .project-detail-image,
+  body.page-artists .project-detail-image-box {
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  body.page-brands .project-detail-image,
+  body.page-artists .project-detail-image {
+    width: 100%;
+    height: auto;
+  }
+
+  body.page-brands .project-detail-image-box,
+  body.page-artists .project-detail-image-box {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+}
+
+/* 768–991: Figma 626:6127 — gap 8px + pt 40 на сетке между заголовком и рядом ≈ 48px */
+@media (min-width: 768px) and (max-width: 991px) {
+  body.page-brands .brands-gallery-section .brands-gallery-grid {
+    margin-top: 48px;
+  }
+
+  body.page-brands .brands-gallery-section .section-subtitle {
+    font-size: 20px;
+  }
+
+  body.page-brands .brands-gallery-section .section-title {
+    font-size: 56px;
+    line-height: 62px;
+  }
+
+  body.page-brands .brands-gallery-section .section-title::first-letter {
+    font-size: 56px;
+    line-height: 64px;
+  }
+}
+
+/* ≤767: галерея 2×2 + кейс-блок (Figma 626:6342); main ≤991 даёт .project-detail 120px — 100px на brands */
+@media (max-width: 767px) {
+  body.page-brands .brands-gallery-section .section-subtitle {
+    font-size: 18px;
+  }
+
+  body.page-brands .brands-gallery-section .section-title {
+    font-size: 36px;
+    line-height: 44px;
+  }
+
+  body.page-brands .brands-gallery-section .section-title::first-letter {
+    font-size: 44px;
+    line-height: 48px;
+  }
+
+  body.page-brands .brands-gallery-section .brands-gallery-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 8px !important;
+    /* Figma 626:6342: gap ~7px + pt ~41px под заголовком */
+    margin-top: 48px;
+  }
+
+  body.page-brands .brands-gallery-section .brands-gallery-grid .brands-gallery-card:nth-child(5) {
+    display: none !important;
+  }
+
+  body.page-brands .project-detail {
+    padding-top: 100px;
+    padding-bottom: 100px;
+  }
+
+  body.page-brands .project-detail-title-two-box {
+    column-gap: 15px;
+    row-gap: 15px;
+  }
+}
+
+/* brands.html / artists.html — ≥1280: hero title scales with viewport; avoids main.css h1 200px jump at 1280px. */
+@media (min-width: 1280px) {
+  body.page-brands .project-info-title,
+  body.page-artists .project-info-title {
+    font-size: clamp(124px, 9.5vw, 200px);
+    line-height: 1.05;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+}
+
