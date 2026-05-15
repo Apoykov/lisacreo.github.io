@@ -10,6 +10,8 @@
 
   function isSamePageContactSectionLink(anchor) {
     if (!anchor || anchor.target === "_blank") return false;
+    // Chatbot triggers intercept this click themselves — no anchor scroll needed.
+    if (anchor.hasAttribute('data-chatbot-open')) return false;
     const hrefAttr = anchor.getAttribute("href");
     if (!hrefAttr || !hrefAttr.trim()) return false;
     let dest;
