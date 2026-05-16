@@ -402,6 +402,7 @@
       "#Project-Section .project-video"
     );
     if (!video) return;
+    video.volume = 0.6;
 
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       video.pause();
@@ -516,6 +517,7 @@
     video.setAttribute("playsinline", "");
     video.setAttribute("controls", "");
     video.setAttribute("preload", "metadata");
+    video.volume = 0.6;
 
     var closeBtn = document.createElement("button");
     closeBtn.className = "lc-gallery-overlay__close";
