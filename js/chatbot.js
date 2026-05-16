@@ -17,11 +17,10 @@
   // ============================================================
   // КОНФИГУРАЦИЯ
   // ============================================================
-  var CONFIG = {
-    mode: 'local',
-    endpoint: null,
-    typingDelayMs: 650,
-  };
+  var CONFIG = Object.assign(
+    { mode: 'local', endpoint: null, typingDelayMs: 650 },
+    (typeof window !== 'undefined' && window.LISACREO_CHAT_CONFIG) || {}
+  );
 
   // ============================================================
   // CHIPS
@@ -65,8 +64,10 @@
 
     if (f === 'refs')     return ['🔗 Вставить ссылку', '⏳ Пришлю позже', '❌ Нет референсов'];
     if (f === 'refs_url') return [];
-    if (f === 'deadline') return ['⚡ Срочно', '📅 На этой неделе', '🗓 Без дедлайна'];
-    if (f === 'contact')  return ['✉️ Дам Telegram', '📧 Дам email'];
+    if (f === 'deadline')      return ['⚡ Срочно', '📅 На этой неделе', '🗓 Без дедлайна'];
+    if (f === 'name')          return [];
+    if (f === 'contact_type')  return ['✈️ Telegram', '📧 Email', '📱 Телефон', '💬 Другое'];
+    if (f === 'contact')       return [];
 
     if (state.briefMode || state.audience || state.service) {
       return ['💬 Расскажу подробнее', '✅ Готов отправить'];
@@ -89,11 +90,13 @@
     goalText:     null,   // specific format / goal (free text)
     refs:         null,   // free text / 'yes' / 'no'
     deadline:     null,   // free text
-    contact:      null,   // TG handle / email / name
-    briefMode:      false,  // brief collection active
-    pendingField:   null,   // field we're waiting an answer for
-    askedFields:    [],     // fields already prompted — avoid re-asking
-    topicsSeen:     [],     // intent topics already explained — avoid repeating
+    name:         null,   // user's name
+    contactType:  null,   // 'telegram' | 'email' | 'phone' | 'other'
+    contact:      null,   // actual contact value (@handle / email / phone)
+    briefMode:      false,
+    pendingField:   null,
+    askedFields:    [],
+    topicsSeen:     [],
     msgCount:        0,
     badInputCount:   0,
     leadCompleted:   false,
@@ -102,7 +105,8 @@
   function resetChatState() {
     chatState = {
       audience: null, service: null, goalText: null,
-      refs: null, deadline: null, contact: null,
+      refs: null, deadline: null,
+      name: null, contactType: null, contact: null,
       briefMode: false, pendingField: null,
       askedFields: [], topicsSeen: [], msgCount: 0, badInputCount: 0, leadCompleted: false,
     };
@@ -180,9 +184,8 @@
   // ============================================================
 
   function isLeadReady() {
-    var hasCore  = !!(chatState.service || chatState.goalText) && !!chatState.audience;
-    var hasExtra = !!(chatState.contact || chatState.deadline);
-    return hasCore && hasExtra;
+    var hasCore = !!(chatState.service || chatState.goalText) && !!chatState.audience;
+    return hasCore && !!chatState.name && !!chatState.contact;
   }
 
   // Returns {field, q} for the next question, or null when all essentials filled.
@@ -225,8 +228,11 @@
     if (!chatState.deadline && !asked('deadline'))
       return ask('deadline', 'К какому сроку нужно?');
 
-    if (!chatState.contact && !asked('contact'))
-      return ask('contact', 'Куда Алисе удобно написать вам — Telegram или email?');
+    if (!chatState.name && !asked('name'))
+      return ask('name', 'Как вас зовут?');
+
+    if (!chatState.contact && !asked('contact_type'))
+      return ask('contact_type', 'Куда вам удобно написать?\nМожно Telegram, телефон, email или любой удобный контакт.');
 
     return null;
   }
@@ -292,6 +298,36 @@
       case 'deadline':
         if (!chatState.deadline) chatState.deadline = t;
         return 'Хорошо, запишем.';
+
+      case 'name':
+        chatState.name = chatState.name || t;
+        var firstName = t.split(/\s+/)[0];
+        return firstName.length > 1 ? 'Приятно познакомиться, ' + firstName + '.' : 'Хорошо.';
+
+      case 'contact_type':
+        if (/telegram|✈️/i.test(t)) {
+          chatState.contactType = 'telegram';
+          chatState.pendingField = 'contact';
+          return 'Напишите ваш Telegram: @username';
+        }
+        if (/email|📧/i.test(t)) {
+          chatState.contactType = 'email';
+          chatState.pendingField = 'contact';
+          return 'Напишите ваш email.';
+        }
+        if (/телефон|📱/i.test(t)) {
+          chatState.contactType = 'phone';
+          chatState.pendingField = 'contact';
+          return 'Напишите номер телефона.';
+        }
+        if (/другое|💬/i.test(t)) {
+          chatState.contactType = 'other';
+          chatState.pendingField = 'contact';
+          return 'Напишите удобный способ связи.';
+        }
+        // User typed contact directly — save and proceed to card
+        chatState.contact = t;
+        return null;
 
       case 'contact':
         if (!chatState.contact) chatState.contact = t;
@@ -523,10 +559,10 @@
     var audienceLabels = { artist: 'Артист', brand: 'Бренд', personal: 'Личный проект' };
     var serviceLabels  = { ai_photo: 'AI-фото', ai_video: 'AI-видео', visual: 'Визуал-арт', content: 'Контент для соцсетей' };
 
-    var whoVal     = audienceLabels[chatState.audience] || chatState.audience || '—';
-    var serviceVal = serviceLabels[chatState.service]   || chatState.service  || '—';
-    var goalVal    = chatState.goalText || '—';
-    var refsVal    = chatState.refs === 'yes' ? 'Есть' : chatState.refs === 'no' ? 'Нет' : (chatState.refs || '—');
+    var nameVal     = chatState.name     || '—';
+    var whoVal      = audienceLabels[chatState.audience] || chatState.audience || '—';
+    var serviceVal  = serviceLabels[chatState.service]   || chatState.service  || '—';
+    var refsVal     = chatState.refs === 'yes' ? 'Есть' : chatState.refs === 'no' ? 'Нет' : (chatState.refs || '—');
     var deadlineVal = chatState.deadline || '—';
     var contactVal  = chatState.contact  || '—';
 
@@ -558,6 +594,7 @@
     card.appendChild(headline);
 
     var fieldDefs = [
+      ['Имя',        nameVal],
       ['Кто',        whoVal],
       ['Сервис',     whatVal],
       ['Референсы',  refsVal],
@@ -579,22 +616,13 @@
 
     var actions = el('div', { className: 'lc-lead-actions' });
 
-    var tgBtn = el('a', {
-      className: 'lc-lead-btn lc-lead-btn--tg',
-      href: tgHref,
-      target: '_blank',
-      rel: 'noopener noreferrer',
+    var submitBtn = el('button', {
+      className: 'lc-lead-btn lc-lead-btn--submit',
+      type: 'button',
+      'data-lc-submit': '1',
     });
-    tgBtn.textContent = 'Отправить в Telegram';
-    actions.appendChild(tgBtn);
-
-    var emailBtn = el('a', {
-      className: 'lc-lead-btn lc-lead-btn--email',
-      href: 'mailto:alisa@lisacreo.ru?subject=' + emailSubject + '&body=' + emailBody,
-      rel: 'noopener',
-    });
-    emailBtn.textContent = 'Отправить на email';
-    actions.appendChild(emailBtn);
+    submitBtn.textContent = 'Отправить заявку';
+    actions.appendChild(submitBtn);
 
     var resetLink = el('button', { className: 'lc-lead-reset', type: 'button', 'data-lc-reset': '1' });
     resetLink.textContent = '↺ Заполнить заново';
@@ -602,6 +630,20 @@
 
     card.appendChild(actions);
     wrap.appendChild(card);
+    return wrap;
+  }
+
+  function successNode() {
+    var wrap  = el('div', { className: 'lc-lead-success' });
+    var icon  = el('div', { className: 'lc-lead-success__icon' });
+    icon.textContent = '✨';
+    var title = el('p', { className: 'lc-lead-success__title' });
+    title.textContent = 'Заявка отправлена';
+    var sub   = el('p', { className: 'lc-lead-success__sub' });
+    sub.textContent = 'Свяжусь с вами в ближайшее время.';
+    var newBtn = el('button', { className: 'lc-lead-btn lc-lead-btn--reset', type: 'button', 'data-lc-reset': '1' });
+    newBtn.textContent = 'Новая заявка';
+    wrap.append(icon, title, sub, newBtn);
     return wrap;
   }
 
@@ -617,6 +659,26 @@
 
   function scrollBottom(container) {
     container.scrollTop = container.scrollHeight;
+  }
+
+  // ============================================================
+  // LEAD SUBMISSION
+  // ============================================================
+  // Configure endpoint via: window.LISACREO_CHAT_CONFIG = { endpoint: 'https://...' }
+  function sendLead(data) {
+    if (!CONFIG.endpoint) {
+      var noEp = new Error('no_endpoint');
+      noEp.code = 'no_endpoint';
+      return Promise.reject(noEp);
+    }
+    return fetch(CONFIG.endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    }).then(function (r) {
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      return r.json();
+    });
   }
 
   // ============================================================
@@ -873,7 +935,69 @@
 
     d.msgs.addEventListener('click', function (e) {
       if (e.target.closest('[data-lc-reset]')) doReset();
+      var sb = e.target.closest('[data-lc-submit]');
+      if (sb) handleSubmit(sb);
     });
+
+    function handleSubmit(btn) {
+      if (btn.disabled) return;
+      if (!chatState.name || !chatState.contact || (!chatState.service && !chatState.goalText)) return;
+
+      btn.disabled = true;
+      btn.textContent = 'Отправляю…';
+
+      var data = {
+        name:        chatState.name,
+        contact:     chatState.contact,
+        contactType: chatState.contactType,
+        audience:    chatState.audience,
+        service:     chatState.service,
+        goal:        chatState.goalText,
+        references:  chatState.refs,
+        deadline:    chatState.deadline,
+        page:        window.location.pathname,
+        createdAt:   new Date().toISOString(),
+      };
+
+      sendLead(data)
+        .then(function () {
+          var card = btn.closest('.lc-msg--card');
+          if (card) {
+            card.innerHTML = '';
+            card.appendChild(successNode());
+            scrollBottom(d.msgs);
+          }
+        })
+        .catch(function (err) {
+          btn.disabled = false;
+          btn.textContent = 'Отправить заявку';
+          var par = btn.parentNode;
+          if (!par) return;
+          var prev = par.querySelector('.lc-lead-error');
+          if (prev) prev.remove();
+          var prevTg = par.querySelector('.lc-lead-tg-fallback');
+          if (prevTg) prevTg.remove();
+
+          var errEl = el('p', { className: 'lc-lead-error' });
+          var tgLink = el('a', {
+            className: 'lc-lead-tg-fallback',
+            href: 'https://t.me/lisacreo',
+            target: '_blank',
+            rel: 'noopener noreferrer',
+          });
+
+          if (err && err.code === 'no_endpoint') {
+            errEl.textContent = 'Отправка с сайта ещё не подключена.';
+            tgLink.textContent = 'Написать напрямую в Telegram →';
+          } else {
+            errEl.textContent = 'Не удалось отправить заявку. Попробуйте ещё раз или напишите в Telegram.';
+            tgLink.textContent = 'Написать в Telegram →';
+          }
+
+          par.insertBefore(tgLink, btn);
+          par.insertBefore(errEl, tgLink);
+        });
+    }
 
     function lockChat() {
       d.chipsWrap.style.display = 'none';

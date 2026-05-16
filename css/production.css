@@ -5804,6 +5804,88 @@ body.page-brands .brands-gallery-section .brands-gallery-card img {
   border-color: rgba(255, 255, 255, 0.24);
 }
 
+/* Primary CTA — submit */
+.lc-lead-btn--submit {
+  padding: 14px 20px;
+  font-size: 15px;
+  background: var(--lc-chat-accent, #E53F88);
+  color: #fff !important;
+  box-shadow: 0 6px 22px rgba(229, 63, 136, 0.36);
+}
+
+.lc-lead-btn--submit:hover:not(:disabled) {
+  opacity: 1;
+  box-shadow: 0 8px 28px rgba(229, 63, 136, 0.50);
+  transform: translateY(-1px);
+}
+
+.lc-lead-btn--submit:disabled {
+  opacity: 0.55;
+  cursor: default;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+/* Error hint under submit */
+.lc-lead-error {
+  margin: 0 0 6px;
+  font-family: Raleway, sans-serif;
+  font-size: 12px;
+  line-height: 1.4;
+  color: rgba(255, 110, 110, 0.88);
+  text-align: center;
+}
+
+/* Telegram fallback link shown on no_endpoint / network error */
+.lc-lead-tg-fallback {
+  display: block;
+  margin: 0 0 10px;
+  font-family: Raleway, sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.72);
+  text-align: center;
+  text-decoration: none;
+  transition: color 150ms;
+}
+
+.lc-lead-tg-fallback:hover {
+  color: #fff;
+}
+
+/* Success state */
+.lc-lead-success {
+  padding: 16px 8px 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  text-align: center;
+}
+
+.lc-lead-success__icon {
+  font-size: 36px;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.lc-lead-success__title {
+  margin: 0;
+  font-family: Raleway, sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.01em;
+}
+
+.lc-lead-success__sub {
+  margin: 0 0 12px;
+  font-family: Raleway, sans-serif;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.58);
+  line-height: 1.45;
+}
+
 /* Tertiary ghost — copy */
 .lc-lead-btn--copy {
   padding: 9px 14px;
