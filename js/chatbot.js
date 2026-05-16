@@ -69,7 +69,7 @@
     if (f === 'contact_type')  return ['✈️ Telegram', '📧 Email', '📱 Телефон', '💬 Другое'];
     if (f === 'contact')       return [];
 
-    if (state.briefMode || state.service || (state.audience && state.msgCount > 0)) {
+    if (state.briefMode || (state.service && state.msgCount > 0)) {
       return ['💬 Расскажу подробнее', '✅ Готов отправить'];
     }
 
@@ -326,6 +326,7 @@
           return 'Напишите удобный способ связи.';
         }
         // User typed contact directly — save and proceed to card
+        chatState.contactType = 'other';
         chatState.contact = t;
         return null;
 
@@ -792,7 +793,7 @@
         typing.remove();
         chatState.leadCompleted = true;
         d.msgs.appendChild(leadDoneNode());
-        scrollBottom(d.msgs);
+        requestAnimationFrame(function () { scrollBottom(d.msgs); });
         renderChips([]);
         lockChat();
       }, reduced ? 0 : CONFIG.typingDelayMs);
@@ -941,7 +942,12 @@
 
     function handleSubmit(btn) {
       if (btn.disabled) return;
-      if (!chatState.name || !chatState.contact || (!chatState.service && !chatState.goalText)) return;
+      if (!chatState.name || !chatState.contact || (!chatState.service && !chatState.goalText)) {
+        var orig = btn.textContent;
+        btn.textContent = 'Заполните все поля';
+        setTimeout(function () { btn.textContent = orig; }, 2000);
+        return;
+      }
 
       btn.disabled = true;
       btn.textContent = 'Отправляю…';
@@ -1006,6 +1012,9 @@
 
     function doReset() {
       resetChatState();
+      var _path = window.location.pathname;
+      if (/artists\.html/i.test(_path)) chatState.audience = 'artist';
+      if (/brands\.html/i.test(_path))  chatState.audience = 'brand';
       history = [];
       d.msgs.innerHTML = '';
       d.chipsWrap.style.display = '';
