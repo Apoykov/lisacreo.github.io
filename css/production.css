@@ -4914,17 +4914,17 @@ body.page-brands .project-detail-line {
   }
 }
 
-/* Между двумя галереями — чуть больше «воздуха», как в 1920/1440 (суммарный ритм pb+pt) */
-@media (min-width: 992px) {
-  body.page-brands .brands-gallery-section + .brands-gallery-section {
-    padding-top: 116px;
-  }
-}
-
 body.page-brands .brands-gallery-section {
   box-sizing: border-box;
   padding-top: 80px;
   padding-bottom: 40px;
+}
+
+/* Desktop: обе галереи одинаковый верхний отступ; должно стоять после базового правила */
+@media (min-width: 992px) {
+  body.page-brands .brands-gallery-section {
+    padding-top: 116px;
+  }
 }
 
 body.page-brands .brands-gallery-section .section-subtitle {
@@ -4945,10 +4945,13 @@ body.page-brands .brands-gallery-section .section-title {
   color: #fff;
 }
 
-/* # в начале заголовка — отдельный размер/вес от основного текста (Figma: span # vs span lead) */
-body.page-brands .brands-gallery-section .section-title::first-letter {
+/* # в начале заголовка — span-паттерн как у project/gallery sections на главной */
+body.page-brands .brands-gallery-section .brands-title-hash,
+body.page-brands .brands-gallery-section .brands-title-lead { display: inline; }
+
+body.page-brands .brands-gallery-section .brands-title-hash {
   font-weight: 400;
-  color: #ff61a6;
+  color: #e53f88;
 }
 
 body.page-brands .brands-gallery-section .brands-gallery-grid {
@@ -4997,9 +5000,12 @@ body.page-brands .brands-gallery-section .brands-gallery-card img {
     line-height: 76px;
   }
 
-  body.page-brands .brands-gallery-section .section-title::first-letter {
+  body.page-brands .brands-gallery-section .brands-title-hash {
     font-size: 88px;
     line-height: 76px;
+    color: #ff61a6;
+    letter-spacing: -1.2px;
+    vertical-align: baseline;
   }
 }
 
@@ -5083,7 +5089,7 @@ body.page-brands .brands-gallery-section .brands-gallery-card img {
     box-sizing: border-box;
   }
 
-  body.page-brands .brands-gallery-section .section-title::first-letter {
+  body.page-brands .brands-gallery-section .brands-title-hash {
     font-size: clamp(50px, 5.9vw, 76px);
     line-height: 1.08;
   }
@@ -5399,7 +5405,7 @@ body.page-brands .brands-gallery-section .brands-gallery-card img {
     line-height: 62px;
   }
 
-  body.page-brands .brands-gallery-section .section-title::first-letter {
+  body.page-brands .brands-gallery-section .brands-title-hash {
     font-size: 56px;
     line-height: 64px;
   }
@@ -5416,7 +5422,7 @@ body.page-brands .brands-gallery-section .brands-gallery-card img {
     line-height: 44px;
   }
 
-  body.page-brands .brands-gallery-section .section-title::first-letter {
+  body.page-brands .brands-gallery-section .brands-title-hash {
     font-size: 44px;
     line-height: 48px;
   }

@@ -69,7 +69,7 @@
     if (f === 'contact_type')  return ['✈️ Telegram', '📧 Email', '📱 Телефон', '💬 Другое'];
     if (f === 'contact')       return [];
 
-    if (state.briefMode || state.audience || state.service) {
+    if (state.briefMode || state.service || (state.audience && state.msgCount > 0)) {
       return ['💬 Расскажу подробнее', '✅ Готов отправить'];
     }
 
